@@ -8,7 +8,7 @@ render(
   <RadarChart
     title="Test"
     dimensions={["One", "Two", "Three"]}
-    scale={[0, 1, 2, 3, 4]}
+    range={[0, 4]}
   />,
   document.getElementById("app")
 )

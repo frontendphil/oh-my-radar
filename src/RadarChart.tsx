@@ -25,18 +25,19 @@ export function RadarChart<Dimension extends string>({
   const width = 500
   const height = 500
 
-  const rangeSteps = 50 / range.length
+  const steps = createRange(range)
+  const stepSize = 50 / steps.length
 
   return (
     <svg role="figure" aria-label={title} width={width} height={height}>
       <g>
-        {range.map((step, index) => (
+        {steps.map((step, index) => (
           <circle
             key={step}
             className="stroke-slate-400 fill-transparent"
             cx="50%"
             cy="50%"
-            r={`${rangeSteps * (index + 1)}%`}
+            r={`${stepSize * (index + 1)}%`}
           />
         ))}
       </g>
@@ -72,7 +73,8 @@ type DimensionProps = {
 }
 
 const Dimension = ({ range, title, value, onChange }: DimensionProps) => {
-  const stepSize = 50 / range.length
+  const steps = createRange(range)
+  const stepSize = 50 / steps.length
 
   return (
     <>
@@ -86,7 +88,7 @@ const Dimension = ({ range, title, value, onChange }: DimensionProps) => {
         className="stroke-slate-500"
       />
 
-      {range.map((step, index) => (
+      {steps.map((step, index) => (
         <circle
           key={step}
           role="radio"
@@ -101,4 +103,16 @@ const Dimension = ({ range, title, value, onChange }: DimensionProps) => {
       ))}
     </>
   )
+}
+
+const createRange = ([lower, upper]: Range): number[] => {
+  const result = []
+
+  for (let i = lower; i <= upper; i++) {
+    result.push(i)
+  }
+
+  console.log(result)
+
+  return result
 }
