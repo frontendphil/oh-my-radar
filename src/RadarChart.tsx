@@ -20,23 +20,22 @@ type DimensionProps = {
 }
 
 const Dimension = ({ scale, title }: DimensionProps) => {
-  const [selectedValues, setSelectedValues] = useState<number[]>([])
+  const [selectedValue, setSelectedValue] = useState<number | null>(null)
 
   return (
     <>
+      <path role="radiogroup" aria-label={title} />
       {scale.map((value) => (
         <circle
           key={value}
-          role="checkbox"
+          role="radio"
           aria-label={`${title} - ${value}`}
-          aria-checked={selectedValues.includes(value)}
-          onClick={() => {
-            if (selectedValues.includes(value)) {
-              setSelectedValues(selectedValues.filter((v) => v !== value))
-            } else {
-              setSelectedValues([...selectedValues, value])
-            }
-          }}
+          aria-checked={selectedValue === value}
+          cx={5}
+          cy={5}
+          r={5}
+          className="fill-slate-700"
+          onClick={() => setSelectedValue(value)}
         />
       ))}
     </>
