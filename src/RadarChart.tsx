@@ -97,7 +97,9 @@ const Dimension = ({ range, title, value, onChange }: DimensionProps) => {
           cx={`${50 + (index + 1) * stepSize}%`}
           cy="50%"
           r={5}
-          className="fill-slate-500 stroke-transparent cursor-pointer hover:fill-pink-500"
+          className={`${
+            value === step ? "fill-pink-500" : "fill-slate-500"
+          } stroke-transparent cursor-pointer hover:fill-pink-500`}
           onClick={() => onChange(step)}
         />
       ))}
@@ -111,8 +113,6 @@ const createRange = ([lower, upper]: Range): number[] => {
   for (let i = lower; i <= upper; i++) {
     result.push(i)
   }
-
-  console.log(result)
 
   return result
 }
