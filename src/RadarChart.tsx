@@ -30,7 +30,13 @@ const Dimension = ({ scale, title }: DimensionProps) => {
           role="checkbox"
           aria-label={`${title} - ${value}`}
           aria-checked={selectedValues.includes(value)}
-          onClick={() => setSelectedValues([...selectedValues, value])}
+          onClick={() => {
+            if (selectedValues.includes(value)) {
+              setSelectedValues(selectedValues.filter((v) => v !== value))
+            } else {
+              setSelectedValues([...selectedValues, value])
+            }
+          }}
         />
       ))}
     </>

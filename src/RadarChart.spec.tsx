@@ -25,4 +25,15 @@ describe("RadarChart", () => {
       screen.getByRole("checkbox", { name: "Height - 1", checked: true })
     ).toBeInTheDocument()
   })
+
+  it("is possible to deselect a value in a dimension.", () => {
+    render(<RadarChart title="Test" dimensions={["Height"]} scale={[1, 2]} />)
+
+    fireEvent.click(screen.getByRole("checkbox", { name: "Height - 1" }))
+    fireEvent.click(screen.getByRole("checkbox", { name: "Height - 1" }))
+
+    expect(
+      screen.getByRole("checkbox", { name: "Height - 1", checked: false })
+    ).toBeInTheDocument()
+  })
 })
