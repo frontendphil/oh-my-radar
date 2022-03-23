@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 type Props = {
   title: string
   dimensions: string[]
@@ -17,10 +19,20 @@ type DimensionProps = {
   scale: number[]
 }
 
-const Dimension = ({ scale, title }: DimensionProps) => (
-  <>
-    {scale.map((value) => (
-      <circle key={value} role="checkbox" aria-label={`${title} - ${value}`} />
-    ))}
-  </>
-)
+const Dimension = ({ scale, title }: DimensionProps) => {
+  const [selectedValues, setSelectedValues] = useState<number[]>([])
+
+  return (
+    <>
+      {scale.map((value) => (
+        <circle
+          key={value}
+          role="checkbox"
+          aria-label={`${title} - ${value}`}
+          aria-checked={selectedValues.includes(value)}
+          onClick={() => setSelectedValues([...selectedValues, value])}
+        />
+      ))}
+    </>
+  )
+}
