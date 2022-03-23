@@ -1,30 +1,42 @@
 import { useState } from "react"
 
-type Props = {
+type Range = [lower: number, upper: number]
+
+type Props<Dimension extends string> = {
   title: string
-  dimensions: string[]
-  scale: number[]
+  dimensions: Dimension[]
+  range: Range
 }
 
-export const RadarChart = ({ title, dimensions, scale }: Props) => {
+type State<Dimension extends string> = {
+  [key in Dimension]?: number
+}
+
+export function RadarChart<Dimension extends string>({
+  title,
+  dimensions,
+  range,
+}: Props<Dimension>) {
+  const [selectedValues, setSelectedValues] = useState<State<Dimension>>({})
+
   const angle = 360 / dimensions.length
   const angleOffset = angle / 2
 
   const width = 500
   const height = 500
 
-  const scaleSteps = 50 / scale.length
+  const rangeSteps = 50 / range.length
 
   return (
     <svg role="figure" aria-label={title} width={width} height={height}>
       <g>
-        {scale.map((value, index) => (
+        {range.map((step, index) => (
           <circle
-            key={value}
+            key={step}
             className="stroke-slate-400 fill-transparent"
             cx="50%"
             cy="50%"
-            r={`${scaleSteps * (index + 1)}%`}
+            r={`${rangeSteps * (index + 1)}%`}
           />
         ))}
       </g>
@@ -35,7 +47,17 @@ export const RadarChart = ({ title, dimensions, scale }: Props) => {
           className="origin-center"
           transform={`rotate(${-90 + angleOffset + angle * index})`}
         >
-          <Dimension title={dimension} scale={scale} />
+          <Dimension
+            title={dimension}
+            range={range}
+            value={selectedValues[dimension]}
+            onChange={(newValue) =>
+              setSelectedValues((current) => ({
+                ...current,
+                [dimension]: newValue,
+              }))
+            }
+          />
         </g>
       ))}
     </svg>
@@ -44,13 +66,13 @@ export const RadarChart = ({ title, dimensions, scale }: Props) => {
 
 type DimensionProps = {
   title: string
-  scale: number[]
+  range: Range
+  value: number | undefined
+  onChange: (value: number) => void
 }
 
-const Dimension = ({ scale, title }: DimensionProps) => {
-  const [selectedValue, setSelectedValue] = useState<number | null>(null)
-
-  const stepSize = 50 / scale.length
+const Dimension = ({ range, title, value, onChange }: DimensionProps) => {
+  const stepSize = 50 / range.length
 
   return (
     <>
@@ -63,17 +85,18 @@ const Dimension = ({ scale, title }: DimensionProps) => {
         y2="50%"
         className="stroke-slate-500"
       />
-      {scale.map((value, index) => (
+
+      {range.map((step, index) => (
         <circle
-          key={value}
+          key={step}
           role="radio"
-          aria-label={`${title} - ${value}`}
-          aria-checked={selectedValue === value}
+          aria-label={`${title} - ${step}`}
+          aria-checked={value === step}
           cx={`${50 + (index + 1) * stepSize}%`}
           cy="50%"
           r={5}
-          className="fill-slate-500 stroke-transparent"
-          onClick={() => setSelectedValue(value)}
+          className="fill-slate-500 stroke-transparent cursor-pointer hover:fill-pink-500"
+          onClick={() => onChange(step)}
         />
       ))}
     </>
