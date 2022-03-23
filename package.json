@@ -1,0 +1,39 @@
+{
+  "name": "radar-chart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frontendphil/radar-chart.git"
+  },
+  "author": "Philipp Giese",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/frontendphil/radar-chart/issues"
+  },
+  "homepage": "https://github.com/frontendphil/radar-chart#readme",
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "prettier": "^2.6.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "ts-jest": "^27.1.3",
+    "typescript": "^4.6.2"
+  },
+  "prettier": {
+    "semi": false
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  }
+}
