@@ -7,7 +7,13 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
   },
   module: {
-    rules: [{ test: /\.tsx?$/, loader: "ts-loader" }],
+    rules: [
+      { test: /\.tsx?$/, loader: "ts-loader" },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader", "postcss-loader"],
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({

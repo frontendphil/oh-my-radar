@@ -1,4 +1,7 @@
 import { render } from "react-dom"
+
+import "./main.css"
+
 import { RadarChart } from "./RadarChart"
 
 render(
