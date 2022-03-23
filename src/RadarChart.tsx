@@ -13,8 +13,22 @@ export const RadarChart = ({ title, dimensions, scale }: Props) => {
   const width = 500
   const height = 500
 
+  const scaleSteps = 50 / scale.length
+
   return (
     <svg role="figure" aria-label={title} width={width} height={height}>
+      <g>
+        {scale.map((value, index) => (
+          <circle
+            key={value}
+            className="stroke-slate-700 fill-transparent"
+            cx="50%"
+            cy="50%"
+            r={`${scaleSteps * (index + 1)}%`}
+          />
+        ))}
+      </g>
+
       {dimensions.map((dimension, index) => (
         <g
           key={dimension}
