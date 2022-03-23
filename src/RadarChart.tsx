@@ -21,7 +21,7 @@ export const RadarChart = ({ title, dimensions, scale }: Props) => {
         {scale.map((value, index) => (
           <circle
             key={value}
-            className="stroke-slate-700 fill-transparent"
+            className="stroke-slate-400 fill-transparent"
             cx="50%"
             cy="50%"
             r={`${scaleSteps * (index + 1)}%`}
@@ -61,7 +61,7 @@ const Dimension = ({ scale, title }: DimensionProps) => {
         y1="50%"
         x2="100%"
         y2="50%"
-        className="stroke-slate-700"
+        className="stroke-slate-500"
       />
       {scale.map((value, index) => (
         <circle
@@ -72,7 +72,7 @@ const Dimension = ({ scale, title }: DimensionProps) => {
           cx={`${50 + (index + 1) * stepSize}%`}
           cy="50%"
           r={5}
-          className="fill-slate-700"
+          className="fill-slate-500 stroke-transparent"
           onClick={() => setSelectedValue(value)}
         />
       ))}
