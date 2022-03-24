@@ -44,7 +44,7 @@ export function RadarChart<Dimension extends string>({
 
       {dimensions.length > 0 &&
         Object.keys(selectedValues).length === dimensions.length && (
-          <g transform="rotate(90)">
+          <g transform={`translate(${width / 2} ${height / 2})`}>
             <Plane
               diagramWidth={width}
               selection={selectedValues}
@@ -156,9 +156,9 @@ function Plane<Dimension extends string>({
     })
   })
 
-  const d = `M ${start.x},${start.y} ${points.map(
-    ({ x, y }) => `L ${x},${y}`
-  )} z`
+  const d = `M ${start.x},${start.y} ${points
+    .map(({ x, y }) => `L ${x},${y}`)
+    .join(" ")} z`
 
-  return <path d={d} />
+  return <path d={d} className="stroke-pink-700 fill-pink-200 opacity-50" />
 }
