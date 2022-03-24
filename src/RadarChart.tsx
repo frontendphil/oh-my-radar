@@ -1,4 +1,5 @@
 import { useState } from "react"
+import invariant from "invariant"
 
 type Range = [lower: number, upper: number]
 
@@ -42,16 +43,26 @@ export function RadarChart<Dimension extends string>({
         ))}
       </g>
 
+      {Object.keys(selectedValues).length === dimensions.length && (
+        <Plane
+          diagramWidth={width}
+          selection={selectedValues}
+          dimensions={dimensions}
+          range={range}
+        />
+      )}
+
       {dimensions.map((dimension, index) => (
         <g
           key={dimension}
           className="origin-center"
-          transform={`rotate(${-90 + angleOffset + angle * index})`}
+          transform={`rotate(${getDimensionAngle(dimensions, index)})`}
         >
           <Dimension
             title={dimension}
             range={range}
             value={selectedValues[dimension]}
+            diagramWidth={width}
             onChange={(newValue) =>
               setSelectedValues((current) => ({
                 ...current,
@@ -65,14 +76,28 @@ export function RadarChart<Dimension extends string>({
   )
 }
 
+const getDimensionAngle = (dimensions: unknown[], index: number): number => {
+  const angle = 360 / dimensions.length
+  const angleOffset = angle / 2
+
+  return -90 + angleOffset + angle * index
+}
+
 type DimensionProps = {
   title: string
   range: Range
   value: number | undefined
+  diagramWidth: number
   onChange: (value: number) => void
 }
 
-const Dimension = ({ range, title, value, onChange }: DimensionProps) => {
+const Dimension = ({
+  range,
+  title,
+  value,
+  diagramWidth,
+  onChange,
+}: DimensionProps) => {
   const steps = createRange(range)
   const stepSize = 50 / steps.length
 
@@ -81,10 +106,10 @@ const Dimension = ({ range, title, value, onChange }: DimensionProps) => {
       <line
         role="radiogroup"
         aria-label={title}
-        x1="50%"
-        y1="50%"
-        x2="100%"
-        y2="50%"
+        x1={diagramWidth / 2}
+        y1={diagramWidth / 2}
+        x2={diagramWidth}
+        y2={diagramWidth / 2}
         className="stroke-slate-500"
       />
 
@@ -115,4 +140,43 @@ const createRange = ([lower, upper]: Range): number[] => {
   }
 
   return result
+}
+
+const getLengthToSelection = (
+  diagramWidth: number,
+  range: Range,
+  value: number
+): number => {
+  const steps = createRange(range)
+  const lineLength = diagramWidth / 2
+
+  return (lineLength / steps.length) * value
+}
+
+type PlaneProps<Dimension extends string> = {
+  diagramWidth: number
+  dimensions: Dimension[]
+  selection: State<Dimension>
+  range: Range
+}
+
+function Plane<Dimension extends string>({
+  diagramWidth,
+  range,
+  selection,
+  dimensions,
+}: PlaneProps<Dimension>) {
+  const points = dimensions.map((dimension, index) => {
+    const value = selection[dimension]
+
+    invariant(
+      value != null,
+      "To render a plane all dimensions must have a value."
+    )
+
+    const angle = getDimensionAngle(dimensions, index)
+    const length = getLengthToSelection(diagramWidth, range, value)
+  })
+
+  return <path />
 }
