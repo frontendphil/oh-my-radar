@@ -1,5 +1,5 @@
+import { getLengthToSelection } from "./getLengthToSelection"
 import { Range } from "./types"
-import { createRange } from "./utils"
 
 type GetPointsOptions = {
   range: Range
@@ -23,19 +23,10 @@ export function getPoint({
 
   const length = getLengthToSelection(diagramWidth, range, value)
 
-  const x = Math.sin(beta) * length
-  const y = Math.sin(angle) * length
+  const x = Math.sin(toRadians(beta)) * length
+  const y = Math.sin(toRadians(angle)) * length
 
-  return { x, y }
+  return { x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100 }
 }
 
-const getLengthToSelection = (
-  diagramWidth: number,
-  range: Range,
-  value: number
-): number => {
-  const steps = createRange(range)
-  const lineLength = diagramWidth / 2
-
-  return (lineLength / steps.length) * value
-}
+const toRadians = (degrees: number): number => degrees * (Math.PI / 180)
