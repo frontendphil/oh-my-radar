@@ -1,7 +1,9 @@
 import { useState } from "react"
-import invariant from "invariant"
 
-type Range = [lower: number, upper: number]
+import { getPoint } from "./getPoint"
+import { createRange, getDimensionAngle } from "./utils"
+import { Range } from "./types"
+import invariant from "invariant"
 
 type Props<Dimension extends string> = {
   title: string
@@ -19,9 +21,6 @@ export function RadarChart<Dimension extends string>({
   range,
 }: Props<Dimension>) {
   const [selectedValues, setSelectedValues] = useState<State<Dimension>>({})
-
-  const angle = 360 / dimensions.length
-  const angleOffset = angle / 2
 
   const width = 500
   const height = 500
@@ -43,14 +42,17 @@ export function RadarChart<Dimension extends string>({
         ))}
       </g>
 
-      {Object.keys(selectedValues).length === dimensions.length && (
-        <Plane
-          diagramWidth={width}
-          selection={selectedValues}
-          dimensions={dimensions}
-          range={range}
-        />
-      )}
+      {dimensions.length > 0 &&
+        Object.keys(selectedValues).length === dimensions.length && (
+          <g transform="rotate(90)">
+            <Plane
+              diagramWidth={width}
+              selection={selectedValues}
+              dimensions={dimensions}
+              range={range}
+            />
+          </g>
+        )}
 
       {dimensions.map((dimension, index) => (
         <g
@@ -74,13 +76,6 @@ export function RadarChart<Dimension extends string>({
       ))}
     </svg>
   )
-}
-
-const getDimensionAngle = (dimensions: unknown[], index: number): number => {
-  const angle = 360 / dimensions.length
-  const angleOffset = angle / 2
-
-  return -90 + angleOffset + angle * index
 }
 
 type DimensionProps = {
@@ -132,27 +127,6 @@ const Dimension = ({
   )
 }
 
-const createRange = ([lower, upper]: Range): number[] => {
-  const result = []
-
-  for (let i = lower; i <= upper; i++) {
-    result.push(i)
-  }
-
-  return result
-}
-
-const getLengthToSelection = (
-  diagramWidth: number,
-  range: Range,
-  value: number
-): number => {
-  const steps = createRange(range)
-  const lineLength = diagramWidth / 2
-
-  return (lineLength / steps.length) * value
-}
-
 type PlaneProps<Dimension extends string> = {
   diagramWidth: number
   dimensions: Dimension[]
@@ -166,7 +140,7 @@ function Plane<Dimension extends string>({
   selection,
   dimensions,
 }: PlaneProps<Dimension>) {
-  const points = dimensions.map((dimension, index) => {
+  const [start, ...points] = dimensions.map((dimension, index) => {
     const value = selection[dimension]
 
     invariant(
@@ -174,9 +148,17 @@ function Plane<Dimension extends string>({
       "To render a plane all dimensions must have a value."
     )
 
-    const angle = getDimensionAngle(dimensions, index)
-    const length = getLengthToSelection(diagramWidth, range, value)
+    return getPoint({
+      diagramWidth,
+      range,
+      value,
+      angle: getDimensionAngle(dimensions, index),
+    })
   })
 
-  return <path />
+  const d = `M ${start.x},${start.y} ${points.map(
+    ({ x, y }) => `L ${x},${y}`
+  )} z`
+
+  return <path d={d} />
 }
