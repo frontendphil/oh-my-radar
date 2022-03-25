@@ -1,6 +1,10 @@
 {
   "extends": ["config:base"],
 
+  "labels": ["renovate"],
+
+  "semanticCommits": "enabled",
+
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
