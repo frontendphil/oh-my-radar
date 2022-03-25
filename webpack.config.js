@@ -1,8 +1,10 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
+const { NODE_ENV } = process.env
+
 module.exports = {
   entry: "./src/index.tsx",
-  mode: "development",
+  mode: NODE_ENV !== "production" ? "development" : "production",
   devtool: "inline-source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
