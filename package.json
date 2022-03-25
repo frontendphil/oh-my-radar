@@ -55,7 +55,7 @@
     "semi": false
   },
   "lint-staged": {
-    "*.ts": [
+    "*.{ts,tsx,json,js}": [
       "eslint --fix",
       "prettier --write"
     ]
