@@ -1,4 +1,4 @@
-import { Fragment, HTMLAttributes, useState } from "react"
+import { HTMLAttributes, useState } from "react"
 import { v4 } from "uuid"
 import { RadarChart } from "./RadarChart"
 import { Range } from "./types"
