@@ -1,14 +1,6 @@
 import { render } from "react-dom"
+import { App } from "./App"
 
 import "./main.css"
 
-import { RadarChart } from "./RadarChart"
-
-render(
-  <RadarChart
-    title="Test"
-    dimensions={["One", "Two", "Three"]}
-    range={[0, 4]}
-  />,
-  document.getElementById("app")
-)
+render(<App />, document.getElementById("app"))
