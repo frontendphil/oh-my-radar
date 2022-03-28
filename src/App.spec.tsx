@@ -219,7 +219,20 @@ describe("App", () => {
         screen.getByRole("radio", { name: "Test - 10" })
       ).toBeInTheDocument()
     })
-    it.todo("is possible to change the lower bound of the selection range")
+
+    it("is possible to change the lower bound of the selection range", () => {
+      render(<App />)
+
+      addDimension("Test")
+
+      fireEvent.change(screen.getByRole("spinbutton", { name: "Min value" }), {
+        target: { value: "0" },
+      })
+
+      expect(
+        screen.getByRole("radio", { name: "Test - 0" })
+      ).toBeInTheDocument()
+    })
     it.todo(
       "is not possible to enter an upper bound that is below the lower bound."
     )
