@@ -253,7 +253,7 @@ describe("App", () => {
       setMax(3)
 
       expect(screen.getByRole("spinbutton", { name: "Max value" })).toHaveValue(
-        4
+        5
       )
     })
 
@@ -264,7 +264,7 @@ describe("App", () => {
       setMin(8)
 
       expect(screen.getByRole("spinbutton", { name: "Min value" })).toHaveValue(
-        6
+        5
       )
     })
   })

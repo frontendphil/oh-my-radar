@@ -81,7 +81,7 @@ export const App = () => {
           label="Min value"
           value={min.toString()}
           onChange={(value) =>
-            setRange([Math.min(parseInt(value, 10), max), max])
+            setRange([Math.min(parseInt(value, 10), max - 1), max])
           }
         />
 
@@ -90,7 +90,7 @@ export const App = () => {
           label="Max value"
           value={max.toString()}
           onChange={(value) =>
-            setRange([min, Math.max(parseInt(value, 10), min)])
+            setRange([min, Math.max(parseInt(value, 10), min + 2)])
           }
         />
       </div>
