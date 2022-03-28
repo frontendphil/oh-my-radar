@@ -1,4 +1,4 @@
-import { fireEvent, getAllByRole, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import { App } from "./App"
 
 describe("App", () => {
@@ -93,7 +93,16 @@ describe("App", () => {
           screen.queryByRole("radiogroup", { name: "" })
         ).not.toBeInTheDocument()
       })
-      it.todo("clears the add input when a new dimension has been added.")
+
+      it("clears the add input when a new dimension has been added.", () => {
+        render(<App />)
+
+        addDimension("Test")
+
+        expect(
+          screen.getByRole("textbox", { name: "Add dimension" })
+        ).toHaveValue("")
+      })
     })
 
     describe("Mouse interaction", () => {
@@ -156,7 +165,16 @@ describe("App", () => {
           screen.queryByRole("radiogroup", { name: "" })
         ).not.toBeInTheDocument()
       })
-      it.todo("clears the add input when a new dimension has been added.")
+
+      it("clears the add input when a new dimension has been added.", () => {
+        render(<App />)
+
+        addDimension("Test")
+
+        expect(
+          screen.getByRole("textbox", { name: "Add dimension" })
+        ).toHaveValue("")
+      })
     })
 
     it("is possible to remove dimensions.", () => {
