@@ -44,6 +44,24 @@ describe("App", () => {
       ).toBeInTheDocument()
     })
 
+    it('is possible to add new dimensions with the "Add" button.', () => {
+      render(<App />)
+
+      fireEvent.change(screen.getByRole("textbox", { name: "Add dimension" }), {
+        target: { value: "New dimension" },
+      })
+      fireEvent.click(
+        screen.getByRole("button", { name: `Add dimension "New dimension"` })
+      )
+
+      expect(
+        screen.getByRole("listitem", { name: "New dimension" })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole("radiogroup", { name: "New dimension" })
+      ).toBeInTheDocument()
+    })
+
     it("is possible to remove dimensions.", () => {
       render(<App />)
 
@@ -61,7 +79,6 @@ describe("App", () => {
       ).not.toBeInTheDocument()
     })
 
-    it.todo('is possible to add new dimensions with "Enter".')
     it.todo('is possible to add a new dimension by clicking "Add".')
     it.todo("is not possible to add dimensions that already exist.")
     it.todo("is not possible to add dimensions with an empty name.")

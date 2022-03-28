@@ -62,6 +62,10 @@ export const App = () => {
           }}
         />
 
+        <button
+          onClick={() => setDimensions([...dimensions, newDimension])}
+        >{`Add dimension "${newDimension}"`}</button>
+
         <Input
           type="number"
           label="Min value"
