@@ -1,5 +1,18 @@
+import { fireEvent, render, screen } from "@testing-library/react"
+import { App } from "./App"
+
 describe("App", () => {
-  it.todo("is possible to change the title of the cart.")
+  it("is possible to change the title of the cart.", () => {
+    render(<App />)
+
+    fireEvent.change(screen.getByRole("textbox", { name: "Title" }), {
+      target: { value: "Changed title" },
+    })
+
+    expect(
+      screen.getByRole("figure", { name: "Changed title" })
+    ).toBeInTheDocument()
+  })
 
   describe("Dimensions", () => {
     it.todo("is possible to add dimensions.")
