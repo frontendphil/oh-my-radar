@@ -7,6 +7,7 @@
     "test": "jest",
     "start": "webpack serve",
     "build": "webpack",
+    "format": "prettier --write .",
     "prepare": "husky install"
   },
   "repository": {
@@ -41,6 +42,7 @@
     "postcss": "8.4.12",
     "postcss-loader": "6.2.1",
     "prettier": "2.6.1",
+    "prettier-plugin-tailwindcss": "^0.1.8",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "style-loader": "3.3.1",

@@ -19,7 +19,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
             <li
               key={dimension}
               aria-label={dimension}
-              className="flex justify-between items-center rounded border border-slate-300"
+              className="flex items-center justify-between rounded border border-slate-300"
             >
               <span className="px-4">{dimension}</span>
 
@@ -79,6 +79,6 @@ type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
 const Button = (props: ButtonProps) => (
   <button
     {...props}
-    className="rounded disabled::bg-slate-100 bg-slate-200 py-2 px-3 disabled:text-slate-500 text-slate-800"
+    className="disabled::bg-slate-100 rounded bg-slate-200 py-2 px-3 text-slate-800 disabled:text-slate-500"
   />
 )
