@@ -80,7 +80,9 @@ export const App = () => {
           type="number"
           label="Min value"
           value={min.toString()}
-          onChange={(value) => setRange([parseInt(value, 10), max])}
+          onChange={(value) =>
+            setRange([Math.min(parseInt(value, 10), max), max])
+          }
         />
 
         <Input

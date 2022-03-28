@@ -256,8 +256,16 @@ describe("App", () => {
         4
       )
     })
-    it.todo(
-      "is not possible to enter a lower bound that is greater than the upper bound."
-    )
+
+    it("is not possible to enter a lower bound that is greater than the upper bound.", () => {
+      render(<App />)
+
+      setMax(6)
+      setMin(8)
+
+      expect(screen.getByRole("spinbutton", { name: "Min value" })).toHaveValue(
+        6
+      )
+    })
   })
 })
