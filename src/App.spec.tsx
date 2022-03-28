@@ -15,7 +15,25 @@ describe("App", () => {
   })
 
   describe("Dimensions", () => {
-    it.todo("is possible to add dimensions.")
+    it("is possible to add dimensions.", () => {
+      render(<App />)
+
+      fireEvent.change(screen.getByRole("textbox", { name: "Add dimension" }), {
+        target: { value: "New dimension" },
+      })
+      fireEvent.keyUp(screen.getByRole("textbox", { name: "Add dimension" }), {
+        target: screen.getByRole("textbox", { name: "Add dimension" }),
+        key: "Enter",
+      })
+
+      expect(
+        screen.getByRole("listitem", { name: "New dimension" })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByRole("radiogroup", { name: "New dimension" })
+      ).toBeInTheDocument()
+    })
+
     it.todo("is possible to remove dimensions.")
     it.todo('is possible to add new dimensions with "Enter".')
     it.todo('is possible to add a new dimension by clicking "Add".')

@@ -21,28 +21,30 @@ export const App = () => {
       <div>
         <Input label="Title" value={title} onChange={setTitle} />
 
-        {dimensions.map((dimension) => (
-          <div key={dimension}>{dimension}</div>
-        ))}
+        {dimensions.length > 0 && (
+          <ul aria-label="Dimensions">
+            {dimensions.map((dimension) => (
+              <li aria-label={dimension} key={dimension}>
+                {dimension}
+              </li>
+            ))}
+          </ul>
+        )}
 
         <Input
           label="Add dimension"
           value={newDimension}
           onChange={setNewDimension}
-          onKeyDown={(event) => {
+          onKeyUp={(event) => {
             if (event.key !== "Enter") {
               return
             }
 
-            if (!(event.target instanceof HTMLInputElement)) {
+            if (newDimension.trim() === "") {
               return
             }
 
-            if (event.target.value.trim() === "") {
-              return
-            }
-
-            setDimensions([...dimensions, event.target.value])
+            setDimensions([...dimensions, newDimension])
             setNewDimension("")
           }}
         />
