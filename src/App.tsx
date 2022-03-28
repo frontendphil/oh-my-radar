@@ -1,5 +1,7 @@
-import { HTMLAttributes, useState } from "react"
-import { v4 } from "uuid"
+import { useState } from "react"
+import { Dimensions } from "./Dimensions"
+import { Input } from "./Input"
+
 import { RadarChart } from "./RadarChart"
 import { Range } from "./types"
 
@@ -12,8 +14,6 @@ export const App = () => {
   ])
   const [[min, max], setRange] = useState<Range>([1, 4])
 
-  const [newDimension, setNewDimension] = useState("")
-
   return (
     <div className="grid grid-cols-2">
       <RadarChart title={title} dimensions={dimensions} range={[min, max]} />
@@ -21,60 +21,17 @@ export const App = () => {
       <div>
         <Input label="Title" value={title} onChange={setTitle} />
 
-        {dimensions.length > 0 && (
-          <ul aria-label="Dimensions">
-            {dimensions.map((dimension) => (
-              <li aria-label={dimension} key={dimension}>
-                {dimension}
-
-                <button
-                  aria-label={`Remove dimension "${dimension}"`}
-                  onClick={() =>
-                    setDimensions((currentDimensions) =>
-                      currentDimensions.filter(
-                        (currentDimension) => currentDimension !== dimension
-                      )
-                    )
-                  }
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <Input
-          label="Add dimension"
-          value={newDimension}
-          onChange={setNewDimension}
-          onKeyUp={(event) => {
-            if (event.key !== "Enter") {
-              return
-            }
-
-            if (newDimension.trim() === "") {
-              return
-            }
-
-            if (dimensions.includes(newDimension)) {
-              return
-            }
-
-            setDimensions([...dimensions, newDimension])
-            setNewDimension("")
-          }}
-        />
-
-        <button
-          disabled={
-            newDimension.trim() === "" || dimensions.includes(newDimension)
+        <Dimensions
+          dimensions={dimensions}
+          onAdd={(dimension) => setDimensions([...dimensions, dimension])}
+          onRemove={(dimension) =>
+            setDimensions((currentDimensions) =>
+              currentDimensions.filter(
+                (currentDimension) => currentDimension !== dimension
+              )
+            )
           }
-          onClick={() => {
-            setDimensions([...dimensions, newDimension])
-            setNewDimension("")
-          }}
-        >{`Add dimension "${newDimension}"`}</button>
+        />
 
         <Input
           type="number"
@@ -95,41 +52,5 @@ export const App = () => {
         />
       </div>
     </div>
-  )
-}
-
-type InputProps = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
-  type?: string
-  label: string
-  value?: string
-  onChange?: (newValue: string) => void
-}
-
-const Input = ({ label, value, onChange, ...rest }: InputProps) => {
-  const [id] = useState(v4)
-
-  return (
-    <>
-      <label
-        htmlFor={id}
-        className="uppercase text-sm font-bold block text-slate-500"
-      >
-        {label}
-      </label>
-      <input
-        type="text"
-        {...rest}
-        className="border border-slate-400 rounded px-2 py-2"
-        id={id}
-        value={value}
-        onChange={(event) => {
-          if (!onChange) {
-            return
-          }
-
-          onChange(event.target.value)
-        }}
-      />
-    </>
   )
 }
