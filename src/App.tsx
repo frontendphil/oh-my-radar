@@ -67,7 +67,9 @@ export const App = () => {
         />
 
         <button
-          disabled={dimensions.includes(newDimension)}
+          disabled={
+            newDimension.trim() === "" || dimensions.includes(newDimension)
+          }
           onClick={() => setDimensions([...dimensions, newDimension])}
         >{`Add dimension "${newDimension}"`}</button>
 

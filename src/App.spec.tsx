@@ -80,7 +80,19 @@ describe("App", () => {
           screen.getAllByRole("radiogroup", { name: "Test" })
         ).toHaveLength(1)
       })
-      it.todo("is not possible to add dimensions with an empty name.")
+
+      it("is not possible to add dimensions with an empty name.", () => {
+        render(<App />)
+
+        addDimension("")
+
+        expect(
+          screen.queryByRole("listbox", { name: "" })
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByRole("radiogroup", { name: "" })
+        ).not.toBeInTheDocument()
+      })
       it.todo("clears the add input when a new dimension has been added.")
     })
 
@@ -131,7 +143,19 @@ describe("App", () => {
           screen.getAllByRole("radiogroup", { name: "Test" })
         ).toHaveLength(1)
       })
-      it.todo("is not possible to add dimensions with an empty name.")
+
+      it("is not possible to add dimensions with an empty name.", () => {
+        render(<App />)
+
+        addDimension("")
+
+        expect(
+          screen.queryByRole("listitem", { name: "" })
+        ).not.toBeInTheDocument()
+        expect(
+          screen.queryByRole("radiogroup", { name: "" })
+        ).not.toBeInTheDocument()
+      })
       it.todo("clears the add input when a new dimension has been added.")
     })
 
