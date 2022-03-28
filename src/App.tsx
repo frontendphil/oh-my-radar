@@ -26,6 +26,19 @@ export const App = () => {
             {dimensions.map((dimension) => (
               <li aria-label={dimension} key={dimension}>
                 {dimension}
+
+                <button
+                  aria-label={`Remove dimension "${dimension}"`}
+                  onClick={() =>
+                    setDimensions((currentDimensions) =>
+                      currentDimensions.filter(
+                        (currentDimension) => currentDimension !== dimension
+                      )
+                    )
+                  }
+                >
+                  Remove
+                </button>
               </li>
             ))}
           </ul>
