@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, getAllByRole, render, screen } from "@testing-library/react"
 import { App } from "./App"
 
 describe("App", () => {
@@ -25,41 +25,114 @@ describe("App", () => {
       })
     }
 
-    it("is possible to add dimensions.", () => {
-      render(<App />)
+    describe("Keyboard interaction", () => {
+      const addDimension = (name: string) => {
+        fireEvent.change(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          {
+            target: { value: name },
+          }
+        )
+        fireEvent.keyUp(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          {
+            target: screen.getByRole("textbox", { name: "Add dimension" }),
+            key: "Enter",
+          }
+        )
+      }
 
-      fireEvent.change(screen.getByRole("textbox", { name: "Add dimension" }), {
-        target: { value: "New dimension" },
-      })
-      fireEvent.keyUp(screen.getByRole("textbox", { name: "Add dimension" }), {
-        target: screen.getByRole("textbox", { name: "Add dimension" }),
-        key: "Enter",
+      it('is possible to add dimensions with "Enter".', () => {
+        render(<App />)
+
+        fireEvent.change(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          {
+            target: { value: "New dimension" },
+          }
+        )
+        fireEvent.keyUp(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          {
+            target: screen.getByRole("textbox", { name: "Add dimension" }),
+            key: "Enter",
+          }
+        )
+
+        expect(
+          screen.getByRole("listitem", { name: "New dimension" })
+        ).toBeInTheDocument()
+        expect(
+          screen.getByRole("radiogroup", { name: "New dimension" })
+        ).toBeInTheDocument()
       })
 
-      expect(
-        screen.getByRole("listitem", { name: "New dimension" })
-      ).toBeInTheDocument()
-      expect(
-        screen.getByRole("radiogroup", { name: "New dimension" })
-      ).toBeInTheDocument()
+      it("is not possible to add dimensions that already exist.", () => {
+        render(<App />)
+
+        addDimension("Test")
+        addDimension("Test")
+
+        expect(screen.getAllByRole("listitem", { name: "Test" })).toHaveLength(
+          1
+        )
+        expect(
+          screen.getAllByRole("radiogroup", { name: "Test" })
+        ).toHaveLength(1)
+      })
+      it.todo("is not possible to add dimensions with an empty name.")
+      it.todo("clears the add input when a new dimension has been added.")
     })
 
-    it('is possible to add new dimensions with the "Add" button.', () => {
-      render(<App />)
+    describe("Mouse interaction", () => {
+      const addDimension = (name: string) => {
+        fireEvent.change(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          {
+            target: { value: name },
+          }
+        )
+        fireEvent.click(
+          screen.getByRole("button", { name: `Add dimension "${name}"` })
+        )
+      }
 
-      fireEvent.change(screen.getByRole("textbox", { name: "Add dimension" }), {
-        target: { value: "New dimension" },
+      it('is possible to add new dimensions with the "Add" button.', () => {
+        render(<App />)
+
+        fireEvent.change(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          {
+            target: { value: "New dimension" },
+          }
+        )
+        fireEvent.click(
+          screen.getByRole("button", { name: `Add dimension "New dimension"` })
+        )
+
+        expect(
+          screen.getByRole("listitem", { name: "New dimension" })
+        ).toBeInTheDocument()
+        expect(
+          screen.getByRole("radiogroup", { name: "New dimension" })
+        ).toBeInTheDocument()
       })
-      fireEvent.click(
-        screen.getByRole("button", { name: `Add dimension "New dimension"` })
-      )
 
-      expect(
-        screen.getByRole("listitem", { name: "New dimension" })
-      ).toBeInTheDocument()
-      expect(
-        screen.getByRole("radiogroup", { name: "New dimension" })
-      ).toBeInTheDocument()
+      it("is not possible to add dimensions that already exist.", () => {
+        render(<App />)
+
+        addDimension("Test")
+        addDimension("Test")
+
+        expect(screen.getAllByRole("listitem", { name: "Test" })).toHaveLength(
+          1
+        )
+        expect(
+          screen.getAllByRole("radiogroup", { name: "Test" })
+        ).toHaveLength(1)
+      })
+      it.todo("is not possible to add dimensions with an empty name.")
+      it.todo("clears the add input when a new dimension has been added.")
     })
 
     it("is possible to remove dimensions.", () => {
@@ -78,11 +151,6 @@ describe("App", () => {
         screen.queryByRole("radiogroup", { name: "Test" })
       ).not.toBeInTheDocument()
     })
-
-    it.todo('is possible to add a new dimension by clicking "Add".')
-    it.todo("is not possible to add dimensions that already exist.")
-    it.todo("is not possible to add dimensions with an empty name.")
-    it.todo("clears the add input when a new dimension has been added.")
   })
 
   describe("Range", () => {

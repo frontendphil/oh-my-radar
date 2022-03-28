@@ -57,12 +57,17 @@ export const App = () => {
               return
             }
 
+            if (dimensions.includes(newDimension)) {
+              return
+            }
+
             setDimensions([...dimensions, newDimension])
             setNewDimension("")
           }}
         />
 
         <button
+          disabled={dimensions.includes(newDimension)}
           onClick={() => setDimensions([...dimensions, newDimension])}
         >{`Add dimension "${newDimension}"`}</button>
 
