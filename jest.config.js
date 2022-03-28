@@ -4,4 +4,8 @@ module.exports = {
   testEnvironment: "jsdom",
   collectCoverageFrom: ["src/**/*.ts(x)?"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
+  watchPlugins: [
+    "jest-watch-typeahead/filename",
+    "jest-watch-typeahead/testname",
+  ],
 }
