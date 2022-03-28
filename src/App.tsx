@@ -1,5 +1,7 @@
-import { HTMLAttributes, useState } from "react"
-import { v4 } from "uuid"
+import { useState } from "react"
+import { Dimensions } from "./Dimensions"
+import { Input } from "./Input"
+
 import { RadarChart } from "./RadarChart"
 import { Range } from "./types"
 
@@ -12,91 +14,43 @@ export const App = () => {
   ])
   const [[min, max], setRange] = useState<Range>([1, 4])
 
-  const [newDimension, setNewDimension] = useState("")
-
   return (
     <div className="grid grid-cols-2">
       <RadarChart title={title} dimensions={dimensions} range={[min, max]} />
 
-      <div>
+      <div className="flex flex-col gap-4">
         <Input label="Title" value={title} onChange={setTitle} />
 
-        {dimensions.map((dimension) => (
-          <div key={dimension}>{dimension}</div>
-        ))}
-
-        <Input
-          label="Add dimension"
-          value={newDimension}
-          onChange={setNewDimension}
-          onKeyDown={(event) => {
-            if (event.key !== "Enter") {
-              return
-            }
-
-            if (!(event.target instanceof HTMLInputElement)) {
-              return
-            }
-
-            if (event.target.value.trim() === "") {
-              return
-            }
-
-            setDimensions([...dimensions, event.target.value])
-            setNewDimension("")
-          }}
+        <Dimensions
+          dimensions={dimensions}
+          onAdd={(dimension) => setDimensions([...dimensions, dimension])}
+          onRemove={(dimension) =>
+            setDimensions((currentDimensions) =>
+              currentDimensions.filter(
+                (currentDimension) => currentDimension !== dimension
+              )
+            )
+          }
         />
 
         <Input
           type="number"
           label="Min value"
           value={min.toString()}
-          onChange={(value) => setRange([parseInt(value, 10), max])}
+          onChange={(value) =>
+            setRange([Math.min(parseInt(value, 10), max - 1), max])
+          }
         />
 
         <Input
           type="number"
           label="Max value"
           value={max.toString()}
-          onChange={(value) => setRange([min, parseInt(value, 10)])}
+          onChange={(value) =>
+            setRange([min, Math.max(parseInt(value, 10), min + 2)])
+          }
         />
       </div>
     </div>
-  )
-}
-
-type InputProps = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
-  type?: string
-  label: string
-  value?: string
-  onChange?: (newValue: string) => void
-}
-
-const Input = ({ label, value, onChange, ...rest }: InputProps) => {
-  const [id] = useState(v4)
-
-  return (
-    <>
-      <label
-        htmlFor={id}
-        className="uppercase text-sm font-bold block text-slate-500"
-      >
-        {label}
-      </label>
-      <input
-        type="text"
-        {...rest}
-        className="border border-slate-400 rounded px-2 py-2"
-        id={id}
-        value={value}
-        onChange={(event) => {
-          if (!onChange) {
-            return
-          }
-
-          onChange(event.target.value)
-        }}
-      />
-    </>
   )
 }
