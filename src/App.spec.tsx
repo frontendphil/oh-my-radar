@@ -196,7 +196,29 @@ describe("App", () => {
   })
 
   describe("Range", () => {
-    it.todo("is possible to change the upper bound of the selection range.")
+    const addDimension = (name: string) => {
+      fireEvent.change(screen.getByRole("textbox", { name: "Add dimension" }), {
+        target: { value: name },
+      })
+      fireEvent.keyUp(screen.getByRole("textbox", { name: "Add dimension" }), {
+        target: screen.getByRole("textbox", { name: "Add dimension" }),
+        key: "Enter",
+      })
+    }
+
+    it("is possible to change the upper bound of the selection range.", () => {
+      render(<App />)
+
+      addDimension("Test")
+
+      fireEvent.change(screen.getByRole("spinbutton", { name: "Max value" }), {
+        target: { value: "10" },
+      })
+
+      expect(
+        screen.getByRole("radio", { name: "Test - 10" })
+      ).toBeInTheDocument()
+    })
     it.todo("is possible to change the lower bound of the selection range")
     it.todo(
       "is not possible to enter an upper bound that is below the lower bound."
