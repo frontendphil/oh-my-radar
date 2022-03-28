@@ -87,7 +87,9 @@ export const App = () => {
           type="number"
           label="Max value"
           value={max.toString()}
-          onChange={(value) => setRange([min, parseInt(value, 10)])}
+          onChange={(value) =>
+            setRange([min, Math.max(parseInt(value, 10), min)])
+          }
         />
       </div>
     </div>

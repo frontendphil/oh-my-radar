@@ -206,6 +206,18 @@ describe("App", () => {
       })
     }
 
+    const setMin = (value: number) => {
+      fireEvent.change(screen.getByRole("spinbutton", { name: "Min value" }), {
+        target: { value: value.toString() },
+      })
+    }
+
+    const setMax = (value: number) => {
+      fireEvent.change(screen.getByRole("spinbutton", { name: "Max value" }), {
+        target: { value: value.toString() },
+      })
+    }
+
     it("is possible to change the upper bound of the selection range.", () => {
       render(<App />)
 
@@ -233,9 +245,17 @@ describe("App", () => {
         screen.getByRole("radio", { name: "Test - 0" })
       ).toBeInTheDocument()
     })
-    it.todo(
-      "is not possible to enter an upper bound that is below the lower bound."
-    )
+
+    it("is not possible to enter an upper bound that is below the lower bound.", () => {
+      render(<App />)
+
+      setMin(4)
+      setMax(3)
+
+      expect(screen.getByRole("spinbutton", { name: "Max value" })).toHaveValue(
+        4
+      )
+    })
     it.todo(
       "is not possible to enter a lower bound that is greater than the upper bound."
     )
