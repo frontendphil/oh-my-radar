@@ -18,7 +18,7 @@ export const App = () => {
     <div className="grid grid-cols-2">
       <RadarChart title={title} dimensions={dimensions} range={[min, max]} />
 
-      <div>
+      <div className="flex flex-col gap-4">
         <Input label="Title" value={title} onChange={setTitle} />
 
         <Dimensions
