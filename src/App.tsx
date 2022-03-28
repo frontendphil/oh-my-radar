@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Dimensions } from "./Dimensions"
 import { Input } from "./Input"
 
@@ -14,11 +14,31 @@ export const App = () => {
   ])
   const [[min, max], setRange] = useState<Range>([1, 4])
 
+  const [size, setSize] = useState(window.innerWidth / 3)
+
+  useEffect(() => {
+    const callback = () => setSize(window.innerWidth / 3)
+
+    window.addEventListener("resize", callback)
+
+    return () => {
+      window.removeEventListener("resize", callback)
+    }
+  }, [])
+
   return (
     <div className="grid grid-cols-2">
-      <RadarChart title={title} dimensions={dimensions} range={[min, max]} />
+      <div className="m-24">
+        <RadarChart
+          title={title}
+          dimensions={dimensions}
+          range={[min, max]}
+          width={size}
+          height={size}
+        />
+      </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="mt-24 mr-24 flex flex-col gap-4">
         <Input label="Title" value={title} onChange={setTitle} />
 
         <Dimensions

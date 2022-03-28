@@ -9,6 +9,8 @@ type Props<Dimension extends string> = {
   title: string
   dimensions: Dimension[]
   range: Range
+  width?: number
+  height?: number
 }
 
 type State<Dimension extends string> = {
@@ -19,11 +21,10 @@ export function RadarChart<Dimension extends string>({
   title,
   dimensions,
   range,
+  width = 500,
+  height = 500,
 }: Props<Dimension>) {
   const [selectedValues, setSelectedValues] = useState<State<Dimension>>({})
-
-  const width = 500
-  const height = 500
 
   const steps = createRange(range)
   const stepSize = 50 / steps.length
