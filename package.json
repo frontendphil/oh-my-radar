@@ -8,6 +8,7 @@
     "start": "webpack serve",
     "build": "webpack",
     "format": "prettier --write .",
+    "cypress:open": "cypress open",
     "prepare": "husky install"
   },
   "repository": {
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/frontendphil/radar-chart#readme",
   "devDependencies": {
+    "@testing-library/cypress": "^8.0.2",
     "@testing-library/jest-dom": "5.16.3",
     "@testing-library/react": "12.1.4",
     "@types/invariant": "2.2.35",
@@ -30,6 +32,7 @@
     "@typescript-eslint/parser": "5.16.0",
     "autoprefixer": "10.4.4",
     "css-loader": "6.7.1",
+    "cypress": "^9.5.3",
     "eslint": "8.12.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-jsx-a11y": "6.5.1",
