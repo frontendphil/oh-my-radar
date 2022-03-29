@@ -7,6 +7,6 @@ type Props = HTMLAttributes<HTMLLabelElement> & {
 export const Label = (props: Props) => (
   <label
     {...props}
-    className="uppercase text-sm font-bold block text-slate-500"
+    className="block text-sm font-bold uppercase text-slate-500"
   />
 )

@@ -9,6 +9,8 @@ type Props<Dimension extends string> = {
   title: string
   dimensions: Dimension[]
   range: Range
+  width?: number
+  height?: number
 }
 
 type State<Dimension extends string> = {
@@ -19,11 +21,10 @@ export function RadarChart<Dimension extends string>({
   title,
   dimensions,
   range,
+  width = 500,
+  height = 500,
 }: Props<Dimension>) {
   const [selectedValues, setSelectedValues] = useState<State<Dimension>>({})
-
-  const width = 500
-  const height = 500
 
   const steps = createRange(range)
   const stepSize = 50 / steps.length
@@ -34,7 +35,7 @@ export function RadarChart<Dimension extends string>({
         {steps.map((step, index) => (
           <circle
             key={step}
-            className="stroke-slate-400 fill-transparent"
+            className="fill-transparent stroke-slate-400"
             cx="50%"
             cy="50%"
             r={`${stepSize * (index + 1)}%`}
@@ -119,7 +120,7 @@ const Dimension = ({
           r={5}
           className={`${
             value === step ? "fill-pink-500" : "fill-slate-500"
-          } stroke-transparent cursor-pointer hover:fill-pink-500`}
+          } cursor-pointer stroke-transparent hover:fill-pink-500`}
           onClick={() => onChange(step)}
         />
       ))}
@@ -160,5 +161,5 @@ function Plane<Dimension extends string>({
     .map(({ x, y }) => `L ${x},${y}`)
     .join(" ")} z`
 
-  return <path d={d} className="stroke-pink-700 fill-pink-200 opacity-50" />
+  return <path d={d} className="fill-pink-200 stroke-pink-700 opacity-50" />
 }

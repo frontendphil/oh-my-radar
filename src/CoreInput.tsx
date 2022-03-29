@@ -13,7 +13,7 @@ export const CoreInput = ({ id, value, onChange, ...rest }: CoreInputProps) => (
   <input
     type="text"
     {...rest}
-    className="border border-slate-400 rounded px-2 py-2"
+    className="rounded border border-slate-400 px-2 py-2"
     id={id}
     value={value}
     onChange={(event) => {
