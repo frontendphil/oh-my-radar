@@ -1,14 +1,15 @@
-import { Plane } from "./Plane"
+import { Color, Plane } from "./Plane"
 import { useDimensions, useSelection } from "./RadarContext"
 import { Selection as SelectionValue } from "./types"
 
 type Props = {
   name: string
   value: SelectionValue
+  color?: Color
   onChange?: (value: SelectionValue) => void
 }
 
-export function Selection({ name, value, onChange }: Props) {
+export function Selection({ name, value, color, onChange }: Props) {
   useSelection({ name, value, onChange })
 
   const dimensions = useDimensions()
@@ -25,5 +26,5 @@ export function Selection({ name, value, onChange }: Props) {
     return null
   }
 
-  return <Plane label={name} selection={value} />
+  return <Plane label={name} selection={value} color={color} />
 }

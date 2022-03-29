@@ -4,12 +4,25 @@ import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
 import { Selection } from "./types"
 import { getDimensionAngle } from "./utils"
 
+const borderColor = {
+  pink: "stroke-pink-700",
+  blue: "stroke-blue-700",
+}
+
+const fill = {
+  pink: "fill-pink-200",
+  blue: "fill-blue-200",
+}
+
+export type Color = keyof typeof fill
+
 type PlaneProps = {
   label: string
   selection: Selection
+  color?: Color
 }
 
-export function Plane({ selection, label }: PlaneProps) {
+export function Plane({ selection, label, color = "pink" }: PlaneProps) {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()
@@ -39,7 +52,7 @@ export function Plane({ selection, label }: PlaneProps) {
       role="figure"
       aria-label={label}
       d={d}
-      className="fill-pink-200 stroke-pink-700 opacity-50"
+      className={`${fill[color]} ${borderColor[color]} opacity-50`}
     />
   )
 }

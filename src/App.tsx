@@ -38,7 +38,12 @@ export const App = () => {
           width={size}
           height={size}
         >
-          <Selection name="john" value={selection} onChange={setSelection} />
+          <Selection
+            name="john"
+            value={selection}
+            onChange={setSelection}
+            color="blue"
+          />
         </RadarChart>
       </div>
 
