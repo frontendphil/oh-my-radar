@@ -268,4 +268,16 @@ describe("App", () => {
       )
     })
   })
+
+  describe("Selection", () => {
+    it("is possible to select a value.", () => {
+      render(<App />)
+
+      fireEvent.click(screen.getByRole("radio", { name: "One - 1" }))
+
+      expect(
+        screen.getByRole("radio", { name: "One - 1", checked: true })
+      ).toBeInTheDocument()
+    })
+  })
 })

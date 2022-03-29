@@ -3,7 +3,8 @@ import { Dimensions } from "./Dimensions"
 import { Input } from "./Input"
 
 import { RadarChart } from "./RadarChart"
-import { Range } from "./types"
+import { Selection } from "./Selection"
+import { Range, Selection as SelectionValue } from "./types"
 
 export const App = () => {
   const [title, setTitle] = useState("Test")
@@ -13,6 +14,7 @@ export const App = () => {
     "Three",
   ])
   const [[min, max], setRange] = useState<Range>([1, 4])
+  const [selection, setSelection] = useState<SelectionValue>({})
 
   const [size, setSize] = useState(window.innerWidth / 3)
 
@@ -35,7 +37,9 @@ export const App = () => {
           range={[min, max]}
           width={size}
           height={size}
-        />
+        >
+          <Selection name="test" value={selection} onChange={setSelection} />
+        </RadarChart>
       </div>
 
       <div className="mt-24 mr-24 flex flex-col gap-4">

@@ -1,9 +1,8 @@
-import { useState } from "react"
+import { ReactNode, useCallback, useState } from "react"
 
-import { getPoint } from "./getPoint"
 import { createRange, getDimensionAngle } from "./utils"
-import { Range } from "./types"
-import invariant from "invariant"
+import { Range, Selection } from "./types"
+import { RadarContext, UpdateOptions } from "./RadarContext"
 
 type Props<Dimension extends string> = {
   title: string
@@ -11,10 +10,13 @@ type Props<Dimension extends string> = {
   range: Range
   width?: number
   height?: number
+  children: ReactNode
 }
 
-type State<Dimension extends string> = {
-  [key in Dimension]?: number
+type ChangeFn = (value: Selection) => void
+
+type State = {
+  [selection: string]: { value: Selection; onChange?: ChangeFn }
 }
 
 export function RadarChart<Dimension extends string>({
@@ -23,8 +25,21 @@ export function RadarChart<Dimension extends string>({
   range,
   width = 500,
   height = 500,
+  children,
 }: Props<Dimension>) {
-  const [selectedValues, setSelectedValues] = useState<State<Dimension>>({})
+  const [selections, setSelections] = useState<State>({})
+  const [activeSelection, setActiveSelection] = useState<string | null>(null)
+
+  const updateSelection = useCallback(
+    ({ name, value, onChange }: UpdateOptions) => {
+      setSelections((currentSelections) => ({
+        ...currentSelections,
+        [name]: { value, onChange },
+      }))
+      setActiveSelection(name)
+    },
+    []
+  )
 
   const steps = createRange(range)
   const stepSize = 50 / steps.length
@@ -43,7 +58,12 @@ export function RadarChart<Dimension extends string>({
         ))}
       </g>
 
-      {dimensions.length > 0 &&
+      <RadarContext.Provider
+        value={{ diagramWidth: width, dimensions, range, updateSelection }}
+      >
+        {children}
+      </RadarContext.Provider>
+      {/* {dimensions.length > 0 &&
         Object.keys(selectedValues).length === dimensions.length && (
           <g transform={`translate(${width / 2} ${height / 2})`}>
             <Plane
@@ -53,28 +73,36 @@ export function RadarChart<Dimension extends string>({
               range={range}
             />
           </g>
-        )}
+        )} */}
 
-      {dimensions.map((dimension, index) => (
-        <g
-          key={dimension}
-          className="origin-center"
-          transform={`rotate(${getDimensionAngle(dimensions, index)})`}
-        >
-          <Dimension
-            title={dimension}
-            range={range}
-            value={selectedValues[dimension]}
-            diagramWidth={width}
-            onChange={(newValue) =>
-              setSelectedValues((current) => ({
-                ...current,
-                [dimension]: newValue,
-              }))
-            }
-          />
-        </g>
-      ))}
+      {activeSelection && (
+        <>
+          {dimensions.map((dimension, index) => (
+            <g
+              key={dimension}
+              className="origin-center"
+              transform={`rotate(${getDimensionAngle(dimensions, index)})`}
+            >
+              <Dimension
+                title={dimension}
+                range={range}
+                value={selections[activeSelection].value[dimension]}
+                diagramWidth={width}
+                onChange={(newValue) => {
+                  const { value, onChange } = selections[activeSelection]
+
+                  if (onChange) {
+                    onChange({
+                      ...value,
+                      [dimension]: newValue,
+                    })
+                  }
+                }}
+              />
+            </g>
+          ))}
+        </>
+      )}
     </svg>
   )
 }
@@ -126,40 +154,4 @@ const Dimension = ({
       ))}
     </>
   )
-}
-
-type PlaneProps<Dimension extends string> = {
-  diagramWidth: number
-  dimensions: Dimension[]
-  selection: State<Dimension>
-  range: Range
-}
-
-function Plane<Dimension extends string>({
-  diagramWidth,
-  range,
-  selection,
-  dimensions,
-}: PlaneProps<Dimension>) {
-  const [start, ...points] = dimensions.map((dimension, index) => {
-    const value = selection[dimension]
-
-    invariant(
-      value != null,
-      "To render a plane all dimensions must have a value."
-    )
-
-    return getPoint({
-      diagramWidth,
-      range,
-      value,
-      angle: getDimensionAngle(dimensions, index),
-    })
-  })
-
-  const d = `M ${start.x},${start.y} ${points
-    .map(({ x, y }) => `L ${x},${y}`)
-    .join(" ")} z`
-
-  return <path d={d} className="fill-pink-200 stroke-pink-700 opacity-50" />
 }
