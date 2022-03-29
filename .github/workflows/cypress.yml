@@ -13,4 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm i
-      - run: npm cypress:test -- --config baseUrl=${{ github.event.deployment_status.target_url }}
+      - uses: cypress-io/github-action@v2
+        env:
+          CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
