@@ -10,7 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: npm i
       - uses: cypress-io/github-action@v2
         with:
           record: true
