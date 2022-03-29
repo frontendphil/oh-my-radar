@@ -279,5 +279,15 @@ describe("App", () => {
         screen.getByRole("radio", { name: "One - 1", checked: true })
       ).toBeInTheDocument()
     })
+
+    it("renders a figure when all options of a selection have been set.", () => {
+      render(<App />)
+
+      fireEvent.click(screen.getByRole("radio", { name: "One - 1" }))
+      fireEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
+      fireEvent.click(screen.getByRole("radio", { name: "Three - 1" }))
+
+      expect(screen.getByRole("figure", { name: "john" })).toBeInTheDocument()
+    })
   })
 })

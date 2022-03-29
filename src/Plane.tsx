@@ -5,10 +5,11 @@ import { Selection } from "./types"
 import { getDimensionAngle } from "./utils"
 
 type PlaneProps = {
+  label: string
   selection: Selection
 }
 
-export function Plane({ selection }: PlaneProps) {
+export function Plane({ selection, label }: PlaneProps) {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()
@@ -33,5 +34,12 @@ export function Plane({ selection }: PlaneProps) {
     .map(({ x, y }) => `L ${x},${y}`)
     .join(" ")} z`
 
-  return <path d={d} className="fill-pink-200 stroke-pink-700 opacity-50" />
+  return (
+    <path
+      role="figure"
+      aria-label={label}
+      d={d}
+      className="fill-pink-200 stroke-pink-700 opacity-50"
+    />
+  )
 }

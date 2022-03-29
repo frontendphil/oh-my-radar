@@ -58,22 +58,13 @@ export function RadarChart<Dimension extends string>({
         ))}
       </g>
 
-      <RadarContext.Provider
-        value={{ diagramWidth: width, dimensions, range, updateSelection }}
-      >
-        {children}
-      </RadarContext.Provider>
-      {/* {dimensions.length > 0 &&
-        Object.keys(selectedValues).length === dimensions.length && (
-          <g transform={`translate(${width / 2} ${height / 2})`}>
-            <Plane
-              diagramWidth={width}
-              selection={selectedValues}
-              dimensions={dimensions}
-              range={range}
-            />
-          </g>
-        )} */}
+      <g transform={`translate(${width / 2} ${height / 2})`}>
+        <RadarContext.Provider
+          value={{ diagramWidth: width, dimensions, range, updateSelection }}
+        >
+          {children}
+        </RadarContext.Provider>
+      </g>
 
       {activeSelection && (
         <>
