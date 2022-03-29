@@ -1,0 +1,16 @@
+name: Cypress tests
+
+on: deployment_status
+
+jobs:
+  run-tests:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    container: cypress/base:16.13.0
+    env:
+      TERM: xterm
+
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm i
+      - run: npm cypress:test -- --config baseUrl=${{ github.event.deployment_status.target_url }}
