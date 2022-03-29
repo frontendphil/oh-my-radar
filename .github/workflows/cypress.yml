@@ -10,9 +10,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: npm ci --ignore-scripts
+      - run: npm ci
+        env:
+          HUSKY: 0
       - uses: cypress-io/github-action@v2
         with:
+          install: false
           record: true
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
