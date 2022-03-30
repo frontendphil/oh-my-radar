@@ -10,10 +10,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - run: npm ci
       - uses: cypress-io/github-action@v2
         with:
-          install: false
           command-prefix: "percy exec -- npx"
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
