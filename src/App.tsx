@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react"
 import { Dimensions } from "./Dimensions"
-import { Input } from "./Input"
+import { Input } from "./form-controls"
 
-import { RadarChart } from "./RadarChart"
-import { Selection } from "./Selection"
-import { Range, Selection as SelectionValue } from "./types"
+import { RadarChart, Selection, Range, SelectionValue } from "./radar-chart"
 
 export const App = () => {
   const [title, setTitle] = useState("Test")
