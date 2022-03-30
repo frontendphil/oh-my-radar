@@ -1,10 +1,10 @@
-import { ReactNode, useLayoutEffect, useRef, useState } from "react"
+import { ReactNode } from "react"
 
 import { createRange, getDimensionAngle } from "./utils"
 import { Range } from "./types"
 import { RadarContext } from "./RadarContext"
 import { Slots } from "./Slots"
-import { getPoint } from "./getPoint"
+import { DimensionLabels } from "./DimensionLabels"
 
 type Props<Dimension extends string> = {
   title: string
@@ -33,11 +33,7 @@ export function RadarChart<Dimension extends string>({
             top: size / 2,
           }}
         >
-          <DimensionLabels
-            dimensions={dimensions}
-            diagramWidth={size}
-            range={range}
-          />
+          <DimensionLabels />
         </div>
 
         <svg
@@ -120,133 +116,5 @@ const Circles = ({ steps }: CircleProps) => {
         />
       ))}
     </>
-  )
-}
-
-type DimensionLabelsProps = {
-  diagramWidth: number
-  range: Range
-  dimensions: string[]
-}
-
-const DimensionLabels = ({
-  dimensions,
-  diagramWidth,
-  range,
-}: DimensionLabelsProps) => {
-  const [, max] = range
-
-  return (
-    <>
-      {dimensions.map((dimension, index) => {
-        const { x, y } = getPoint({
-          diagramWidth,
-          range,
-          value: max,
-          angle: getDimensionAngle(dimensions, index),
-        })
-
-        return (
-          <div
-            key={dimension}
-            style={{ position: "absolute", top: y, left: x }}
-          >
-            <Text align={getAlign(x)} justify={getJustify(y)}>
-              {dimension}
-            </Text>
-          </div>
-        )
-      })}
-    </>
-  )
-}
-
-const enum Align {
-  left = "left",
-  center = "center",
-  right = "right",
-}
-
-const enum Justify {
-  top = "top",
-  center = "center",
-  bottom = "bottom",
-}
-
-const getAlign = (x: number): Align => {
-  if (x < 0) {
-    return Align.right
-  }
-
-  if (x > 0) {
-    return Align.left
-  }
-
-  return Align.center
-}
-
-const getJustify = (y: number): Justify => {
-  if (y < 0) {
-    return Justify.bottom
-  }
-
-  if (y > 0) {
-    return Justify.top
-  }
-
-  return Justify.center
-}
-
-type TextProps = {
-  children: string
-  align: Align
-  justify: Justify
-}
-
-const Text = ({ children, align, justify }: TextProps) => {
-  const ref = useRef<HTMLSpanElement | null>(null)
-
-  const [left, setLeft] = useState(0)
-  const [top, setTop] = useState(0)
-
-  useLayoutEffect(() => {
-    const node = ref.current
-
-    if (!node) {
-      return
-    }
-
-    const { width, height } = node.getBoundingClientRect()
-    const padding = 10
-
-    if (align === Align.left) {
-      setLeft(padding)
-    }
-
-    if (align === Align.right) {
-      setLeft(-(width + padding))
-    }
-
-    if (align === Align.center) {
-      setLeft(-(width / 2))
-    }
-
-    if (justify === Justify.top) {
-      setTop(padding)
-    }
-
-    if (justify === Justify.bottom) {
-      setTop(-(height + padding))
-    }
-
-    if (justify === Justify.center) {
-      setTop(-(height / 2))
-    }
-  }, [align, justify])
-
-  return (
-    <span className="relative" ref={ref} style={{ left, top }}>
-      {children}
-    </span>
   )
 }
