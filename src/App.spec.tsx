@@ -289,5 +289,76 @@ describe("App", () => {
 
       expect(screen.getByRole("figure", { name: "john" })).toBeInTheDocument()
     })
+
+    describe("Change the active selection", () => {
+      const addSelection = (value: string) => {
+        fireEvent.change(
+          screen.getByRole("textbox", { name: "Add a selection" }),
+          { target: { value } }
+        )
+        fireEvent.keyUp(
+          screen.getByRole("textbox", { name: "Add a selection" }),
+          { key: "Enter" }
+        )
+      }
+
+      const selectValues = () => {
+        fireEvent.click(screen.getByRole("radio", { name: "One - 1" }))
+        fireEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
+        fireEvent.click(screen.getByRole("radio", { name: "Three - 1" }))
+      }
+
+      it("should be possible to change the active selection", () => {
+        render(<App />)
+
+        addSelection("jane")
+
+        fireEvent.click(screen.getByRole("button", { name: `Activate "jane"` }))
+
+        selectValues()
+
+        expect(screen.getByRole("figure", { name: "jane" })).toBeInTheDocument()
+      })
+    })
+
+    describe("Keyboard interaction", () => {
+      const addSelection = (value: string) => {
+        fireEvent.change(
+          screen.getByRole("textbox", { name: "Add a selection" }),
+          { target: { value } }
+        )
+        fireEvent.keyUp(
+          screen.getByRole("textbox", { name: "Add a selection" }),
+          { key: "Enter" }
+        )
+      }
+
+      it("is possible to add a selection.", () => {
+        render(<App />)
+
+        fireEvent.change(
+          screen.getByRole("textbox", { name: "Add a selection" }),
+          { target: { value: "jane" } }
+        )
+        fireEvent.keyUp(
+          screen.getByRole("textbox", { name: "Add a selection" }),
+          { key: "Enter" }
+        )
+
+        expect(
+          screen.getByRole("listitem", { name: "jane" })
+        ).toBeInTheDocument()
+      })
+
+      it("clears the input after a new selection was added.", () => {
+        render(<App />)
+
+        addSelection("jane")
+
+        expect(
+          screen.getByRole("textbox", { name: "Add a selection" })
+        ).toHaveValue("")
+      })
+    })
   })
 })

@@ -1,5 +1,5 @@
-import { HTMLAttributes, useState } from "react"
-import { InputWithButton } from "./form-controls"
+import { useState } from "react"
+import { Button, InputWithButton } from "./form-controls"
 
 type Props = {
   dimensions: string[]
@@ -71,14 +71,3 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
     </div>
   )
 }
-
-type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
-  disabled?: boolean
-}
-
-const Button = (props: ButtonProps) => (
-  <button
-    {...props}
-    className="disabled::bg-slate-100 rounded bg-slate-200 py-2 px-3 text-slate-800 disabled:text-slate-500"
-  />
-)
