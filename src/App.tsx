@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Dimensions } from "./Dimensions"
-import { Input } from "./Input"
+import { Input } from "./form-controls"
 
 import { RadarChart, Selection, Range, SelectionValue } from "./radar-chart"
 

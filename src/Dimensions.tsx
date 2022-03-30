@@ -1,5 +1,5 @@
 import { HTMLAttributes, useState } from "react"
-import { InputWithButton } from "./InputWithButton"
+import { InputWithButton } from "./form-controls"
 
 type Props = {
   dimensions: string[]
