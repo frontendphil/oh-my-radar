@@ -23,22 +23,11 @@ export function RadarChart<Dimension extends string>({
   children,
 }: Props<Dimension>) {
   const steps = createRange(range)
-  const stepSize = 50 / steps.length
 
   return (
     <RadarContext.Provider value={{ diagramWidth: width, dimensions, range }}>
       <svg role="figure" aria-label={title} width={width} height={height}>
-        <g>
-          {steps.map((step, index) => (
-            <circle
-              key={step}
-              className="fill-transparent stroke-slate-400"
-              cx="50%"
-              cy="50%"
-              r={`${stepSize * (index + 1)}%`}
-            />
-          ))}
-        </g>
+        <Circles steps={steps} />
 
         {dimensions.map((dimension, index) => (
           <g
@@ -87,6 +76,28 @@ const Dimension = ({ title, diagramWidth }: DimensionProps) => {
         y2={diagramWidth / 2}
         className="stroke-slate-500"
       />
+    </>
+  )
+}
+
+type CircleProps = {
+  steps: number[]
+}
+
+const Circles = ({ steps }: CircleProps) => {
+  const stepSize = 50 / steps.length
+
+  return (
+    <>
+      {steps.map((step, index) => (
+        <circle
+          key={step}
+          className="fill-transparent stroke-slate-400"
+          cx="50%"
+          cy="50%"
+          r={`${stepSize * (index + 1)}%`}
+        />
+      ))}
     </>
   )
 }
