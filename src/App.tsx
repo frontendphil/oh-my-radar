@@ -33,8 +33,7 @@ export const App = () => {
           title={title}
           dimensions={dimensions}
           range={[min, max]}
-          width={size}
-          height={size}
+          size={size}
         >
           <Selection
             name="john"

@@ -9,8 +9,7 @@ type Props<Dimension extends string> = {
   title: string
   dimensions: Dimension[]
   range: Range
-  width?: number
-  height?: number
+  size?: number
   children: ReactNode
 }
 
@@ -18,15 +17,14 @@ export function RadarChart<Dimension extends string>({
   title,
   dimensions,
   range,
-  width = 500,
-  height = 500,
+  size = 500,
   children,
 }: Props<Dimension>) {
   const steps = createRange(range)
 
   return (
-    <RadarContext.Provider value={{ diagramWidth: width, dimensions, range }}>
-      <svg role="figure" aria-label={title} width={width} height={height}>
+    <RadarContext.Provider value={{ diagramWidth: size, dimensions, range }}>
+      <svg role="figure" aria-label={title} width={size} height={size}>
         <Circles steps={steps} />
 
         {dimensions.map((dimension, index) => (
@@ -35,11 +33,11 @@ export function RadarChart<Dimension extends string>({
             className="origin-center"
             transform={`rotate(${getDimensionAngle(dimensions, index)})`}
           >
-            <Dimension title={dimension} diagramWidth={width} />
+            <Dimension title={dimension} diagramWidth={size} />
           </g>
         ))}
 
-        <g transform={`translate(${width / 2} ${height / 2})`}>
+        <g transform={`translate(${size / 2} ${size / 2})`}>
           <Slots>
             {(_, { x, y, step }) => (
               <circle
