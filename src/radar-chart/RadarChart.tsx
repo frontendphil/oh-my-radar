@@ -26,11 +26,19 @@ export function RadarChart<Dimension extends string>({
   return (
     <RadarContext.Provider value={{ diagramWidth: size, dimensions, range }}>
       <div className="relative">
-        <DimensionLabels
-          dimensions={dimensions}
-          diagramWidth={size}
-          range={range}
-        />
+        <div
+          style={{
+            position: "absolute",
+            left: size / 2,
+            top: size / 2,
+          }}
+        >
+          <DimensionLabels
+            dimensions={dimensions}
+            diagramWidth={size}
+            range={range}
+          />
+        </div>
 
         <svg
           className="absolute"
@@ -129,13 +137,7 @@ const DimensionLabels = ({
   const [, max] = range
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: diagramWidth / 2,
-        top: diagramWidth / 2,
-      }}
-    >
+    <>
       {dimensions.map((dimension, index) => {
         const { x, y } = getPoint({
           diagramWidth,
@@ -155,7 +157,7 @@ const DimensionLabels = ({
           </div>
         )
       })}
-    </div>
+    </>
   )
 }
 
