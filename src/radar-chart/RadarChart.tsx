@@ -26,6 +26,12 @@ export function RadarChart<Dimension extends string>({
   return (
     <RadarContext.Provider value={{ diagramWidth: size, dimensions, range }}>
       <div className="relative">
+        <DimensionLabels
+          dimensions={dimensions}
+          diagramWidth={size}
+          range={range}
+        />
+
         <svg
           className="absolute"
           role="figure"
@@ -61,12 +67,6 @@ export function RadarChart<Dimension extends string>({
             {children}
           </g>
         </svg>
-
-        <DimensionLabels
-          dimensions={dimensions}
-          diagramWidth={size}
-          range={range}
-        />
       </div>
     </RadarContext.Provider>
   )
