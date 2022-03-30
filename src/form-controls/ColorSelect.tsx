@@ -33,6 +33,15 @@ export const ColorSelect = ({ label, value, onChange }: Props) => {
             <ListboxOption value={Colors.blue}>
               <Color color={Colors.blue} />
             </ListboxOption>
+            <ListboxOption value={Colors.green}>
+              <Color color={Colors.green} />
+            </ListboxOption>
+            <ListboxOption value={Colors.purple}>
+              <Color color={Colors.purple} />
+            </ListboxOption>
+            <ListboxOption value={Colors.yellow}>
+              <Color color={Colors.yellow} />
+            </ListboxOption>
           </ListboxList>
         </ListboxPopover>
       </ListboxInput>
@@ -47,6 +56,9 @@ type ColorProps = HTMLAttributes<HTMLDivElement> & {
 const colors = {
   [Colors.pink]: "border border-pink-700 bg-pink-200",
   [Colors.blue]: "border border-blue-700 bg-blue-200",
+  [Colors.green]: "border border-emerald-700 bg-emerald-200",
+  [Colors.purple]: "border border-purple-700 bg-purple-200",
+  [Colors.yellow]: "border border-yellow-700 bg-yellow-200",
 }
 
 const Color = ({ color, ...rest }: ColorProps) => (

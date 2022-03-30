@@ -23,6 +23,27 @@ const colors = {
     },
     circle: { hover: "hover:fill-blue-500", selected: "fill-blue-500" },
   },
+  [Colors.green]: {
+    plane: {
+      fill: "fill-emerald-200",
+      stroke: "stroke-emerald-700",
+    },
+    circle: { hover: "hover:fill-emerald-500", selected: "fill-emerald-500" },
+  },
+  [Colors.purple]: {
+    plane: {
+      fill: "fill-purple-200",
+      stroke: "stroke-purple-700",
+    },
+    circle: { hover: "hover:fill-purple-500", selected: "fill-purple-500" },
+  },
+  [Colors.yellow]: {
+    plane: {
+      fill: "fill-yellow-200",
+      stroke: "stroke-yellow-700",
+    },
+    circle: { hover: "hover:fill-yellow-500", selected: "fill-yellow-500" },
+  },
 }
 
 type Props = {
