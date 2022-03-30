@@ -1,6 +1,7 @@
 import { Plane } from "./Plane"
 import { useDimensions } from "./RadarContext"
 import { Slots } from "./Slots"
+import { Step } from "./Step"
 import { Selection as SelectionValue } from "./types"
 
 const colors = {
@@ -61,14 +62,13 @@ export function Selection({
 
       <Slots>
         {(dimension, { x, y, step }) => (
-          <circle
+          <Step
             key={step}
             role="radio"
             aria-label={`${dimension} - ${step}`}
             aria-checked={value[dimension] === step}
-            cx={x}
-            cy={y}
-            r={5}
+            x={x}
+            y={y}
             className={`cursor-pointer ${
               value[dimension] === step ? circle.selected : "fill-transparent"
             } stroke-transparent ${circle.hover}`}

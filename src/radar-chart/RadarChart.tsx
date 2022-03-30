@@ -2,9 +2,11 @@ import { ReactNode } from "react"
 
 import { createRange, getDimensionAngle } from "./utils"
 import { Range } from "./types"
-import { RadarContext } from "./RadarContext"
+import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
 import { DimensionLabels } from "./DimensionLabels"
+import { getLengthToSelection } from "./getLengthToSelection"
+import { Step, STEP_RADIUS } from "./Step"
 
 type Props<Dimension extends string> = {
   title: string
@@ -21,10 +23,12 @@ export function RadarChart<Dimension extends string>({
   size = 500,
   children,
 }: Props<Dimension>) {
-  const steps = createRange(range)
+  const padding = STEP_RADIUS
 
   return (
-    <RadarContext.Provider value={{ diagramWidth: size, dimensions, range }}>
+    <RadarContext.Provider
+      value={{ diagramWidth: size - 2 * STEP_RADIUS, dimensions, range }}
+    >
       <div className="relative">
         <div
           style={{
@@ -43,32 +47,38 @@ export function RadarChart<Dimension extends string>({
           width={size}
           height={size}
         >
-          <Circles steps={steps} />
+          <g
+            x={padding}
+            y={padding}
+            width={size - 2 * STEP_RADIUS}
+            height={size - 2 * STEP_RADIUS}
+          >
+            <Circles />
 
-          {dimensions.map((dimension, index) => (
-            <g
-              key={dimension}
-              className="origin-center"
-              transform={`rotate(${getDimensionAngle(dimensions, index)})`}
-            >
-              <Dimension title={dimension} diagramWidth={size} />
+            {dimensions.map((dimension, index) => (
+              <g
+                key={dimension}
+                className="origin-center"
+                transform={`rotate(${getDimensionAngle(dimensions, index)})`}
+              >
+                <Dimension title={dimension} diagramWidth={size} />
+              </g>
+            ))}
+
+            <g transform={`translate(${size / 2} ${size / 2})`}>
+              <Slots>
+                {(_, { x, y, step }) => (
+                  <Step
+                    key={step}
+                    x={x}
+                    y={y}
+                    className="fill-slate-500 stroke-transparent"
+                  />
+                )}
+              </Slots>
+
+              {children}
             </g>
-          ))}
-
-          <g transform={`translate(${size / 2} ${size / 2})`}>
-            <Slots>
-              {(_, { x, y, step }) => (
-                <circle
-                  key={step}
-                  cx={x}
-                  cy={y}
-                  r={5}
-                  className="fill-slate-500 stroke-transparent"
-                />
-              )}
-            </Slots>
-
-            {children}
           </g>
         </svg>
       </div>
@@ -97,22 +107,20 @@ const Dimension = ({ title, diagramWidth }: DimensionProps) => {
   )
 }
 
-type CircleProps = {
-  steps: number[]
-}
-
-const Circles = ({ steps }: CircleProps) => {
-  const stepSize = 50 / steps.length
+const Circles = () => {
+  const diagramWidth = useDiagramWidth()
+  const range = useRange()
+  const steps = createRange(range)
 
   return (
     <>
-      {steps.map((step, index) => (
+      {steps.map((step) => (
         <circle
           key={step}
           className="fill-transparent stroke-slate-400"
           cx="50%"
           cy="50%"
-          r={`${stepSize * (index + 1)}%`}
+          r={getLengthToSelection(diagramWidth, range, step)}
         />
       ))}
     </>
