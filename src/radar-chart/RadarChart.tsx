@@ -6,7 +6,7 @@ import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
 import { DimensionLabels } from "./DimensionLabels"
 import { getLengthToSelection } from "./getLengthToSelection"
-import { Step } from "./Step"
+import { Step, STEP_RADIUS } from "./Step"
 
 type Props<Dimension extends string> = {
   title: string
@@ -23,9 +23,11 @@ export function RadarChart<Dimension extends string>({
   size = 500,
   children,
 }: Props<Dimension>) {
+  const padding = STEP_RADIUS
+
   return (
     <RadarContext.Provider
-      value={{ diagramWidth: size - 10, dimensions, range }}
+      value={{ diagramWidth: size - 2 * STEP_RADIUS, dimensions, range }}
     >
       <div className="relative">
         <div
@@ -45,7 +47,12 @@ export function RadarChart<Dimension extends string>({
           width={size}
           height={size}
         >
-          <g x={5} y={5} width={size - 10} height={size - 10}>
+          <g
+            x={padding}
+            y={padding}
+            width={size - 2 * STEP_RADIUS}
+            height={size - 2 * STEP_RADIUS}
+          >
             <Circles />
 
             {dimensions.map((dimension, index) => (
