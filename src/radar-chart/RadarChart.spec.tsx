@@ -6,35 +6,25 @@ describe("RadarChart", () => {
   it("renders a chart with a title.", () => {
     render(
       <RadarChart title="Test" dimensions={[]} range={[0, 1]}>
-        <Selection name="test" value={{}} />
+        <Selection name="test" />
       </RadarChart>
     )
 
     expect(screen.getByRole("figure", { name: "Test" })).toBeInTheDocument()
   })
 
-  it("renders dimensions.", () => {
-    render(
-      <RadarChart title="Test" dimensions={["Height"]} range={[0, 1]}>
-        <Selection name="test" value={{}} />
-      </RadarChart>
-    )
+  describe("Dimensions", () => {
+    it("renders dimensions.", () => {
+      render(
+        <RadarChart title="Test" dimensions={["Height"]} range={[0, 1]}>
+          <Selection name="test" />
+        </RadarChart>
+      )
 
-    expect(
-      screen.getByRole("radiogroup", { name: "Height" })
-    ).toBeInTheDocument()
-  })
-
-  it("is possible to select a value for a given dimension.", () => {
-    render(
-      <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
-        <Selection name="test" value={{}} />
-      </RadarChart>
-    )
-
-    expect(
-      screen.getByRole("radio", { name: `Height - 1` })
-    ).toBeInTheDocument()
+      expect(
+        screen.getByRole("radiogroup", { name: "Height" })
+      ).toBeInTheDocument()
+    })
   })
 
   describe("Selection", () => {
@@ -50,12 +40,12 @@ describe("RadarChart", () => {
       ).toBeInTheDocument()
     })
 
-    it("notifies when the user makes a selection.", () => {
+    it("is possible to select a value for a given dimension.", () => {
       const onChange = jest.fn()
 
       render(
         <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
-          <Selection name="test" value={{}} onChange={onChange} />
+          <Selection name="test" onChange={onChange} />
         </RadarChart>
       )
 
