@@ -319,6 +319,18 @@ describe("App", () => {
 
         expect(screen.getByRole("figure", { name: "jane" })).toBeInTheDocument()
       })
+
+      it("disables the button for the active selection.", () => {
+        render(<App />)
+
+        addSelection("jane")
+
+        fireEvent.click(screen.getByRole("button", { name: `Activate "jane"` }))
+
+        expect(
+          screen.getByRole("button", { name: 'Activate "jane"' })
+        ).toBeDisabled()
+      })
     })
 
     describe("Keyboard interaction", () => {

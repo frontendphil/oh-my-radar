@@ -53,6 +53,7 @@ export const App = () => {
 
         <Selections
           selections={selections}
+          activeSelection={activeSelection}
           onAdd={(selection) => setSelections([...selections, selection])}
           onActivate={setActiveSelection}
         />

@@ -3,11 +3,17 @@ import { Button, Input } from "./form-controls"
 
 type Props = {
   selections: string[]
+  activeSelection: string
   onAdd: (selection: string) => void
   onActivate: (selection: string) => void
 }
 
-export const Selections = ({ selections, onAdd, onActivate }: Props) => {
+export const Selections = ({
+  selections,
+  activeSelection,
+  onAdd,
+  onActivate,
+}: Props) => {
   const [newSelection, setNewSelection] = useState("")
 
   return (
@@ -18,7 +24,10 @@ export const Selections = ({ selections, onAdd, onActivate }: Props) => {
             <li key={selection} aria-label={selection}>
               {selection}
 
-              <Button onClick={() => onActivate(selection)}>
+              <Button
+                disabled={activeSelection === selection}
+                onClick={() => onActivate(selection)}
+              >
                 Activate &quot;{selection}&quot;
               </Button>
             </li>
