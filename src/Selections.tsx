@@ -1,41 +1,53 @@
 import { useState } from "react"
-import { Button, Input } from "./form-controls"
+import { Colors } from "./configuration"
+import { Button, ColorSelect, Input } from "./form-controls"
 import { List, ListItem } from "./layout"
+import { SelectionDescriptor } from "./radar-chart"
 
 type Props = {
-  selections: string[]
+  selectionDescriptors: SelectionDescriptor[]
   activeSelection: string
-  onAdd: (selection: string) => void
+  onAdd: (selectionDescriptor: SelectionDescriptor) => void
+  onChange: (SelectionDescriptor: SelectionDescriptor) => void
   onActivate: (selection: string) => void
 }
 
 export const Selections = ({
-  selections,
+  selectionDescriptors,
   activeSelection,
   onAdd,
+  onChange,
   onActivate,
 }: Props) => {
   const [newSelection, setNewSelection] = useState("")
 
   return (
     <div className="flex flex-col gap-2">
-      {selections.length > 0 && (
+      {selectionDescriptors.length > 0 && (
         <List>
-          {selections.map((selection) => (
+          {selectionDescriptors.map(({ title, color }) => (
             <ListItem
-              key={selection}
-              aria-label={selection}
+              key={title}
+              aria-label={title}
               action={
                 <Button
-                  disabled={activeSelection === selection}
-                  aria-label={`Activate "${selection}"`}
-                  onClick={() => onActivate(selection)}
+                  disabled={activeSelection === title}
+                  aria-label={`Activate "${title}"`}
+                  onClick={() => onActivate(title)}
                 >
                   Activate
                 </Button>
               }
             >
-              {selection}
+              <div className="flex items-center gap-4">
+                <ColorSelect
+                  label={`Color for "${title}"`}
+                  value={color}
+                  onChange={(color) => onChange({ title, color })}
+                />
+
+                {title}
+              </div>
             </ListItem>
           ))}
         </List>
@@ -50,7 +62,7 @@ export const Selections = ({
             return
           }
 
-          onAdd(newSelection)
+          onAdd({ title: newSelection, color: Colors.pink })
 
           setNewSelection("")
         }}

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { App } from "./App"
 
 describe("App", () => {
@@ -270,6 +271,12 @@ describe("App", () => {
   })
 
   describe("Selection", () => {
+    const selectValues = async () => {
+      await userEvent.click(screen.getByRole("radio", { name: "One - 1" }))
+      await userEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
+      await userEvent.click(screen.getByRole("radio", { name: "Three - 1" }))
+    }
+
     it("is possible to select a value.", () => {
       render(<App />)
 
@@ -280,12 +287,10 @@ describe("App", () => {
       ).toBeInTheDocument()
     })
 
-    it("renders a figure when all options of a selection have been set.", () => {
+    it("renders a figure when all options of a selection have been set.", async () => {
       render(<App />)
 
-      fireEvent.click(screen.getByRole("radio", { name: "One - 1" }))
-      fireEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
-      fireEvent.click(screen.getByRole("radio", { name: "Three - 1" }))
+      await selectValues()
 
       expect(screen.getByRole("figure", { name: "john" })).toBeInTheDocument()
     })
@@ -302,20 +307,14 @@ describe("App", () => {
         )
       }
 
-      const selectValues = () => {
-        fireEvent.click(screen.getByRole("radio", { name: "One - 1" }))
-        fireEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
-        fireEvent.click(screen.getByRole("radio", { name: "Three - 1" }))
-      }
-
-      it("should be possible to change the active selection", () => {
+      it("should be possible to change the active selection", async () => {
         render(<App />)
 
         addSelection("jane")
 
         fireEvent.click(screen.getByRole("button", { name: `Activate "jane"` }))
 
-        selectValues()
+        await selectValues()
 
         expect(screen.getByRole("figure", { name: "jane" })).toBeInTheDocument()
       })
@@ -330,6 +329,29 @@ describe("App", () => {
         expect(
           screen.getByRole("button", { name: 'Activate "jane"' })
         ).toBeDisabled()
+      })
+    })
+
+    describe("Selection color", () => {
+      it("is possible to change the color of a selection.", async () => {
+        render(<App />)
+
+        await userEvent.click(
+          screen.getByRole("button", { name: 'Color for "john"' })
+        )
+
+        await userEvent.click(screen.getByRole("option", { name: "Pink" }))
+
+        await selectValues()
+
+        expect(screen.getByRole("figure", { name: "john" })).toHaveAttribute(
+          "class",
+          expect.stringContaining("stroke-pink")
+        )
+        expect(screen.getByRole("figure", { name: "john" })).toHaveAttribute(
+          "class",
+          expect.stringContaining("fill-pink")
+        )
       })
     })
 

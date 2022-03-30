@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Colors } from "./configuration"
 import { Dimensions } from "./Dimensions"
 import { Input } from "./form-controls"
 
@@ -7,15 +8,13 @@ import {
   Selection,
   Range,
   SelectionValue,
-  Colors,
+  SelectionDescriptor,
 } from "./radar-chart"
 import { Selections } from "./Selections"
 
 type ChartState = {
   [selection: string]: SelectionValue
 }
-
-const colors = [Colors.blue, Colors.pink]
 
 export const App = () => {
   const [title, setTitle] = useState("Test")
@@ -30,7 +29,9 @@ export const App = () => {
   const size = useAutoResize()
 
   const [activeSelection, setActiveSelection] = useState<string>("john")
-  const [selections, setSelections] = useState(["john"])
+  const [selectionDescriptors, setSelectionDescriptors] = useState<
+    SelectionDescriptor[]
+  >([{ title: "john", color: Colors.blue }])
 
   return (
     <div className="grid grid-cols-2">
@@ -41,16 +42,16 @@ export const App = () => {
           range={[min, max]}
           size={size}
         >
-          {selections.map((selection, index) => (
+          {selectionDescriptors.map(({ title, color }) => (
             <Selection
-              key={selection}
-              active={activeSelection === selection}
-              name={selection}
-              value={chartState[selection]}
+              key={title}
+              active={activeSelection === title}
+              name={title}
+              value={chartState[title]}
               onChange={(value) =>
-                setChartState({ ...chartState, [selection]: value })
+                setChartState({ ...chartState, [title]: value })
               }
-              color={colors[index % selections.length]}
+              color={color}
             />
           ))}
         </RadarChart>
@@ -60,9 +61,27 @@ export const App = () => {
         <Input label="Title" value={title} onChange={setTitle} />
 
         <Selections
-          selections={selections}
+          selectionDescriptors={selectionDescriptors}
           activeSelection={activeSelection}
-          onAdd={(selection) => setSelections([...selections, selection])}
+          onAdd={(selectionDescriptor) =>
+            setSelectionDescriptors([
+              ...selectionDescriptors,
+              selectionDescriptor,
+            ])
+          }
+          onChange={(updatedSelectionDescriptor) =>
+            setSelectionDescriptors(
+              selectionDescriptors.map((selectionDescriptor) => {
+                if (
+                  selectionDescriptor.title === updatedSelectionDescriptor.title
+                ) {
+                  return updatedSelectionDescriptor
+                }
+
+                return selectionDescriptor
+              })
+            )
+          }
           onActivate={setActiveSelection}
         />
 
