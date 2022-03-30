@@ -7,6 +7,4 @@ type Props = Omit<SVGAttributes<SVGCircleElement>, "cx" | "cy" | "r"> & {
   y: number
 }
 
-export const Step = ({ x, y, ...rest }: Props) => (
-  <circle x={x} y={y} r={STEP_RADIUS} {...rest} />
-)
+export const Step = (props: Props) => <circle r={STEP_RADIUS} {...props} />
