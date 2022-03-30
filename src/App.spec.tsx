@@ -1,14 +1,18 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { App } from "./App"
 
 describe("App", () => {
-  it("is possible to change the title of the cart.", () => {
+  it("is possible to change the title of the cart.", async () => {
     render(<App />)
 
-    fireEvent.change(screen.getByRole("textbox", { name: "Title" }), {
-      target: { value: "Changed title" },
-    })
+    await userEvent.clear(screen.getByRole("textbox", { name: "Title" }))
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Title" }),
+      "Changed title",
+      {}
+    )
 
     expect(
       screen.getByRole("figure", { name: "Changed title" })
@@ -16,48 +20,27 @@ describe("App", () => {
   })
 
   describe("Dimensions", () => {
-    const addDimension = (name: string) => {
-      fireEvent.change(screen.getByRole("textbox", { name: "Add dimension" }), {
-        target: { value: name },
-      })
-      fireEvent.keyUp(screen.getByRole("textbox", { name: "Add dimension" }), {
-        target: screen.getByRole("textbox", { name: "Add dimension" }),
-        key: "Enter",
-      })
+    const addDimension = async (name: string) => {
+      await userEvent.type(
+        screen.getByRole("textbox", { name: "Add dimension" }),
+        `${name}{enter}`
+      )
     }
 
     describe("Keyboard interaction", () => {
-      const addDimension = (name: string) => {
-        fireEvent.change(
+      const addDimension = async (name: string) => {
+        await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
-          {
-            target: { value: name },
-          }
-        )
-        fireEvent.keyUp(
-          screen.getByRole("textbox", { name: "Add dimension" }),
-          {
-            target: screen.getByRole("textbox", { name: "Add dimension" }),
-            key: "Enter",
-          }
+          `${name}{enter}`
         )
       }
 
-      it('is possible to add dimensions with "Enter".', () => {
+      it('is possible to add dimensions with "Enter".', async () => {
         render(<App />)
 
-        fireEvent.change(
+        await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
-          {
-            target: { value: "New dimension" },
-          }
-        )
-        fireEvent.keyUp(
-          screen.getByRole("textbox", { name: "Add dimension" }),
-          {
-            target: screen.getByRole("textbox", { name: "Add dimension" }),
-            key: "Enter",
-          }
+          "New dimension{enter}"
         )
 
         expect(
@@ -68,11 +51,11 @@ describe("App", () => {
         ).toBeInTheDocument()
       })
 
-      it("is not possible to add dimensions that already exist.", () => {
+      it("is not possible to add dimensions that already exist.", async () => {
         render(<App />)
 
-        addDimension("Test")
-        addDimension("Test")
+        await addDimension("Test")
+        await addDimension("Test")
 
         expect(screen.getAllByRole("listitem", { name: "Test" })).toHaveLength(
           1
@@ -82,10 +65,10 @@ describe("App", () => {
         ).toHaveLength(1)
       })
 
-      it("is not possible to add dimensions with an empty name.", () => {
+      it("is not possible to add dimensions with an empty name.", async () => {
         render(<App />)
 
-        addDimension("")
+        await addDimension("")
 
         expect(
           screen.queryByRole("listbox", { name: "" })
@@ -95,10 +78,10 @@ describe("App", () => {
         ).not.toBeInTheDocument()
       })
 
-      it("clears the add input when a new dimension has been added.", () => {
+      it("clears the add input when a new dimension has been added.", async () => {
         render(<App />)
 
-        addDimension("Test")
+        await addDimension("Test")
 
         expect(
           screen.getByRole("textbox", { name: "Add dimension" })
@@ -107,28 +90,26 @@ describe("App", () => {
     })
 
     describe("Mouse interaction", () => {
-      const addDimension = (name: string) => {
-        fireEvent.change(
+      const addDimension = async (name: string) => {
+        await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
-          {
-            target: { value: name },
-          }
+          name
         )
-        fireEvent.click(
+
+        await userEvent.click(
           screen.getByRole("button", { name: `Add dimension "${name}"` })
         )
       }
 
-      it('is possible to add new dimensions with the "Add" button.', () => {
+      it('is possible to add new dimensions with the "Add" button.', async () => {
         render(<App />)
 
-        fireEvent.change(
+        await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
-          {
-            target: { value: "New dimension" },
-          }
+          "New dimension"
         )
-        fireEvent.click(
+
+        await userEvent.click(
           screen.getByRole("button", { name: `Add dimension "New dimension"` })
         )
 
@@ -140,11 +121,11 @@ describe("App", () => {
         ).toBeInTheDocument()
       })
 
-      it("is not possible to add dimensions that already exist.", () => {
+      it("is not possible to add dimensions that already exist.", async () => {
         render(<App />)
 
-        addDimension("Test")
-        addDimension("Test")
+        await addDimension("Test")
+        await addDimension("Test")
 
         expect(screen.getAllByRole("listitem", { name: "Test" })).toHaveLength(
           1
@@ -154,10 +135,10 @@ describe("App", () => {
         ).toHaveLength(1)
       })
 
-      it("is not possible to add dimensions with an empty name.", () => {
+      it("is not possible to add dimensions with an empty name.", async () => {
         render(<App />)
 
-        addDimension("")
+        await addDimension(" ")
 
         expect(
           screen.queryByRole("listitem", { name: "" })
@@ -167,10 +148,10 @@ describe("App", () => {
         ).not.toBeInTheDocument()
       })
 
-      it("clears the add input when a new dimension has been added.", () => {
+      it("clears the add input when a new dimension has been added.", async () => {
         render(<App />)
 
-        addDimension("Test")
+        await addDimension("Test")
 
         expect(
           screen.getByRole("textbox", { name: "Add dimension" })
@@ -178,12 +159,12 @@ describe("App", () => {
       })
     })
 
-    it("is possible to remove dimensions.", () => {
+    it("is possible to remove dimensions.", async () => {
       render(<App />)
 
-      addDimension("Test")
+      await addDimension("Test")
 
-      fireEvent.click(
+      await userEvent.click(
         screen.getByRole("button", { name: `Remove dimension "Test"` })
       )
 
@@ -197,72 +178,82 @@ describe("App", () => {
   })
 
   describe("Range", () => {
-    const addDimension = (name: string) => {
-      fireEvent.change(screen.getByRole("textbox", { name: "Add dimension" }), {
-        target: { value: name },
-      })
-      fireEvent.keyUp(screen.getByRole("textbox", { name: "Add dimension" }), {
-        target: screen.getByRole("textbox", { name: "Add dimension" }),
-        key: "Enter",
-      })
+    const addDimension = async (name: string) => {
+      await userEvent.type(
+        screen.getByRole("textbox", { name: "Add dimension" }),
+        `${name}{enter}`
+      )
     }
 
-    const setMin = (value: number) => {
-      fireEvent.change(screen.getByRole("spinbutton", { name: "Min value" }), {
-        target: { value: value.toString() },
-      })
+    const setMin = async (value: number) => {
+      await userEvent.clear(
+        screen.getByRole("spinbutton", { name: "Min value" })
+      )
+      await userEvent.type(
+        screen.getByRole("spinbutton", { name: "Min value" }),
+        value.toString()
+      )
     }
 
-    const setMax = (value: number) => {
-      fireEvent.change(screen.getByRole("spinbutton", { name: "Max value" }), {
-        target: { value: value.toString() },
-      })
+    const setMax = async (value: number) => {
+      await userEvent.clear(
+        screen.getByRole("spinbutton", { name: "Max value" })
+      )
+      await userEvent.type(
+        screen.getByRole("spinbutton", { name: "Max value" }),
+        value.toString()
+      )
     }
 
-    it("is possible to change the upper bound of the selection range.", () => {
+    it("is possible to change the upper bound of the selection range.", async () => {
       render(<App />)
 
-      addDimension("Test")
+      await addDimension("Test")
 
-      fireEvent.change(screen.getByRole("spinbutton", { name: "Max value" }), {
-        target: { value: "10" },
-      })
+      await userEvent.type(
+        screen.getByRole("spinbutton", { name: "Max value" }),
+        "10"
+      )
 
       expect(
         screen.getByRole("radio", { name: "Test - 10" })
       ).toBeInTheDocument()
     })
 
-    it("is possible to change the lower bound of the selection range", () => {
+    it("is possible to change the lower bound of the selection range", async () => {
       render(<App />)
 
-      addDimension("Test")
+      await addDimension("Test")
 
-      fireEvent.change(screen.getByRole("spinbutton", { name: "Min value" }), {
-        target: { value: "0" },
-      })
+      await userEvent.clear(
+        screen.getByRole("spinbutton", { name: "Min value" })
+      )
+      await userEvent.type(
+        screen.getByRole("spinbutton", { name: "Min value" }),
+        "0"
+      )
 
       expect(
         screen.getByRole("radio", { name: "Test - 0" })
       ).toBeInTheDocument()
     })
 
-    it("is not possible to enter an upper bound that is below the lower bound.", () => {
+    it("is not possible to enter an upper bound that is below the lower bound.", async () => {
       render(<App />)
 
-      setMin(4)
-      setMax(3)
+      await setMin(4)
+      await setMax(3)
 
       expect(screen.getByRole("spinbutton", { name: "Max value" })).toHaveValue(
         5
       )
     })
 
-    it("is not possible to enter a lower bound that is greater than the upper bound.", () => {
+    it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
       render(<App />)
 
-      setMax(6)
-      setMin(8)
+      await setMax(6)
+      await setMin(8)
 
       expect(screen.getByRole("spinbutton", { name: "Min value" })).toHaveValue(
         5
@@ -277,10 +268,10 @@ describe("App", () => {
       await userEvent.click(screen.getByRole("radio", { name: "Three - 1" }))
     }
 
-    it("is possible to select a value.", () => {
+    it("is possible to select a value.", async () => {
       render(<App />)
 
-      fireEvent.click(screen.getByRole("radio", { name: "One - 1" }))
+      await userEvent.click(screen.getByRole("radio", { name: "One - 1" }))
 
       expect(
         screen.getByRole("radio", { name: "One - 1", checked: true })
@@ -296,35 +287,35 @@ describe("App", () => {
     })
 
     describe("Change the active selection", () => {
-      const addSelection = (value: string) => {
-        fireEvent.change(
+      const addSelection = async (value: string) => {
+        await userEvent.type(
           screen.getByRole("textbox", { name: "Add a selection" }),
-          { target: { value } }
-        )
-        fireEvent.keyUp(
-          screen.getByRole("textbox", { name: "Add a selection" }),
-          { key: "Enter" }
+          `${value}{enter}`
         )
       }
 
       it("should be possible to change the active selection", async () => {
         render(<App />)
 
-        addSelection("jane")
+        await addSelection("jane")
 
-        fireEvent.click(screen.getByRole("button", { name: `Activate "jane"` }))
+        await userEvent.click(
+          screen.getByRole("button", { name: `Activate "jane"` })
+        )
 
         await selectValues()
 
         expect(screen.getByRole("figure", { name: "jane" })).toBeInTheDocument()
       })
 
-      it("disables the button for the active selection.", () => {
+      it("disables the button for the active selection.", async () => {
         render(<App />)
 
-        addSelection("jane")
+        await addSelection("jane")
 
-        fireEvent.click(screen.getByRole("button", { name: `Activate "jane"` }))
+        await userEvent.click(
+          screen.getByRole("button", { name: `Activate "jane"` })
+        )
 
         expect(
           screen.getByRole("button", { name: 'Activate "jane"' })
@@ -356,27 +347,19 @@ describe("App", () => {
     })
 
     describe("Keyboard interaction", () => {
-      const addSelection = (value: string) => {
-        fireEvent.change(
+      const addSelection = async (value: string) => {
+        await userEvent.type(
           screen.getByRole("textbox", { name: "Add a selection" }),
-          { target: { value } }
-        )
-        fireEvent.keyUp(
-          screen.getByRole("textbox", { name: "Add a selection" }),
-          { key: "Enter" }
+          `${value}{enter}`
         )
       }
 
-      it("is possible to add a selection.", () => {
+      it("is possible to add a selection.", async () => {
         render(<App />)
 
-        fireEvent.change(
+        await userEvent.type(
           screen.getByRole("textbox", { name: "Add a selection" }),
-          { target: { value: "jane" } }
-        )
-        fireEvent.keyUp(
-          screen.getByRole("textbox", { name: "Add a selection" }),
-          { key: "Enter" }
+          "jane{enter}"
         )
 
         expect(
@@ -384,10 +367,10 @@ describe("App", () => {
         ).toBeInTheDocument()
       })
 
-      it("clears the input after a new selection was added.", () => {
+      it("clears the input after a new selection was added.", async () => {
         render(<App />)
 
-        addSelection("jane")
+        await addSelection("jane")
 
         expect(
           screen.getByRole("textbox", { name: "Add a selection" })

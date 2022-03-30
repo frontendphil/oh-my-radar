@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { RadarChart } from "./RadarChart"
 import { Selection } from "./Selection"
 
@@ -28,7 +29,7 @@ describe("RadarChart", () => {
   })
 
   describe("Selection", () => {
-    it("is possible to select a value for a given dimension.", () => {
+    it("is possible to select a value for a given dimension.", async () => {
       const onChange = jest.fn()
 
       render(
@@ -37,12 +38,12 @@ describe("RadarChart", () => {
         </RadarChart>
       )
 
-      fireEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
+      await userEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
 
       expect(onChange).toHaveBeenCalledWith({ Height: 1 })
     })
 
-    it("is only possible to interact with active selections.", () => {
+    it("is only possible to interact with active selections.", async () => {
       const onChangeThatShouldBeCalled = jest.fn()
       const onChangeThatShouldNotBeCalled = jest.fn()
 
@@ -57,13 +58,13 @@ describe("RadarChart", () => {
         </RadarChart>
       )
 
-      fireEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
+      await userEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
 
       expect(onChangeThatShouldNotBeCalled).not.toHaveBeenCalled()
       expect(onChangeThatShouldBeCalled).toHaveBeenCalled()
     })
 
-    it("is not possible to change inactive selections.", () => {
+    it("is not possible to change inactive selections.", async () => {
       const onChange = jest.fn()
 
       render(
@@ -72,7 +73,9 @@ describe("RadarChart", () => {
         </RadarChart>
       )
 
-      fireEvent.click(screen.getByRole("presentation", { name: "Height - 1" }))
+      await userEvent.click(
+        screen.getByRole("presentation", { name: "Height - 1" })
+      )
 
       expect(onChange).not.toHaveBeenCalled()
     })
