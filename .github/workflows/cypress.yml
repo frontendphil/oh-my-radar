@@ -15,6 +15,7 @@ jobs:
         with:
           install: false
           record: true
+          command-prefix: "percy exec -- npx"
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
