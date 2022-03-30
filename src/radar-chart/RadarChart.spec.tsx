@@ -28,30 +28,39 @@ describe("RadarChart", () => {
   })
 
   describe("Selection", () => {
-    it("is possible to select a value in a dimension.", () => {
-      render(
-        <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
-          <Selection name="test" value={{ Height: 1 }} />
-        </RadarChart>
-      )
-
-      expect(
-        screen.getByRole("radio", { name: "Height - 1", checked: true })
-      ).toBeInTheDocument()
-    })
-
     it("is possible to select a value for a given dimension.", () => {
       const onChange = jest.fn()
 
       render(
         <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
-          <Selection name="test" onChange={onChange} />
+          <Selection active name="test" onChange={onChange} />
         </RadarChart>
       )
 
       fireEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
 
       expect(onChange).toHaveBeenCalledWith({ Height: 1 })
+    })
+
+    it("is only possible to interact with active selections.", () => {
+      const onChangeThatShouldBeCalled = jest.fn()
+      const onChangeThatShouldNotBeCalled = jest.fn()
+
+      render(
+        <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
+          <Selection
+            active
+            name="active"
+            onChange={onChangeThatShouldBeCalled}
+          />
+          <Selection name="inactive" onChange={onChangeThatShouldNotBeCalled} />
+        </RadarChart>
+      )
+
+      fireEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
+
+      expect(onChangeThatShouldNotBeCalled).not.toHaveBeenCalled()
+      expect(onChangeThatShouldBeCalled).toHaveBeenCalled()
     })
   })
 })

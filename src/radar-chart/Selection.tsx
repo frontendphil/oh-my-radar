@@ -28,6 +28,7 @@ type Props = {
   name: string
   value?: SelectionValue
   color?: keyof typeof colors
+  active?: boolean
   onChange?: (value: SelectionValue) => void
 }
 
@@ -35,6 +36,7 @@ export function Selection({
   name,
   value = {},
   color = "pink",
+  active = false,
   onChange,
 }: Props) {
   const dimensions = useDimensions()
@@ -64,7 +66,7 @@ export function Selection({
         {(dimension, { x, y, step }) => (
           <Step
             key={step}
-            role="radio"
+            role={active ? "radio" : "presentation"}
             aria-label={`${dimension} - ${step}`}
             aria-checked={value[dimension] === step}
             x={x}

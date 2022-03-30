@@ -36,6 +36,7 @@ export const App = () => {
           size={size}
         >
           <Selection
+            active
             name="john"
             value={selection}
             onChange={setSelection}
