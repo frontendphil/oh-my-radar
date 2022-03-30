@@ -1,8 +1,20 @@
 import { useEffect, useState } from "react"
+import { Colors } from "./configuration"
 import { Dimensions } from "./Dimensions"
 import { Input } from "./form-controls"
 
-import { RadarChart, Selection, Range, SelectionValue } from "./radar-chart"
+import {
+  RadarChart,
+  Selection,
+  Range,
+  SelectionValue,
+  SelectionDescriptor,
+} from "./radar-chart"
+import { Selections } from "./Selections"
+
+type ChartState = {
+  [selection: string]: SelectionValue
+}
 
 export const App = () => {
   const [title, setTitle] = useState("Test")
@@ -12,19 +24,14 @@ export const App = () => {
     "Three",
   ])
   const [[min, max], setRange] = useState<Range>([1, 4])
-  const [selection, setSelection] = useState<SelectionValue>({})
+  const [chartState, setChartState] = useState<ChartState>({})
 
-  const [size, setSize] = useState(window.innerWidth / 3)
+  const size = useAutoResize()
 
-  useEffect(() => {
-    const callback = () => setSize(window.innerWidth / 3)
-
-    window.addEventListener("resize", callback)
-
-    return () => {
-      window.removeEventListener("resize", callback)
-    }
-  }, [])
+  const [activeSelection, setActiveSelection] = useState<string>("john")
+  const [selectionDescriptors, setSelectionDescriptors] = useState<
+    SelectionDescriptor[]
+  >([{ title: "john", color: Colors.blue }])
 
   return (
     <div className="grid grid-cols-2">
@@ -35,24 +42,55 @@ export const App = () => {
           range={[min, max]}
           size={size}
         >
-          <Selection
-            name="john"
-            value={selection}
-            onChange={setSelection}
-            color="blue"
-          />
+          {selectionDescriptors.map(({ title, color }) => (
+            <Selection
+              key={title}
+              active={activeSelection === title}
+              name={title}
+              value={chartState[title]}
+              onChange={(value) =>
+                setChartState({ ...chartState, [title]: value })
+              }
+              color={color}
+            />
+          ))}
         </RadarChart>
       </div>
 
       <div className="mt-24 mr-24 flex flex-col gap-4">
         <Input label="Title" value={title} onChange={setTitle} />
 
+        <Selections
+          selectionDescriptors={selectionDescriptors}
+          activeSelection={activeSelection}
+          onAdd={(selectionDescriptor) =>
+            setSelectionDescriptors([
+              ...selectionDescriptors,
+              selectionDescriptor,
+            ])
+          }
+          onChange={(updatedSelectionDescriptor) =>
+            setSelectionDescriptors(
+              selectionDescriptors.map((selectionDescriptor) => {
+                if (
+                  selectionDescriptor.title === updatedSelectionDescriptor.title
+                ) {
+                  return updatedSelectionDescriptor
+                }
+
+                return selectionDescriptor
+              })
+            )
+          }
+          onActivate={setActiveSelection}
+        />
+
         <Dimensions
           dimensions={dimensions}
           onAdd={(dimension) => setDimensions([...dimensions, dimension])}
           onRemove={(dimension) =>
-            setDimensions((currentDimensions) =>
-              currentDimensions.filter(
+            setDimensions(
+              dimensions.filter(
                 (currentDimension) => currentDimension !== dimension
               )
             )
@@ -79,4 +117,20 @@ export const App = () => {
       </div>
     </div>
   )
+}
+
+const useAutoResize = () => {
+  const [size, setSize] = useState(window.innerWidth / 3)
+
+  useEffect(() => {
+    const callback = () => setSize(window.innerWidth / 3)
+
+    window.addEventListener("resize", callback)
+
+    return () => {
+      window.removeEventListener("resize", callback)
+    }
+  }, [])
+
+  return size
 }

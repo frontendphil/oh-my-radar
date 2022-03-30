@@ -1,5 +1,6 @@
-import { HTMLAttributes, useState } from "react"
-import { InputWithButton } from "./form-controls"
+import { useState } from "react"
+import { Button, InputWithButton } from "./form-controls"
+import { List, ListItem } from "./layout"
 
 type Props = {
   dimensions: string[]
@@ -14,24 +15,24 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
   return (
     <div className="flex flex-col gap-2">
       {dimensions.length > 0 && (
-        <ul aria-label="Dimensions" className="flex flex-col gap-1">
+        <List aria-label="Dimensions" className="flex flex-col gap-1">
           {dimensions.map((dimension) => (
-            <li
+            <ListItem
               key={dimension}
               aria-label={dimension}
-              className="flex items-center justify-between rounded border border-slate-300"
+              action={
+                <Button
+                  aria-label={`Remove dimension "${dimension}"`}
+                  onClick={() => onRemove(dimension)}
+                >
+                  Remove
+                </Button>
+              }
             >
-              <span className="px-4">{dimension}</span>
-
-              <Button
-                aria-label={`Remove dimension "${dimension}"`}
-                onClick={() => onRemove(dimension)}
-              >
-                Remove
-              </Button>
-            </li>
+              {dimension}
+            </ListItem>
           ))}
-        </ul>
+        </List>
       )}
 
       <InputWithButton
@@ -71,14 +72,3 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
     </div>
   )
 }
-
-type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
-  disabled?: boolean
-}
-
-const Button = (props: ButtonProps) => (
-  <button
-    {...props}
-    className="disabled::bg-slate-100 rounded bg-slate-200 py-2 px-3 text-slate-800 disabled:text-slate-500"
-  />
-)
