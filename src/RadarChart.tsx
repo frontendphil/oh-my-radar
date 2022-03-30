@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { ReactNode } from "react"
 
-import { getPoint } from "./getPoint"
 import { createRange, getDimensionAngle } from "./utils"
 import { Range } from "./types"
-import invariant from "invariant"
+import { RadarContext } from "./RadarContext"
+import { Slots } from "./Slots"
 
 type Props<Dimension extends string> = {
   title: string
@@ -11,10 +11,7 @@ type Props<Dimension extends string> = {
   range: Range
   width?: number
   height?: number
-}
-
-type State<Dimension extends string> = {
-  [key in Dimension]?: number
+  children: ReactNode
 }
 
 export function RadarChart<Dimension extends string>({
@@ -23,80 +20,62 @@ export function RadarChart<Dimension extends string>({
   range,
   width = 500,
   height = 500,
+  children,
 }: Props<Dimension>) {
-  const [selectedValues, setSelectedValues] = useState<State<Dimension>>({})
-
   const steps = createRange(range)
   const stepSize = 50 / steps.length
 
   return (
-    <svg role="figure" aria-label={title} width={width} height={height}>
-      <g>
-        {steps.map((step, index) => (
-          <circle
-            key={step}
-            className="fill-transparent stroke-slate-400"
-            cx="50%"
-            cy="50%"
-            r={`${stepSize * (index + 1)}%`}
-          />
-        ))}
-      </g>
-
-      {dimensions.length > 0 &&
-        Object.keys(selectedValues).length === dimensions.length && (
-          <g transform={`translate(${width / 2} ${height / 2})`}>
-            <Plane
-              diagramWidth={width}
-              selection={selectedValues}
-              dimensions={dimensions}
-              range={range}
+    <RadarContext.Provider value={{ diagramWidth: width, dimensions, range }}>
+      <svg role="figure" aria-label={title} width={width} height={height}>
+        <g>
+          {steps.map((step, index) => (
+            <circle
+              key={step}
+              className="fill-transparent stroke-slate-400"
+              cx="50%"
+              cy="50%"
+              r={`${stepSize * (index + 1)}%`}
             />
-          </g>
-        )}
-
-      {dimensions.map((dimension, index) => (
-        <g
-          key={dimension}
-          className="origin-center"
-          transform={`rotate(${getDimensionAngle(dimensions, index)})`}
-        >
-          <Dimension
-            title={dimension}
-            range={range}
-            value={selectedValues[dimension]}
-            diagramWidth={width}
-            onChange={(newValue) =>
-              setSelectedValues((current) => ({
-                ...current,
-                [dimension]: newValue,
-              }))
-            }
-          />
+          ))}
         </g>
-      ))}
-    </svg>
+
+        {dimensions.map((dimension, index) => (
+          <g
+            key={dimension}
+            className="origin-center"
+            transform={`rotate(${getDimensionAngle(dimensions, index)})`}
+          >
+            <Dimension title={dimension} diagramWidth={width} />
+          </g>
+        ))}
+
+        <g transform={`translate(${width / 2} ${height / 2})`}>
+          <Slots>
+            {(_, { x, y, step }) => (
+              <circle
+                key={step}
+                cx={x}
+                cy={y}
+                r={5}
+                className="fill-slate-500 stroke-transparent"
+              />
+            )}
+          </Slots>
+
+          {children}
+        </g>
+      </svg>
+    </RadarContext.Provider>
   )
 }
 
 type DimensionProps = {
   title: string
-  range: Range
-  value: number | undefined
   diagramWidth: number
-  onChange: (value: number) => void
 }
 
-const Dimension = ({
-  range,
-  title,
-  value,
-  diagramWidth,
-  onChange,
-}: DimensionProps) => {
-  const steps = createRange(range)
-  const stepSize = 50 / steps.length
-
+const Dimension = ({ title, diagramWidth }: DimensionProps) => {
   return (
     <>
       <line
@@ -108,58 +87,6 @@ const Dimension = ({
         y2={diagramWidth / 2}
         className="stroke-slate-500"
       />
-
-      {steps.map((step, index) => (
-        <circle
-          key={step}
-          role="radio"
-          aria-label={`${title} - ${step}`}
-          aria-checked={value === step}
-          cx={`${50 + (index + 1) * stepSize}%`}
-          cy="50%"
-          r={5}
-          className={`${
-            value === step ? "fill-pink-500" : "fill-slate-500"
-          } cursor-pointer stroke-transparent hover:fill-pink-500`}
-          onClick={() => onChange(step)}
-        />
-      ))}
     </>
   )
-}
-
-type PlaneProps<Dimension extends string> = {
-  diagramWidth: number
-  dimensions: Dimension[]
-  selection: State<Dimension>
-  range: Range
-}
-
-function Plane<Dimension extends string>({
-  diagramWidth,
-  range,
-  selection,
-  dimensions,
-}: PlaneProps<Dimension>) {
-  const [start, ...points] = dimensions.map((dimension, index) => {
-    const value = selection[dimension]
-
-    invariant(
-      value != null,
-      "To render a plane all dimensions must have a value."
-    )
-
-    return getPoint({
-      diagramWidth,
-      range,
-      value,
-      angle: getDimensionAngle(dimensions, index),
-    })
-  })
-
-  const d = `M ${start.x},${start.y} ${points
-    .map(({ x, y }) => `L ${x},${y}`)
-    .join(" ")} z`
-
-  return <path d={d} className="fill-pink-200 stroke-pink-700 opacity-50" />
 }
