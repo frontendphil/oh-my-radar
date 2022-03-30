@@ -73,7 +73,9 @@ export function Selection({
             y={y}
             className={`cursor-pointer ${
               value[dimension] === step ? circle.selected : "fill-transparent"
-            } stroke-transparent ${circle.hover}`}
+            } stroke-transparent ${circle.hover} ${
+              active ? "pointer-events-auto" : "pointer-events-none"
+            }`}
             onClick={() => {
               if (!active) {
                 return
