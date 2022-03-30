@@ -1,5 +1,6 @@
 import { Color, Plane } from "./Plane"
-import { useDimensions, useSelection } from "./RadarContext"
+import { useDimensions } from "./RadarContext"
+import { Slots } from "./Slots"
 import { Selection as SelectionValue } from "./types"
 
 type Props = {
@@ -10,8 +11,6 @@ type Props = {
 }
 
 export function Selection({ name, value, color, onChange }: Props) {
-  useSelection({ name, value, onChange })
-
   const dimensions = useDimensions()
 
   if (dimensions.length === 0) {
@@ -22,9 +21,34 @@ export function Selection({ name, value, color, onChange }: Props) {
     (dimension) => value[dimension] != null
   )
 
-  if (!allValuesSelected) {
-    return null
-  }
+  return (
+    <>
+      <Slots>
+        {(dimension, { x, y, step }) => (
+          <circle
+            key={step}
+            role="radio"
+            aria-label={`${dimension} - ${step}`}
+            aria-checked={value[dimension] === step}
+            cx={x}
+            cy={y}
+            r={5}
+            className="cursor-pointer fill-transparent stroke-transparent hover:fill-pink-500"
+            onClick={() => {
+              if (onChange) {
+                onChange({
+                  ...value,
+                  [dimension]: step,
+                })
+              }
+            }}
+          />
+        )}
+      </Slots>
 
-  return <Plane label={name} selection={value} color={color} />
+      {allValuesSelected && (
+        <Plane label={name} selection={value} color={color} />
+      )}
+    </>
+  )
 }
