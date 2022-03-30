@@ -25,12 +25,17 @@ const colors = {
 
 type Props = {
   name: string
-  value: SelectionValue
+  value?: SelectionValue
   color?: keyof typeof colors
   onChange?: (value: SelectionValue) => void
 }
 
-export function Selection({ name, value, color = "pink", onChange }: Props) {
+export function Selection({
+  name,
+  value = {},
+  color = "pink",
+  onChange,
+}: Props) {
   const dimensions = useDimensions()
 
   if (dimensions.length === 0) {
