@@ -75,6 +75,10 @@ export function Selection({
               value[dimension] === step ? circle.selected : "fill-transparent"
             } stroke-transparent ${circle.hover}`}
             onClick={() => {
+              if (!active) {
+                return
+              }
+
               if (onChange) {
                 onChange({
                   ...value,

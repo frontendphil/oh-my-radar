@@ -62,5 +62,19 @@ describe("RadarChart", () => {
       expect(onChangeThatShouldNotBeCalled).not.toHaveBeenCalled()
       expect(onChangeThatShouldBeCalled).toHaveBeenCalled()
     })
+
+    it("is not possible to change inactive selections.", () => {
+      const onChange = jest.fn()
+
+      render(
+        <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
+          <Selection name="test" onChange={onChange} />
+        </RadarChart>
+      )
+
+      fireEvent.click(screen.getByRole("presentation", { name: "Height - 1" }))
+
+      expect(onChange).not.toHaveBeenCalled()
+    })
   })
 })
