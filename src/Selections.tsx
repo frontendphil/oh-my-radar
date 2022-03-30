@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Button, Input } from "./form-controls"
+import { List, ListItem } from "./layout"
 
 type Props = {
   selections: string[]
@@ -19,20 +20,25 @@ export const Selections = ({
   return (
     <div className="flex flex-col gap-2">
       {selections.length > 0 && (
-        <ul>
+        <List>
           {selections.map((selection) => (
-            <li key={selection} aria-label={selection}>
+            <ListItem
+              key={selection}
+              aria-label={selection}
+              action={
+                <Button
+                  disabled={activeSelection === selection}
+                  aria-label={`Activate "${selection}"`}
+                  onClick={() => onActivate(selection)}
+                >
+                  Activate
+                </Button>
+              }
+            >
               {selection}
-
-              <Button
-                disabled={activeSelection === selection}
-                onClick={() => onActivate(selection)}
-              >
-                Activate &quot;{selection}&quot;
-              </Button>
-            </li>
+            </ListItem>
           ))}
-        </ul>
+        </List>
       )}
 
       <Input
