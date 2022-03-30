@@ -4,8 +4,13 @@ import { Slots } from "./Slots"
 import { Step } from "./Step"
 import { Selection as SelectionValue } from "./types"
 
+export const enum Colors {
+  pink = "pink",
+  blue = "blue",
+}
+
 const colors = {
-  pink: {
+  [Colors.pink]: {
     plane: {
       fill: "fill-pink-200",
       stroke: "stroke-pink-700",
@@ -15,7 +20,7 @@ const colors = {
       selected: "fill-pink-500",
     },
   },
-  blue: {
+  [Colors.blue]: {
     plane: {
       fill: "fill-blue-200",
       stroke: "stroke-blue-700",
@@ -35,7 +40,7 @@ type Props = {
 export function Selection({
   name,
   value = {},
-  color = "pink",
+  color = Colors.pink,
   active = false,
   onChange,
 }: Props) {

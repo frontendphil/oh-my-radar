@@ -2,12 +2,20 @@ import { useEffect, useState } from "react"
 import { Dimensions } from "./Dimensions"
 import { Input } from "./form-controls"
 
-import { RadarChart, Selection, Range, SelectionValue } from "./radar-chart"
+import {
+  RadarChart,
+  Selection,
+  Range,
+  SelectionValue,
+  Colors,
+} from "./radar-chart"
 import { Selections } from "./Selections"
 
 type ChartState = {
   [selection: string]: SelectionValue
 }
+
+const colors = [Colors.blue, Colors.pink]
 
 export const App = () => {
   const [title, setTitle] = useState("Test")
@@ -33,7 +41,7 @@ export const App = () => {
           range={[min, max]}
           size={size}
         >
-          {selections.map((selection) => (
+          {selections.map((selection, index) => (
             <Selection
               key={selection}
               active={activeSelection === selection}
@@ -42,7 +50,7 @@ export const App = () => {
               onChange={(value) =>
                 setChartState({ ...chartState, [selection]: value })
               }
-              color="blue"
+              color={colors[index % selections.length]}
             />
           ))}
         </RadarChart>
