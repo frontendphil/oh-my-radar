@@ -52,10 +52,9 @@ export function RadarChart<Dimension extends string>({
 
         <g transform={`translate(${width / 2} ${height / 2})`}>
           <Slots>
-            {(dimension, { x, y, step }) => (
+            {(_, { x, y, step }) => (
               <circle
                 key={step}
-                aria-label={`${dimension} - ${step}`}
                 cx={x}
                 cy={y}
                 r={5}
