@@ -5,6 +5,9 @@ module.exports = {
   testMatch: ["<rootDir>/src/**/*.spec.ts(x)?"],
   collectCoverageFrom: ["src/**/*.ts(x)?"],
   setupFilesAfterEnv: ["<rootDir>/setupTests.ts"],
+  moduleNameMapper: {
+    "\\.css$": "identity-obj-proxy",
+  },
   watchPlugins: [
     "jest-watch-typeahead/filename",
     "jest-watch-typeahead/testname",
