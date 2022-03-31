@@ -9,6 +9,7 @@ import {
   Range,
   SelectionState,
   SelectionDescriptor,
+  DimensionDescriptor,
 } from "./radar-chart"
 import { Selections } from "./Selections"
 
@@ -18,10 +19,10 @@ type ChartState = {
 
 export const App = () => {
   const [title, setTitle] = useState("Test")
-  const [dimensions, setDimensions] = useState<string[]>([
-    "One",
-    "Two",
-    "Three",
+  const [dimensions, setDimensions] = useState<DimensionDescriptor[]>([
+    { id: "one", title: "One" },
+    { id: "two", title: "Two" },
+    { id: "three", title: "Three" },
   ])
   const [[min, max], setRange] = useState<Range>([1, 4])
   const [chartState, setChartState] = useState<ChartState>({})
@@ -86,12 +87,8 @@ export const App = () => {
         <Dimensions
           dimensions={dimensions}
           onAdd={(dimension) => setDimensions([...dimensions, dimension])}
-          onRemove={(dimension) =>
-            setDimensions(
-              dimensions.filter(
-                (currentDimension) => currentDimension !== dimension
-              )
-            )
+          onRemove={(dimensionId) =>
+            setDimensions(dimensions.filter(({ id }) => id !== dimensionId))
           }
         />
 

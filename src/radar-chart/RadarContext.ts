@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react"
-import { Range } from "./types"
+import { DimensionDescriptor, Range } from "./types"
 
 type Context = {
   diagramWidth: number
   range: Range
-  dimensions: string[]
+  dimensions: DimensionDescriptor[]
 }
 
 export const RadarContext = createContext<Context>({
@@ -25,7 +25,7 @@ export const useRange = (): Range => {
   return range
 }
 
-export const useDimensions = (): string[] => {
+export const useDimensions = (): DimensionDescriptor[] => {
   const { dimensions } = useContext(RadarContext)
 
   return dimensions

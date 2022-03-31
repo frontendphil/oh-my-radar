@@ -16,8 +16,8 @@ export function Plane({ selection, label, fill, stroke }: PlaneProps) {
   const range = useRange()
   const dimensions = useDimensions()
 
-  const [start, ...points] = dimensions.map((dimension, index) => {
-    const value = selection[dimension]
+  const [start, ...points] = dimensions.map(({ id }, index) => {
+    const value = selection[id]
 
     invariant(
       value != null,

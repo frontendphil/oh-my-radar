@@ -11,3 +11,8 @@ export type SelectionDescriptor = {
   title: string
   color: Colors
 }
+
+export type DimensionDescriptor = {
+  id: string
+  title: string
+}
