@@ -3,6 +3,7 @@ export { Selection } from "./Selection"
 
 export {
   Range,
-  Selection as SelectionValue,
+  SelectionState,
   SelectionDescriptor,
+  DimensionDescriptor,
 } from "./types"

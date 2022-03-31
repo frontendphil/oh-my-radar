@@ -1,12 +1,12 @@
 import invariant from "invariant"
 import { getPoint } from "./getPoint"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
-import { Selection } from "./types"
+import { SelectionState } from "./types"
 import { getDimensionAngle } from "./utils"
 
 type PlaneProps = {
   label: string
-  selection: Selection
+  selection: SelectionState
   fill: string
   stroke: string
 }
@@ -16,8 +16,8 @@ export function Plane({ selection, label, fill, stroke }: PlaneProps) {
   const range = useRange()
   const dimensions = useDimensions()
 
-  const [start, ...points] = dimensions.map((dimension, index) => {
-    const value = selection[dimension]
+  const [start, ...points] = dimensions.map(({ id }, index) => {
+    const value = selection[id]
 
     invariant(
       value != null,

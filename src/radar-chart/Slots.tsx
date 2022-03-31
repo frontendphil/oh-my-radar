@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import { getPoint } from "./getPoint"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
+import { DimensionDescriptor } from "./types"
 import { createRange, getDimensionAngle } from "./utils"
 
 type Slot = {
@@ -10,7 +11,7 @@ type Slot = {
 }
 
 type Props = {
-  children: (dimension: string, slot: Slot) => ReactNode
+  children: (dimension: DimensionDescriptor, slot: Slot) => ReactNode
 }
 
 export const Slots = ({ children }: Props) => {

@@ -3,7 +3,7 @@ import { Plane } from "./Plane"
 import { useDimensions } from "./RadarContext"
 import { Slots } from "./Slots"
 import { Step } from "./Step"
-import { Selection as SelectionValue } from "./types"
+import { SelectionState } from "./types"
 
 const colors = {
   [Colors.pink]: {
@@ -48,10 +48,10 @@ const colors = {
 
 type Props = {
   name: string
-  value?: SelectionValue
+  value?: SelectionState
   color?: keyof typeof colors
   active?: boolean
-  onChange?: (value: SelectionValue) => void
+  onChange?: (value: SelectionState) => void
 }
 
 export function Selection({
@@ -67,9 +67,7 @@ export function Selection({
     return null
   }
 
-  const allValuesSelected = dimensions.every(
-    (dimension) => value[dimension] != null
-  )
+  const allValuesSelected = dimensions.every(({ id }) => value[id] != null)
 
   const { circle, plane } = colors[color]
 
@@ -85,16 +83,16 @@ export function Selection({
       )}
 
       <Slots>
-        {(dimension, { x, y, step }) => (
+        {({ id, title }, { x, y, step }) => (
           <Step
             key={step}
             role={active ? "radio" : "presentation"}
-            aria-label={`${dimension} - ${step}`}
-            aria-checked={value[dimension] === step}
+            aria-label={`${title} - ${step}`}
+            aria-checked={value[id] === step}
             x={x}
             y={y}
             className={`cursor-pointer ${
-              value[dimension] === step ? circle.selected : "fill-transparent"
+              value[id] === step ? circle.selected : "fill-transparent"
             } stroke-transparent ${circle.hover} ${
               active ? "pointer-events-auto" : "pointer-events-none"
             }`}
@@ -106,7 +104,7 @@ export function Selection({
               if (onChange) {
                 onChange({
                   ...value,
-                  [dimension]: step,
+                  [id]: step,
                 })
               }
             }}

@@ -12,7 +12,7 @@ export const DimensionLabels = () => {
 
   return (
     <>
-      {dimensions.map((dimension, index) => {
+      {dimensions.map(({ id, title }, index) => {
         const { x, y } = getPoint({
           diagramWidth,
           range,
@@ -21,8 +21,8 @@ export const DimensionLabels = () => {
         })
 
         return (
-          <Text key={dimension} x={x} y={y}>
-            {dimension}
+          <Text key={id} x={x} y={y}>
+            {title}
           </Text>
         )
       })}

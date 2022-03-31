@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { v4 } from "uuid"
 import { Colors } from "./configuration"
 import { Button, ColorSelect, Input } from "./form-controls"
 import { List, ListItem } from "./layout"
@@ -25,15 +26,15 @@ export const Selections = ({
     <div className="flex flex-col gap-2">
       {selectionDescriptors.length > 0 && (
         <List>
-          {selectionDescriptors.map(({ title, color }) => (
+          {selectionDescriptors.map(({ id, title, color }) => (
             <ListItem
-              key={title}
+              key={id}
               aria-label={title}
               action={
                 <Button
-                  disabled={activeSelection === title}
+                  disabled={activeSelection === id}
                   aria-label={`Activate "${title}"`}
-                  onClick={() => onActivate(title)}
+                  onClick={() => onActivate(id)}
                 >
                   Activate
                 </Button>
@@ -43,7 +44,7 @@ export const Selections = ({
                 <ColorSelect
                   label={`Color for "${title}"`}
                   value={color}
-                  onChange={(color) => onChange({ title, color })}
+                  onChange={(color) => onChange({ id, title, color })}
                 />
 
                 {title}
@@ -62,7 +63,7 @@ export const Selections = ({
             return
           }
 
-          onAdd({ title: newSelection, color: Colors.pink })
+          onAdd({ id: v4(), title: newSelection, color: Colors.pink })
 
           setNewSelection("")
         }}

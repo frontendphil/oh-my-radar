@@ -4,6 +4,11 @@ import { RadarChart } from "./RadarChart"
 import { Selection } from "./Selection"
 
 describe("RadarChart", () => {
+  const defaultDimension = {
+    id: "height",
+    title: "Height",
+  }
+
   it("renders a chart with a title.", () => {
     render(
       <RadarChart title="Test" dimensions={[]} range={[0, 1]}>
@@ -17,13 +22,13 @@ describe("RadarChart", () => {
   describe("Dimensions", () => {
     it("renders dimensions.", () => {
       render(
-        <RadarChart title="Test" dimensions={["Height"]} range={[0, 1]}>
+        <RadarChart title="Test" dimensions={[defaultDimension]} range={[0, 1]}>
           <Selection name="test" />
         </RadarChart>
       )
 
       expect(
-        screen.getByRole("radiogroup", { name: "Height" })
+        screen.getByRole("radiogroup", { name: defaultDimension.title })
       ).toBeInTheDocument()
     })
   })
@@ -33,14 +38,16 @@ describe("RadarChart", () => {
       const onChange = jest.fn()
 
       render(
-        <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
+        <RadarChart title="Test" dimensions={[defaultDimension]} range={[1, 2]}>
           <Selection active name="test" onChange={onChange} />
         </RadarChart>
       )
 
-      await userEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
+      await userEvent.click(
+        screen.getByRole("radio", { name: `${defaultDimension.title} - 1` })
+      )
 
-      expect(onChange).toHaveBeenCalledWith({ Height: 1 })
+      expect(onChange).toHaveBeenCalledWith({ [defaultDimension.id]: 1 })
     })
 
     it("is only possible to interact with active selections.", async () => {
@@ -48,7 +55,7 @@ describe("RadarChart", () => {
       const onChangeThatShouldNotBeCalled = jest.fn()
 
       render(
-        <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
+        <RadarChart title="Test" dimensions={[defaultDimension]} range={[1, 2]}>
           <Selection
             active
             name="active"
@@ -58,7 +65,9 @@ describe("RadarChart", () => {
         </RadarChart>
       )
 
-      await userEvent.click(screen.getByRole("radio", { name: "Height - 1" }))
+      await userEvent.click(
+        screen.getByRole("radio", { name: `${defaultDimension.title} - 1` })
+      )
 
       expect(onChangeThatShouldNotBeCalled).not.toHaveBeenCalled()
       expect(onChangeThatShouldBeCalled).toHaveBeenCalled()
@@ -68,13 +77,15 @@ describe("RadarChart", () => {
       const onChange = jest.fn()
 
       render(
-        <RadarChart title="Test" dimensions={["Height"]} range={[1, 2]}>
+        <RadarChart title="Test" dimensions={[defaultDimension]} range={[1, 2]}>
           <Selection name="test" onChange={onChange} />
         </RadarChart>
       )
 
       await userEvent.click(
-        screen.getByRole("presentation", { name: "Height - 1" })
+        screen.getByRole("presentation", {
+          name: `${defaultDimension.title} - 1`,
+        })
       )
 
       expect(onChange).not.toHaveBeenCalled()

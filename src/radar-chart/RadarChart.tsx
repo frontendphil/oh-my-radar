@@ -1,28 +1,28 @@
 import { ReactNode } from "react"
 
 import { createRange, getDimensionAngle } from "./utils"
-import { Range } from "./types"
+import { DimensionDescriptor, Range } from "./types"
 import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
 import { DimensionLabels } from "./DimensionLabels"
 import { getLengthToSelection } from "./getLengthToSelection"
 import { Step, STEP_RADIUS } from "./Step"
 
-type Props<Dimension extends string> = {
+type Props = {
   title: string
-  dimensions: Dimension[]
+  dimensions: DimensionDescriptor[]
   range: Range
   size?: number
   children: ReactNode
 }
 
-export function RadarChart<Dimension extends string>({
+export function RadarChart({
   title,
   dimensions,
   range,
   size = 500,
   children,
-}: Props<Dimension>) {
+}: Props) {
   const padding = STEP_RADIUS
 
   return (
@@ -55,13 +55,13 @@ export function RadarChart<Dimension extends string>({
           >
             <Circles />
 
-            {dimensions.map((dimension, index) => (
+            {dimensions.map(({ id, title }, index) => (
               <g
-                key={dimension}
+                key={id}
                 className="origin-center"
                 transform={`rotate(${getDimensionAngle(dimensions, index)})`}
               >
-                <Dimension title={dimension} diagramWidth={size} />
+                <Dimension title={title} diagramWidth={size} />
               </g>
             ))}
 
