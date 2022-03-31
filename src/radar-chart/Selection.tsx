@@ -3,7 +3,7 @@ import { Plane } from "./Plane"
 import { useDimensions } from "./RadarContext"
 import { Slots } from "./Slots"
 import { Step } from "./Step"
-import { Selection as SelectionValue } from "./types"
+import { SelectionState } from "./types"
 
 const colors = {
   [Colors.pink]: {
@@ -48,10 +48,10 @@ const colors = {
 
 type Props = {
   name: string
-  value?: SelectionValue
+  value?: SelectionState
   color?: keyof typeof colors
   active?: boolean
-  onChange?: (value: SelectionValue) => void
+  onChange?: (value: SelectionState) => void
 }
 
 export function Selection({

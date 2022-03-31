@@ -7,13 +7,13 @@ import {
   RadarChart,
   Selection,
   Range,
-  SelectionValue,
+  SelectionState,
   SelectionDescriptor,
 } from "./radar-chart"
 import { Selections } from "./Selections"
 
 type ChartState = {
-  [selection: string]: SelectionValue
+  [selection: string]: SelectionState
 }
 
 export const App = () => {
@@ -31,7 +31,7 @@ export const App = () => {
   const [activeSelection, setActiveSelection] = useState<string>("john")
   const [selectionDescriptors, setSelectionDescriptors] = useState<
     SelectionDescriptor[]
-  >([{ title: "john", color: Colors.blue }])
+  >([{ id: "john", title: "john", color: Colors.blue }])
 
   return (
     <div className="grid grid-cols-2">
@@ -42,14 +42,14 @@ export const App = () => {
           range={[min, max]}
           size={size}
         >
-          {selectionDescriptors.map(({ title, color }) => (
+          {selectionDescriptors.map(({ id, title, color }) => (
             <Selection
-              key={title}
-              active={activeSelection === title}
+              key={id}
+              active={activeSelection === id}
               name={title}
-              value={chartState[title]}
+              value={chartState[id]}
               onChange={(value) =>
-                setChartState({ ...chartState, [title]: value })
+                setChartState({ ...chartState, [id]: value })
               }
               color={color}
             />
@@ -72,9 +72,7 @@ export const App = () => {
           onChange={(updatedSelectionDescriptor) =>
             setSelectionDescriptors(
               selectionDescriptors.map((selectionDescriptor) => {
-                if (
-                  selectionDescriptor.title === updatedSelectionDescriptor.title
-                ) {
+                if (selectionDescriptor.id === updatedSelectionDescriptor.id) {
                   return updatedSelectionDescriptor
                 }
 
