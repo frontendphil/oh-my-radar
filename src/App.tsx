@@ -1,46 +1,36 @@
 import { useEffect, useState } from "react"
-import { Colors } from "./configuration"
-import { Dimensions } from "./Dimensions"
-import { Input } from "./form-controls"
-
-import {
-  RadarChart,
-  Selection,
-  Range,
-  SelectionState,
-  SelectionDescriptor,
-  DimensionDescriptor,
-} from "./radar-chart"
-import { Selections } from "./Selections"
+import { ChartConfiguration, useConfiguration } from "./chart-configuration"
+import { RadarChart, Selection, SelectionState, Colors } from "./radar-chart"
 
 type ChartState = {
   [selection: string]: SelectionState
 }
 
 export const App = () => {
-  const [title, setTitle] = useState("Test")
-  const [dimensions, setDimensions] = useState<DimensionDescriptor[]>([
-    { id: "one", title: "One" },
-    { id: "two", title: "Two" },
-    { id: "three", title: "Three" },
-  ])
-  const [[min, max], setRange] = useState<Range>([1, 4])
   const [chartState, setChartState] = useState<ChartState>({})
-
   const size = useAutoResize()
-
   const [activeSelection, setActiveSelection] = useState<string>("john")
-  const [selectionDescriptors, setSelectionDescriptors] = useState<
-    SelectionDescriptor[]
-  >([{ id: "john", title: "john", color: Colors.blue }])
+  const [
+    { title, dimensionDescriptors, selectionDescriptors, range },
+    onChangeConfiguration,
+  ] = useConfiguration({
+    title: "Test",
+    range: [1, 4],
+    dimensionDescriptors: [
+      { id: "one", title: "One" },
+      { id: "two", title: "Two" },
+      { id: "three", title: "Three" },
+    ],
+    selectionDescriptors: [{ id: "john", title: "john", color: Colors.blue }],
+  })
 
   return (
     <div className="grid grid-cols-2">
       <div className="m-24">
         <RadarChart
           title={title}
-          dimensions={dimensions}
-          range={[min, max]}
+          dimensions={dimensionDescriptors}
+          range={range}
           size={size}
         >
           {selectionDescriptors.map(({ id, title, color }) => (
@@ -58,56 +48,17 @@ export const App = () => {
         </RadarChart>
       </div>
 
-      <div className="mt-24 mr-24 flex flex-col gap-4">
-        <Input label="Title" value={title} onChange={setTitle} />
-
-        <Selections
-          selectionDescriptors={selectionDescriptors}
-          activeSelection={activeSelection}
-          onAdd={(selectionDescriptor) =>
-            setSelectionDescriptors([
-              ...selectionDescriptors,
-              selectionDescriptor,
-            ])
-          }
-          onChange={(updatedSelectionDescriptor) =>
-            setSelectionDescriptors(
-              selectionDescriptors.map((selectionDescriptor) => {
-                if (selectionDescriptor.id === updatedSelectionDescriptor.id) {
-                  return updatedSelectionDescriptor
-                }
-
-                return selectionDescriptor
-              })
-            )
-          }
-          onActivate={setActiveSelection}
-        />
-
-        <Dimensions
-          dimensions={dimensions}
-          onAdd={(dimension) => setDimensions([...dimensions, dimension])}
-          onRemove={(dimensionId) =>
-            setDimensions(dimensions.filter(({ id }) => id !== dimensionId))
-          }
-        />
-
-        <Input
-          type="number"
-          label="Min value"
-          value={min.toString()}
-          onChange={(value) =>
-            setRange([Math.min(parseInt(value, 10), max - 1), max])
-          }
-        />
-
-        <Input
-          type="number"
-          label="Max value"
-          value={max.toString()}
-          onChange={(value) =>
-            setRange([min, Math.max(parseInt(value, 10), min + 2)])
-          }
+      <div className="mt-24 mr-24">
+        <ChartConfiguration
+          activeSelectionId={activeSelection}
+          configuration={{
+            title,
+            dimensionDescriptors,
+            selectionDescriptors,
+            range,
+          }}
+          onChange={onChangeConfiguration}
+          onActivateSelection={setActiveSelection}
         />
       </div>
     </div>

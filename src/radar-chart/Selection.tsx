@@ -1,9 +1,16 @@
-import { Colors } from "../configuration"
 import { Plane } from "./Plane"
 import { useDimensions } from "./RadarContext"
 import { Slots } from "./Slots"
 import { Step } from "./Step"
-import { SelectionState } from "./types"
+import { Colors, SelectionState } from "./types"
+
+type ColorConfiguration = {
+  fill: string
+  stroke: string
+}
+
+export const getSelectionColor = (color: Colors): ColorConfiguration =>
+  colors[color].plane
 
 const colors = {
   [Colors.pink]: {
