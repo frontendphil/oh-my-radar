@@ -1,12 +1,12 @@
 import { ReactNode } from "react"
-
-import { createRange, getDimensionAngle } from "./utils"
 import { DimensionDescriptor, Range } from "./types"
 import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
 import { DimensionLabels } from "./DimensionLabels"
 import { getLengthToSelection } from "./getLengthToSelection"
 import { Step, STEP_RADIUS } from "./Step"
+import { getStepsFromRange } from "./getStepsFromRange"
+import { getDimensionAngle } from "./getDimensionAngle"
 
 type Props = {
   title: string
@@ -110,7 +110,7 @@ const Dimension = ({ title, diagramWidth }: DimensionProps) => {
 const Circles = () => {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
-  const steps = createRange(range)
+  const steps = getStepsFromRange(range)
 
   return (
     <>

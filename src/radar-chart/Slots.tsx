@@ -1,8 +1,9 @@
 import { ReactNode } from "react"
+import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
+import { getStepsFromRange } from "./getStepsFromRange"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
 import { DimensionDescriptor } from "./types"
-import { createRange, getDimensionAngle } from "./utils"
 
 type Slot = {
   x: number
@@ -19,7 +20,7 @@ export const Slots = ({ children }: Props) => {
   const range = useRange()
   const dimensions = useDimensions()
 
-  const steps = createRange(range)
+  const steps = getStepsFromRange(range)
 
   return (
     <>
