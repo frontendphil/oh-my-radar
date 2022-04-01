@@ -1,18 +1,22 @@
 import invariant from "invariant"
-import { HTMLAttributes } from "react"
+import { HTMLAttributes, useEffect, useState } from "react"
 import { CoreInput } from "./CoreInput"
-
 import { Label } from "./Label"
 import { useId } from "./useId"
 
 type Props = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
   label: string
-  value?: string
-  onChange?: (value: string) => void
+  value?: number
+  onChange?: (value: number) => void
 }
 
-export const Input = ({ label, onChange, ...rest }: Props) => {
+export const NumberInput = ({ label, value, onChange, ...rest }: Props) => {
   const id = useId()
+  const [internalValue, setInternalValue] = useState(value?.toString())
+
+  useEffect(() => {
+    setInternalValue(value?.toString())
+  }, [value])
 
   return (
     <div className="flex flex-col">
@@ -20,7 +24,9 @@ export const Input = ({ label, onChange, ...rest }: Props) => {
 
       <CoreInput
         {...rest}
+        type="number"
         id={id}
+        value={internalValue}
         onChange={(event) => {
           if (!onChange) {
             return
@@ -31,7 +37,13 @@ export const Input = ({ label, onChange, ...rest }: Props) => {
             `Expected an input as event target.`
           )
 
-          onChange(event.target.value)
+          setInternalValue(event.target.value)
+
+          if (isNaN(event.target.valueAsNumber)) {
+            return
+          }
+
+          onChange(event.target.valueAsNumber)
         }}
       />
     </div>

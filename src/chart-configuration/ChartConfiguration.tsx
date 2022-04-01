@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Input } from "../form-controls"
+import { NumberInput } from "../form-controls/NumberInput"
 import { DimensionDescriptor, Range, SelectionDescriptor } from "../radar-chart"
 
 import { Dimensions } from "./Dimensions"
@@ -88,26 +89,24 @@ export const ChartConfiguration = ({
         }
       />
 
-      <Input
-        type="number"
+      <NumberInput
         label="Min value"
-        value={min.toString()}
+        value={min}
         onChange={(value) =>
           onChange({
             ...configuration,
-            range: [Math.min(parseInt(value, 10), max - 1), max],
+            range: [Math.min(value, max - 1), max],
           })
         }
       />
 
-      <Input
-        type="number"
+      <NumberInput
         label="Max value"
-        value={max.toString()}
+        value={max}
         onChange={(value) =>
           onChange({
             ...configuration,
-            range: [min, Math.max(parseInt(value, 10), min + 2)],
+            range: [min, Math.max(value, min + 2)],
           })
         }
       />

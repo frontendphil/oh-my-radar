@@ -1,27 +1,14 @@
 import { HTMLAttributes } from "react"
 
-export type CoreInputProps = Omit<
-  HTMLAttributes<HTMLInputElement>,
-  "onChange"
-> & {
+type Props = HTMLAttributes<HTMLInputElement> & {
   type?: string
   value?: string
-  onChange?: (newValue: string) => void
 }
 
-export const CoreInput = ({ id, value, onChange, ...rest }: CoreInputProps) => (
+export const CoreInput = (props: Props) => (
   <input
     type="text"
-    {...rest}
+    {...props}
     className="rounded border border-slate-400 px-2 py-2"
-    id={id}
-    value={value}
-    onChange={(event) => {
-      if (!onChange) {
-        return
-      }
-
-      onChange(event.target.value)
-    }}
   />
 )
