@@ -1,7 +1,7 @@
 import invariant from "invariant"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { App } from "./App"
+import { DevConfiguration } from "./DevConfiguration"
 
 import "./main.css"
 
@@ -12,6 +12,6 @@ invariant(container, 'Could not find app container with id "app".')
 const root = createRoot(container)
 root.render(
   <StrictMode>
-    <App />
+    <DevConfiguration />
   </StrictMode>
 )
