@@ -12,10 +12,11 @@ type Slot = {
 }
 
 type Props = {
+  groupRole?: string
   children: (dimension: DimensionDescriptor, slot: Slot) => ReactNode
 }
 
-export const Slots = ({ children }: Props) => {
+export const Slots = ({ children, groupRole }: Props) => {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()
@@ -27,11 +28,20 @@ export const Slots = ({ children }: Props) => {
       {dimensions.map((dimension, index) => {
         const angle = getDimensionAngle(dimensions, index)
 
-        return steps.map((step) => {
-          const point = getPoint({ diagramWidth, range, value: step, angle })
+        return (
+          <g key={dimension.id} role={groupRole} aria-label={dimension.title}>
+            {steps.map((step) => {
+              const point = getPoint({
+                diagramWidth,
+                range,
+                value: step,
+                angle,
+              })
 
-          return children(dimension, { ...point, step })
-        })
+              return children(dimension, { ...point, step })
+            })}
+          </g>
+        )
       })}
     </>
   )
