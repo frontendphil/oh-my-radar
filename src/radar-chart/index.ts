@@ -5,6 +5,6 @@ export {
   Colors,
   Range,
   SelectionState,
-  SelectionDescriptor,
+  Participant,
   DimensionDescriptor,
 } from "./types"

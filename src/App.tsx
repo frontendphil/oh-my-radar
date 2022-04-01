@@ -9,9 +9,9 @@ type ChartState = {
 export const App = () => {
   const [chartState, setChartState] = useState<ChartState>({})
   const size = useAutoResize()
-  const [activeSelection, setActiveSelection] = useState<string>("john")
+  const [activeParticipantId, setActiveParticipantId] = useState<string>("john")
   const [
-    { title, dimensionDescriptors, selectionDescriptors, range },
+    { title, dimensionDescriptors, participants, range },
     onChangeConfiguration,
   ] = useConfiguration({
     title: "Test",
@@ -21,7 +21,7 @@ export const App = () => {
       { id: "two", title: "Two" },
       { id: "three", title: "Three" },
     ],
-    selectionDescriptors: [{ id: "john", title: "john", color: Colors.blue }],
+    participants: [{ id: "john", name: "john", color: Colors.blue }],
   })
 
   return (
@@ -33,11 +33,11 @@ export const App = () => {
           range={range}
           size={size}
         >
-          {selectionDescriptors.map(({ id, title, color }) => (
+          {participants.map(({ id, name, color }) => (
             <Selection
               key={id}
-              active={activeSelection === id}
-              name={title}
+              active={activeParticipantId === id}
+              name={name}
               value={chartState[id]}
               onChange={(value) =>
                 setChartState({ ...chartState, [id]: value })
@@ -50,15 +50,15 @@ export const App = () => {
 
       <div className="mt-24 mr-24">
         <ChartConfiguration
-          activeSelectionId={activeSelection}
+          activeParticipantId={activeParticipantId}
           configuration={{
             title,
             dimensionDescriptors,
-            selectionDescriptors,
+            participants,
             range,
           }}
           onChange={onChangeConfiguration}
-          onActivateSelection={setActiveSelection}
+          onActivateParticipant={setActiveParticipantId}
         />
       </div>
     </div>

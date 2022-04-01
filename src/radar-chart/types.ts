@@ -12,9 +12,9 @@ export type SelectionState = {
   [dimension: string]: number
 }
 
-export type SelectionDescriptor = {
+export type Participant = {
   id: string
-  title: string
+  name: string
   color: Colors
 }
 

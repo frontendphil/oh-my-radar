@@ -1,33 +1,32 @@
 import { useState } from "react"
 import { Input } from "../form-controls"
 import { NumberInput } from "../form-controls/NumberInput"
-import { DimensionDescriptor, Range, SelectionDescriptor } from "../radar-chart"
+import { DimensionDescriptor, Range, Participant } from "../radar-chart"
 
 import { Dimensions } from "./Dimensions"
-import { Selections } from "./Selections"
+import { Participants } from "./Participants"
 
 type Configuration = {
   title: string
   range: Range
-  selectionDescriptors: SelectionDescriptor[]
+  participants: Participant[]
   dimensionDescriptors: DimensionDescriptor[]
 }
 
 type Props = {
-  activeSelectionId: string
+  activeParticipantId: string
   configuration: Configuration
   onChange: (configuration: Configuration) => void
-  onActivateSelection: (selectionId: string) => void
+  onActivateParticipant: (selectionId: string) => void
 }
 
 export const ChartConfiguration = ({
   configuration,
-  activeSelectionId,
+  activeParticipantId,
   onChange,
-  onActivateSelection,
+  onActivateParticipant,
 }: Props) => {
-  const { title, selectionDescriptors, dimensionDescriptors, range } =
-    configuration
+  const { title, participants, dimensionDescriptors, range } = configuration
 
   const [min, max] = range
 
@@ -39,33 +38,28 @@ export const ChartConfiguration = ({
         onChange={(title) => onChange({ ...configuration, title })}
       />
 
-      <Selections
-        selectionDescriptors={selectionDescriptors}
-        activeSelectionId={activeSelectionId}
+      <Participants
+        participants={participants}
+        activeParticipantId={activeParticipantId}
         onAdd={(selectionDescriptor) =>
           onChange({
             ...configuration,
-            selectionDescriptors: [
-              ...selectionDescriptors,
-              selectionDescriptor,
-            ],
+            participants: [...participants, selectionDescriptor],
           })
         }
         onChange={(updatedSelectionDescriptor) =>
           onChange({
             ...configuration,
-            selectionDescriptors: selectionDescriptors.map(
-              (selectionDescriptor) => {
-                if (selectionDescriptor.id === updatedSelectionDescriptor.id) {
-                  return updatedSelectionDescriptor
-                }
-
-                return selectionDescriptor
+            participants: participants.map((selectionDescriptor) => {
+              if (selectionDescriptor.id === updatedSelectionDescriptor.id) {
+                return updatedSelectionDescriptor
               }
-            ),
+
+              return selectionDescriptor
+            }),
           })
         }
-        onActivate={onActivateSelection}
+        onActivate={onActivateParticipant}
       />
 
       <Dimensions
