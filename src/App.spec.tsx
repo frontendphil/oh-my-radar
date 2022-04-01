@@ -121,7 +121,7 @@ describe("App", () => {
         ).toBeInTheDocument()
       })
 
-      it.only("is not possible to add dimensions that already exist.", async () => {
+      it("is not possible to add dimensions that already exist.", async () => {
         render(<App />)
 
         await addDimension("Test")
