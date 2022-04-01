@@ -32,9 +32,14 @@ export function Plane({ selection, label, fill, stroke }: PlaneProps) {
     })
   })
 
-  const d = `M ${start.x},${start.y} ${points
-    .map(({ x, y }) => `L ${x},${y}`)
-    .join(" ")} z`
+  const d = [
+    "M",
+    `${start.x},${start.y}`,
+    points.length > 0 && `${points.map(({ x, y }) => `L ${x},${y}`).join(" ")}`,
+    "z",
+  ]
+    .filter(Boolean)
+    .join(" ")
 
   return (
     <path
