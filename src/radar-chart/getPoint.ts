@@ -1,3 +1,4 @@
+import invariant from "invariant"
 import { getLengthToSelection } from "./getLengthToSelection"
 import { Range } from "./types"
 
@@ -22,6 +23,11 @@ export function getPoint({
   const beta = 90 - angle
 
   const length = getLengthToSelection(diagramWidth, range, value)
+
+  invariant(
+    !isNaN(length),
+    `Could not compute length to value "${value}" with angle ${angle}° and range ${range}.`
+  )
 
   const x = Math.sin(toRadians(beta)) * length
   const y = Math.sin(toRadians(angle)) * length

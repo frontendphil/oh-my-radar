@@ -1,14 +1,22 @@
-import { ReactNode } from "react"
-import { CoreInput, CoreInputProps } from "./CoreInput"
+import invariant from "invariant"
+import { HTMLAttributes, ReactNode } from "react"
+import { CoreInput } from "./CoreInput"
 import { Label } from "./Label"
 import { useId } from "./useId"
 
-type Props = CoreInputProps & {
+type Props = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
   label: string
   children: ReactNode
+  value?: string
+  onChange?: (value: string) => void
 }
 
-export const InputWithButton = ({ label, children, ...rest }: Props) => {
+export const InputWithButton = ({
+  label,
+  children,
+  onChange,
+  ...rest
+}: Props) => {
   const id = useId()
 
   return (
@@ -16,7 +24,22 @@ export const InputWithButton = ({ label, children, ...rest }: Props) => {
       <Label htmlFor={id}>{label}</Label>
 
       <div className="flex gap-2">
-        <CoreInput {...rest} id={id} />
+        <CoreInput
+          {...rest}
+          id={id}
+          onChange={(event) => {
+            if (!onChange) {
+              return
+            }
+
+            invariant(
+              event.target instanceof HTMLInputElement,
+              `Expected an input as event target.`
+            )
+
+            onChange(event.target.value)
+          }}
+        />
         {children}
       </div>
     </div>
