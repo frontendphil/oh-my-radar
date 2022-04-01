@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Input } from "../form-controls"
 import { NumberInput } from "../form-controls/NumberInput"
-import { DimensionDescriptor, Range, Participant } from "../radar-chart"
+import { Dimension, Range, Participant } from "../radar-chart"
 
 import { Dimensions } from "./Dimensions"
 import { Participants } from "./Participants"
@@ -10,7 +10,7 @@ type Configuration = {
   title: string
   range: Range
   participants: Participant[]
-  dimensionDescriptors: DimensionDescriptor[]
+  dimensions: Dimension[]
 }
 
 type Props = {
@@ -26,7 +26,7 @@ export const ChartConfiguration = ({
   onChange,
   onActivateParticipant,
 }: Props) => {
-  const { title, participants, dimensionDescriptors, range } = configuration
+  const { title, participants, dimensions, range } = configuration
 
   const [min, max] = range
 
@@ -63,22 +63,17 @@ export const ChartConfiguration = ({
       />
 
       <Dimensions
-        dimensionDescriptors={dimensionDescriptors}
+        dimensions={dimensions}
         onAdd={(dimensionDescriptor) =>
           onChange({
             ...configuration,
-            dimensionDescriptors: [
-              ...configuration.dimensionDescriptors,
-              dimensionDescriptor,
-            ],
+            dimensions: [...configuration.dimensions, dimensionDescriptor],
           })
         }
         onRemove={(dimensionId) =>
           onChange({
             ...configuration,
-            dimensionDescriptors: dimensionDescriptors.filter(
-              ({ id }) => id !== dimensionId
-            ),
+            dimensions: dimensions.filter(({ id }) => id !== dimensionId),
           })
         }
       />

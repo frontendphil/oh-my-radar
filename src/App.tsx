@@ -10,26 +10,24 @@ export const App = () => {
   const [chartState, setChartState] = useState<ChartState>({})
   const size = useAutoResize()
   const [activeParticipantId, setActiveParticipantId] = useState<string>("john")
-  const [
-    { title, dimensionDescriptors, participants, range },
-    onChangeConfiguration,
-  ] = useConfiguration({
-    title: "Test",
-    range: [1, 4],
-    dimensionDescriptors: [
-      { id: "one", title: "One" },
-      { id: "two", title: "Two" },
-      { id: "three", title: "Three" },
-    ],
-    participants: [{ id: "john", name: "john", color: Colors.blue }],
-  })
+  const [{ title, dimensions, participants, range }, onChangeConfiguration] =
+    useConfiguration({
+      title: "Test",
+      range: [1, 4],
+      dimensions: [
+        { id: "one", title: "One" },
+        { id: "two", title: "Two" },
+        { id: "three", title: "Three" },
+      ],
+      participants: [{ id: "john", name: "john", color: Colors.blue }],
+    })
 
   return (
     <div className="grid grid-cols-2">
       <div className="m-24">
         <RadarChart
           title={title}
-          dimensions={dimensionDescriptors}
+          dimensions={dimensions}
           range={range}
           size={size}
         >
@@ -53,7 +51,7 @@ export const App = () => {
           activeParticipantId={activeParticipantId}
           configuration={{
             title,
-            dimensionDescriptors,
+            dimensions,
             participants,
             range,
           }}

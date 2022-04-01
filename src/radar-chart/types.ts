@@ -18,7 +18,7 @@ export type Participant = {
   color: Colors
 }
 
-export type DimensionDescriptor = {
+export type Dimension = {
   id: string
   title: string
 }
