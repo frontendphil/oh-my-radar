@@ -29,7 +29,7 @@ export const Slots = ({ children, groupRole }: Props) => {
         const angle = getDimensionAngle(dimensions, index)
 
         return (
-          <g key={dimension.id} role={groupRole} aria-label={dimension.title}>
+          <g key={dimension.id} role={groupRole} aria-labelledby={dimension.id}>
             {steps.map((step) => {
               const point = getPoint({
                 diagramWidth,

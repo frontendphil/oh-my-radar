@@ -21,7 +21,7 @@ export const DimensionLabels = () => {
         })
 
         return (
-          <Text key={id} x={x} y={y}>
+          <Text key={id} id={id} x={x} y={y}>
             {title}
           </Text>
         )

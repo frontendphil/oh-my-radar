@@ -13,12 +13,13 @@ const enum Justify {
 }
 
 type TextProps = {
+  id: string
   children: string
   x: number
   y: number
 }
 
-export const Text = ({ children, x, y }: TextProps) => {
+export const Text = ({ id, children, x, y }: TextProps) => {
   const ref = useRef<HTMLSpanElement | null>(null)
 
   const [left, setLeft] = useState(0)
@@ -63,7 +64,7 @@ export const Text = ({ children, x, y }: TextProps) => {
   }, [x, y])
 
   return (
-    <div style={{ position: "absolute", top: y, left: x }}>
+    <div id={id} style={{ position: "absolute", top: y, left: x }}>
       <span className="relative" ref={ref} style={{ left, top }}>
         {children}
       </span>
