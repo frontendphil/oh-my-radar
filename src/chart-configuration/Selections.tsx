@@ -1,21 +1,22 @@
 import { useState } from "react"
 import { v4 } from "uuid"
-import { Colors } from "./configuration"
-import { Button, ColorSelect, Input } from "./form-controls"
-import { List, ListItem } from "./layout"
-import { SelectionDescriptor } from "./radar-chart"
+import { Colors } from "../configuration"
+
+import { Button, ColorSelect, Input } from "../form-controls"
+import { List, ListItem } from "../layout"
+import { SelectionDescriptor } from "../radar-chart"
 
 type Props = {
   selectionDescriptors: SelectionDescriptor[]
-  activeSelection: string
+  activeSelectionId: string
   onAdd: (selectionDescriptor: SelectionDescriptor) => void
   onChange: (SelectionDescriptor: SelectionDescriptor) => void
-  onActivate: (selection: string) => void
+  onActivate: (selectionId: string) => void
 }
 
 export const Selections = ({
   selectionDescriptors,
-  activeSelection,
+  activeSelectionId,
   onAdd,
   onChange,
   onActivate,
@@ -32,7 +33,7 @@ export const Selections = ({
               aria-label={title}
               action={
                 <Button
-                  disabled={activeSelection === id}
+                  disabled={activeSelectionId === id}
                   aria-label={`Activate "${title}"`}
                   onClick={() => onActivate(id)}
                 >
