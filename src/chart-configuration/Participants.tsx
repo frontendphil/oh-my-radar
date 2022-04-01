@@ -2,37 +2,37 @@ import { useState } from "react"
 import { v4 } from "uuid"
 import { Button, ColorSelect, Input } from "../form-controls"
 import { List, ListItem } from "../layout"
-import { SelectionDescriptor, Colors } from "../radar-chart"
+import { Colors, Participant } from "../radar-chart"
 
 type Props = {
-  selectionDescriptors: SelectionDescriptor[]
-  activeSelectionId: string
-  onAdd: (selectionDescriptor: SelectionDescriptor) => void
-  onChange: (SelectionDescriptor: SelectionDescriptor) => void
+  participants: Participant[]
+  activeParticipantId: string
+  onAdd: (participant: Participant) => void
+  onChange: (participant: Participant) => void
   onActivate: (selectionId: string) => void
 }
 
-export const Selections = ({
-  selectionDescriptors,
-  activeSelectionId,
+export const Participants = ({
+  participants,
+  activeParticipantId,
   onAdd,
   onChange,
   onActivate,
 }: Props) => {
-  const [newSelection, setNewSelection] = useState("")
+  const [participantName, setParticipantName] = useState("")
 
   return (
     <div className="flex flex-col gap-2">
-      {selectionDescriptors.length > 0 && (
+      {participants.length > 0 && (
         <List>
-          {selectionDescriptors.map(({ id, title, color }) => (
+          {participants.map(({ id, name, color }) => (
             <ListItem
               key={id}
-              aria-label={title}
+              aria-label={name}
               action={
                 <Button
-                  disabled={activeSelectionId === id}
-                  aria-label={`Activate "${title}"`}
+                  disabled={activeParticipantId === id}
+                  aria-label={`Activate "${name}"`}
                   onClick={() => onActivate(id)}
                 >
                   Activate
@@ -41,12 +41,12 @@ export const Selections = ({
             >
               <div className="flex items-center gap-4">
                 <ColorSelect
-                  label={`Color for "${title}"`}
+                  label={`Color for "${name}"`}
                   value={color}
-                  onChange={(color) => onChange({ id, title, color })}
+                  onChange={(color) => onChange({ id, name, color })}
                 />
 
-                {title}
+                {name}
               </div>
             </ListItem>
           ))}
@@ -55,16 +55,16 @@ export const Selections = ({
 
       <Input
         label="Add a selection"
-        value={newSelection}
-        onChange={setNewSelection}
+        value={participantName}
+        onChange={setParticipantName}
         onKeyUp={(event) => {
           if (event.key !== "Enter") {
             return
           }
 
-          onAdd({ id: v4(), title: newSelection, color: Colors.pink })
+          onAdd({ id: v4(), name: participantName, color: Colors.pink })
 
-          setNewSelection("")
+          setParticipantName("")
         }}
       />
     </div>

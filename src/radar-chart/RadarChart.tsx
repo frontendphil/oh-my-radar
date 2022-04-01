@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { DimensionDescriptor, Range } from "./types"
+import { Dimension, Range } from "./types"
 import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
 import { DimensionLabels } from "./DimensionLabels"
@@ -10,7 +10,7 @@ import { getDimensionAngle } from "./getDimensionAngle"
 
 type Props = {
   title: string
-  dimensions: DimensionDescriptor[]
+  dimensions: Dimension[]
   range: Range
   size?: number
   children: ReactNode

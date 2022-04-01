@@ -2,27 +2,23 @@ import { useState } from "react"
 import { v4 } from "uuid"
 import { Button, InputWithButton } from "../form-controls"
 import { List, ListItem } from "../layout"
-import { DimensionDescriptor } from "../radar-chart"
+import { Dimension } from "../radar-chart"
 
 type Props = {
-  dimensionDescriptors: DimensionDescriptor[]
+  dimensions: Dimension[]
 
-  onAdd: (dimensionDescriptor: DimensionDescriptor) => void
-  onRemove: (dimensionDescriptorId: string) => void
+  onAdd: (dimension: Dimension) => void
+  onRemove: (dimensionId: string) => void
 }
 
-export const Dimensions = ({
-  dimensionDescriptors,
-  onAdd,
-  onRemove,
-}: Props) => {
+export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
   const [newDimension, setNewDimension] = useState("")
 
   return (
     <div className="flex flex-col gap-2">
-      {dimensionDescriptors.length > 0 && (
+      {dimensions.length > 0 && (
         <List aria-label="Dimensions" className="flex flex-col gap-1">
-          {dimensionDescriptors.map(({ id, title }) => (
+          {dimensions.map(({ id, title }) => (
             <ListItem
               key={id}
               aria-label={title}
@@ -54,7 +50,7 @@ export const Dimensions = ({
             return
           }
 
-          const isDuplicate = dimensionDescriptors.some(
+          const isDuplicate = dimensions.some(
             ({ title }) => title === newDimension
           )
 
@@ -69,7 +65,7 @@ export const Dimensions = ({
         <Button
           disabled={
             newDimension.trim() === "" ||
-            dimensionDescriptors.some(({ title }) => title === newDimension)
+            dimensions.some(({ title }) => title === newDimension)
           }
           aria-label={`Add dimension "${newDimension}"`}
           onClick={() => {

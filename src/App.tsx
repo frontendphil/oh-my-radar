@@ -9,35 +9,33 @@ type ChartState = {
 export const App = () => {
   const [chartState, setChartState] = useState<ChartState>({})
   const size = useAutoResize()
-  const [activeSelection, setActiveSelection] = useState<string>("john")
-  const [
-    { title, dimensionDescriptors, selectionDescriptors, range },
-    onChangeConfiguration,
-  ] = useConfiguration({
-    title: "Test",
-    range: [1, 4],
-    dimensionDescriptors: [
-      { id: "one", title: "One" },
-      { id: "two", title: "Two" },
-      { id: "three", title: "Three" },
-    ],
-    selectionDescriptors: [{ id: "john", title: "john", color: Colors.blue }],
-  })
+  const [activeParticipantId, setActiveParticipantId] = useState<string>("john")
+  const [{ title, dimensions, participants, range }, onChangeConfiguration] =
+    useConfiguration({
+      title: "Test",
+      range: [1, 4],
+      dimensions: [
+        { id: "one", title: "One" },
+        { id: "two", title: "Two" },
+        { id: "three", title: "Three" },
+      ],
+      participants: [{ id: "john", name: "john", color: Colors.blue }],
+    })
 
   return (
     <div className="grid grid-cols-2">
       <div className="m-24">
         <RadarChart
           title={title}
-          dimensions={dimensionDescriptors}
+          dimensions={dimensions}
           range={range}
           size={size}
         >
-          {selectionDescriptors.map(({ id, title, color }) => (
+          {participants.map(({ id, name, color }) => (
             <Selection
               key={id}
-              active={activeSelection === id}
-              name={title}
+              active={activeParticipantId === id}
+              name={name}
               value={chartState[id]}
               onChange={(value) =>
                 setChartState({ ...chartState, [id]: value })
@@ -50,15 +48,15 @@ export const App = () => {
 
       <div className="mt-24 mr-24">
         <ChartConfiguration
-          activeSelectionId={activeSelection}
+          activeParticipantId={activeParticipantId}
           configuration={{
             title,
-            dimensionDescriptors,
-            selectionDescriptors,
+            dimensions,
+            participants,
             range,
           }}
           onChange={onChangeConfiguration}
-          onActivateSelection={setActiveSelection}
+          onActivateParticipant={setActiveParticipantId}
         />
       </div>
     </div>
