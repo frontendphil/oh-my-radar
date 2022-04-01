@@ -56,13 +56,11 @@ export function RadarChart({
             <Circles />
 
             {dimensions.map(({ id }, index) => (
-              <g
+              <Dimension
                 key={id}
-                className="origin-center"
-                transform={`rotate(${getDimensionAngle(dimensions, index)})`}
-              >
-                <Dimension diagramWidth={size} />
-              </g>
+                angle={getDimensionAngle(dimensions, index)}
+                diagramWidth={size}
+              />
             ))}
 
             <g transform={`translate(${size / 2} ${size / 2})`}>
@@ -87,12 +85,13 @@ export function RadarChart({
 }
 
 type DimensionProps = {
+  angle: number
   diagramWidth: number
 }
 
-const Dimension = ({ diagramWidth }: DimensionProps) => {
+const Dimension = ({ angle, diagramWidth }: DimensionProps) => {
   return (
-    <>
+    <g className="origin-center" transform={`rotate(${angle})`}>
       <line
         x1={diagramWidth / 2}
         y1={diagramWidth / 2}
@@ -100,7 +99,7 @@ const Dimension = ({ diagramWidth }: DimensionProps) => {
         y2={diagramWidth / 2}
         className="stroke-slate-500"
       />
-    </>
+    </g>
   )
 }
 
