@@ -76,7 +76,7 @@
     "@reach/listbox": "^0.16.2",
     "@reach/visually-hidden": "^0.16.0",
     "invariant": "^2.2.4",
-    "react-router": "^6.3.0",
+    "react-router-dom": "^6.3.0",
     "uuid": "^8.3.2"
   }
 }
