@@ -8,8 +8,16 @@ import {
 import "@reach/listbox/styles.css"
 import { VisuallyHidden } from "@reach/visually-hidden"
 import { HTMLAttributes } from "react"
-import { ColorNames, Colors } from "../configuration"
+import { Colors } from "../radar-chart"
 import { useId } from "./useId"
+
+const ColorNames = {
+  [Colors.pink]: "Pink",
+  [Colors.blue]: "Blue",
+  [Colors.green]: "Green",
+  [Colors.purple]: "Purple",
+  [Colors.yellow]: "Yellow",
+}
 
 type Props = {
   label: string

@@ -1,9 +1,16 @@
-import { Colors } from "../configuration"
 import { Plane } from "./Plane"
 import { useDimensions } from "./RadarContext"
 import { Slots } from "./Slots"
 import { Step } from "./Step"
 import { SelectionState } from "./types"
+
+export const enum Colors {
+  pink = "pink",
+  blue = "blue",
+  green = "green",
+  purple = "purple",
+  yellow = "yellow",
+}
 
 const colors = {
   [Colors.pink]: {

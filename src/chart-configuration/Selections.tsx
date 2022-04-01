@@ -1,10 +1,8 @@
 import { useState } from "react"
 import { v4 } from "uuid"
-import { Colors } from "../configuration"
-
 import { Button, ColorSelect, Input } from "../form-controls"
 import { List, ListItem } from "../layout"
-import { SelectionDescriptor } from "../radar-chart"
+import { SelectionDescriptor, Colors } from "../radar-chart"
 
 type Props = {
   selectionDescriptors: SelectionDescriptor[]

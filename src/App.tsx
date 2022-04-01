@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { ChartConfiguration, useConfiguration } from "./chart-configuration"
-import { Colors } from "./configuration"
-import { RadarChart, Selection, SelectionState } from "./radar-chart"
+import { RadarChart, Selection, SelectionState, Colors } from "./radar-chart"
 
 type ChartState = {
   [selection: string]: SelectionState
