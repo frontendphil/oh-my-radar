@@ -1,8 +1,8 @@
 import invariant from "invariant"
+import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
 import { SelectionState } from "./types"
-import { getDimensionAngle } from "./utils"
 
 type PlaneProps = {
   label: string

@@ -1,7 +1,7 @@
+import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
 import { Text } from "./Text"
-import { getDimensionAngle } from "./utils"
 
 export const DimensionLabels = () => {
   const dimensions = useDimensions()
