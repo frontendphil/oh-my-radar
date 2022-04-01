@@ -1,12 +1,12 @@
 describe("Smoke test", () => {
   it("shows the application", () => {
-    cy.visit("/")
+    cy.visit("/dev-configuration")
 
     cy.findByRole("figure", { name: "Test" }).should("exist")
   })
 
   it("renders selections correctly.", () => {
-    cy.visit("/")
+    cy.visit("/dev-configuration")
 
     cy.findByRole("radio", { name: "One - 1" }).click()
     cy.findByRole("radio", { name: "Two - 2" }).click()
@@ -18,7 +18,7 @@ describe("Smoke test", () => {
   })
 
   it("renders multiple selection correctly.", () => {
-    cy.visit("/")
+    cy.visit("/dev-configuration")
 
     cy.findByRole("radio", { name: "One - 1" }).click()
     cy.findByRole("radio", { name: "Two - 2" }).click()
