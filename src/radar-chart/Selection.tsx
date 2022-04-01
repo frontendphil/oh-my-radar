@@ -89,7 +89,7 @@ export function Selection({
         />
       )}
 
-      <Slots>
+      <Slots groupRole="radiogroup">
         {({ id, title }, { x, y, step }) => (
           <Step
             key={step}
