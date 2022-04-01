@@ -1,7 +1,8 @@
 export { RadarChart } from "./RadarChart"
-export { Selection, Colors } from "./Selection"
+export { Selection, getSelectionColor } from "./Selection"
 
 export {
+  Colors,
   Range,
   SelectionState,
   SelectionDescriptor,
