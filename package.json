@@ -10,6 +10,9 @@
     "format": "prettier --write .",
     "cypress:test": "cypress",
     "cypress:open": "cypress open --config baseUrl=http://localhost:8080",
+    "download-graphql-schema": " npx apollo client:download-schema schema.graphql",
+    "graphql-codegen": "graphql-codegen --config codegen.yml",
+    "update-graphql-schema": "npm run download-graphql-schema &&  npm run graphql-codegen",
     "prepare": "is-ci || husky install"
   },
   "repository": {
@@ -23,6 +26,12 @@
   },
   "homepage": "https://github.com/frontendphil/radar-chart#readme",
   "devDependencies": {
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "2.4.8",
+    "@graphql-codegen/typescript-graphql-files-modules": "2.1.1",
+    "@graphql-codegen/typescript-operations": "2.3.5",
+    "@graphql-codegen/typescript-react-apollo": "3.2.11",
     "@percy/cli": "1.0.0-beta.76",
     "@percy/cypress": "3.1.1",
     "@testing-library/cypress": "8.0.2",
@@ -34,10 +43,12 @@
     "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "5.17.0",
     "@typescript-eslint/parser": "5.17.0",
+    "apollo": "2.33.10",
     "autoprefixer": "10.4.4",
-    "cross-fetch": "^3.1.5",
+    "cross-fetch": "3.1.5",
     "css-loader": "6.7.1",
     "cypress": "9.5.3",
+    "dotenv": "16.0.0",
     "eslint": "8.12.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-jsx-a11y": "6.5.1",
@@ -74,12 +85,15 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "^3.5.10",
-    "@reach/listbox": "^0.16.2",
-    "@reach/visually-hidden": "^0.16.0",
-    "graphql": "^16.3.0",
-    "invariant": "^2.2.4",
-    "react-router-dom": "^6.3.0",
-    "uuid": "^8.3.2"
+    "@apollo/client": "3.5.10",
+    "@reach/listbox": "0.16.2",
+    "@reach/visually-hidden": "0.16.0",
+    "graphql": "15.8.0",
+    "invariant": "2.2.4",
+    "react-router-dom": "6.3.0",
+    "uuid": "8.3.2"
+  },
+  "overrides": {
+    "graphql": "15.8.0"
   }
 }
