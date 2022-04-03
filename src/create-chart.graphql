@@ -1,0 +1,6 @@
+mutation CreateChart($chart: charts_insert_input!) {
+  insert_charts_one(object: $chart) {
+    id
+    title
+  }
+}
