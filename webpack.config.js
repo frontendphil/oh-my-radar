@@ -34,6 +34,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./public/index.html",
+      publicPath: "/",
     }),
     new EnvironmentPlugin("HASURA_ADMIN_SECRET"),
   ],

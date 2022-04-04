@@ -1,5 +1,11 @@
 query GetChart($id: uuid!) {
   charts_by_pk(id: $id) {
     title
+    min
+    max
+    dimensions {
+      id
+      title
+    }
   }
 }

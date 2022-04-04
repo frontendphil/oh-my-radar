@@ -1,18 +1,23 @@
 import invariant from "invariant"
 import { useNavigate } from "react-router-dom"
 import { Button } from "./form-controls"
-import { useCreateChartMutation } from "./__generated__/api"
+import {
+  useCreateChartMutation,
+  useCreateDimensionsMutation,
+} from "./__generated__/api"
 
 export const Create = () => {
   const navigate = useNavigate()
 
-  const [addChart, { loading }] = useCreateChartMutation()
+  const [addChart, { loading: loadingChart }] = useCreateChartMutation()
+  const [addDimensions, { loading: loadingDimensions }] =
+    useCreateDimensionsMutation()
 
   return (
     <Button
       onClick={() =>
         addChart({
-          variables: { chart: { title: "New chart", min: 1, max: 4 } },
+          variables: { chart: defaultChart() },
           onCompleted: ({ insert_charts_one }) => {
             invariant(
               insert_charts_one,
@@ -21,12 +26,29 @@ export const Create = () => {
 
             const { id } = insert_charts_one
 
-            navigate(`/admin/${id}`)
+            addDimensions({
+              variables: {
+                dimensions: defaultDimensions(id),
+              },
+              onCompleted: () => {
+                navigate(`/admin/${id}`)
+              },
+            })
           },
         })
       }
     >
-      {loading ? "Creating your chart..." : "Create new chart"}
+      {loadingChart || loadingDimensions
+        ? "Creating your chart..."
+        : "Create new chart"}
     </Button>
   )
 }
+
+export const defaultDimensions = (chartId: string) => [
+  { title: "One", chartId },
+  { title: "Two", chartId },
+  { title: "Three", chartId },
+]
+
+export const defaultChart = () => ({ title: "New chart", min: 1, max: 4 })
