@@ -1,0 +1,8 @@
+mutation UpdateChart(
+  $pk: charts_pk_columns_input!
+  $payload: charts_set_input!
+) {
+  update_charts_by_pk(pk_columns: $pk, _set: $payload) {
+    id
+  }
+}
