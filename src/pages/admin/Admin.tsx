@@ -1,12 +1,31 @@
 import { useParams } from "react-router-dom"
 import invariant from "invariant"
-import { RadarChart } from "../../radar-chart"
-import { useGetChartQuery } from "./__generated__/api"
+import { RadarChart, Selection } from "../../radar-chart"
+import { useGetChartQuery, useUpdateChartMutation } from "./__generated__/api"
+
+import { ChartConfiguration, useConfiguration } from "../../chart-configuration"
+import { useEffect } from "react"
 
 export const Admin = () => {
   const { id } = useParams()
 
+  const [configuration, updateConfiguration] = useConfiguration()
+
   const { loading, data } = useGetChartQuery({ variables: { id } })
+  const [updateChart] = useUpdateChartMutation()
+
+  useEffect(() => {
+    if (!data?.charts_by_pk) {
+      return
+    }
+
+    const { title, min, max } = data.charts_by_pk
+
+    updateConfiguration({
+      title,
+      range: [min, max],
+    })
+  }, [data?.charts_by_pk, updateConfiguration])
 
   if (loading) {
     return null
@@ -16,5 +35,31 @@ export const Admin = () => {
 
   const { title, dimensions, min, max } = data.charts_by_pk
 
-  return <RadarChart title={title} dimensions={dimensions} range={[min, max]} />
+  return (
+    <div className="grid grid-cols-2">
+      <div className="m-24">
+        <RadarChart
+          title={title}
+          dimensions={dimensions}
+          range={configuration.range}
+        >
+          <Selection active name="example" />
+        </RadarChart>
+      </div>
+      <div className="mt-24 mr-24">
+        {!loading && (
+          <ChartConfiguration
+            configuration={configuration}
+            onChange={({ title, range }) => {
+              const [min, max] = range
+
+              updateChart({
+                variables: { pk: { id }, payload: { title, min, max } },
+              })
+            }}
+          />
+        )}
+      </div>
+    </div>
+  )
 }
