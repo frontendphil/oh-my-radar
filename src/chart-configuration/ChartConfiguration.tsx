@@ -1,6 +1,5 @@
-import { useState } from "react"
-import { Input } from "../form-controls"
-import { NumberInput } from "../form-controls/NumberInput"
+import { useCallback, useState } from "react"
+import { Input, NumberInput } from "../form-controls"
 import { Dimension, Range, Participant } from "../radar-chart"
 
 import { Dimensions } from "./Dimensions"
@@ -14,10 +13,10 @@ type Configuration = {
 }
 
 type Props = {
-  activeParticipantId: string
+  activeParticipantId?: string
   configuration: Configuration
   onChange: (configuration: Configuration) => void
-  onActivateParticipant: (selectionId: string) => void
+  onActivateParticipant?: (selectionId: string) => void
 }
 
 export const ChartConfiguration = ({
@@ -104,7 +103,23 @@ export const ChartConfiguration = ({
 }
 
 export function useConfiguration(
-  initialValue: Configuration
-): [Configuration, (configuration: Configuration) => void] {
-  return useState<Configuration>(initialValue)
+  initialValue: Partial<Configuration> = {}
+): [Configuration, (configuration: Partial<Configuration>) => void] {
+  const [configuration, setConfiguration] = useState<Configuration>({
+    title: initialValue.title ?? "",
+    range: initialValue.range ?? [0, 1],
+    dimensions: initialValue.dimensions ?? [],
+    participants: initialValue.participants ?? [],
+  })
+
+  const updateConfiguration = useCallback(
+    (updatedConfiguration: Partial<Configuration>) =>
+      setConfiguration((currentConfiguration) => ({
+        ...currentConfiguration,
+        ...updatedConfiguration,
+      })),
+    []
+  )
+
+  return [configuration, updateConfiguration]
 }
