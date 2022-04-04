@@ -1,13 +1,52 @@
 import { render as baseRender, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { MockedProvider, MockedResponse } from "@apollo/client/testing"
-import { Create } from "./Create"
+import { Create, defaultChart, defaultDimensions } from "./Create"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
-import { CreateChartDocument } from "./__generated__/api"
+import {
+  CreateChartDocument,
+  CreateDimensionsDocument,
+} from "./__generated__/api"
 import { ReactNode } from "react"
 import { finishMutations } from "./test-utils"
 
 describe("Create", () => {
+  const chartMock = {
+    request: {
+      query: CreateChartDocument,
+      variables: {
+        chart: defaultChart(),
+      },
+    },
+    result: {
+      data: {
+        insert_charts_one: {
+          id: "test-id",
+          title: "New chart",
+        },
+      },
+    },
+  }
+
+  const dimensionsMock = {
+    request: {
+      query: CreateDimensionsDocument,
+      variables: {
+        dimensions: defaultDimensions("test-id"),
+      },
+    },
+    result: {
+      data: {
+        insert_dimensions: {
+          returning: defaultDimensions("test-id").map((dimension, index) => ({
+            ...dimension,
+            id: `dimension-${index}`,
+          })),
+        },
+      },
+    },
+  }
+
   const render = ({
     mocks,
     routes,
@@ -34,28 +73,7 @@ describe("Create", () => {
 
   it("shows a loading state on the button while creating a new chart.", async () => {
     render({
-      mocks: [
-        {
-          request: {
-            query: CreateChartDocument,
-            variables: {
-              chart: {
-                title: "New chart",
-                min: 1,
-                max: 4,
-              },
-            },
-          },
-          result: {
-            data: {
-              insert_charts_one: {
-                id: "test-id",
-                title: "New chart",
-              },
-            },
-          },
-        },
-      ],
+      mocks: [chartMock, dimensionsMock],
     })
 
     await userEvent.click(
@@ -72,29 +90,8 @@ describe("Create", () => {
   it("redirects to the chart admin when a chart has been created.", async () => {
     const Needle = () => <div data-testid="created" />
 
-    const chartMock = {
-      request: {
-        query: CreateChartDocument,
-        variables: {
-          chart: {
-            title: "New chart",
-            min: 1,
-            max: 4,
-          },
-        },
-      },
-      result: {
-        data: {
-          insert_charts_one: {
-            id: "test-id",
-            title: "New chart",
-          },
-        },
-      },
-    }
-
     render({
-      mocks: [chartMock],
+      mocks: [chartMock, dimensionsMock],
       routes: <Route path="/admin/:id" element={<Needle />} />,
     })
 
@@ -102,7 +99,7 @@ describe("Create", () => {
       screen.getByRole("button", { name: "Create new chart" })
     )
 
-    await finishMutations()
+    await finishMutations(chartMock, dimensionsMock)
 
     expect(screen.getByTestId("created")).toBeInTheDocument()
   })

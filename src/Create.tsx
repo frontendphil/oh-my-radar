@@ -17,7 +17,7 @@ export const Create = () => {
     <Button
       onClick={() =>
         addChart({
-          variables: { chart: { title: "New chart", min: 1, max: 4 } },
+          variables: { chart: defaultChart() },
           onCompleted: ({ insert_charts_one }) => {
             invariant(
               insert_charts_one,
@@ -28,11 +28,7 @@ export const Create = () => {
 
             addDimensions({
               variables: {
-                dimensions: [
-                  { title: "One", chartId: id },
-                  { title: "Two", chartId: id },
-                  { title: "Three", chartId: id },
-                ],
+                dimensions: defaultDimensions(id),
               },
               onCompleted: () => {
                 navigate(`/admin/${id}`)
@@ -48,3 +44,11 @@ export const Create = () => {
     </Button>
   )
 }
+
+export const defaultDimensions = (chartId: string) => [
+  { title: "One", chartId },
+  { title: "Two", chartId },
+  { title: "Three", chartId },
+]
+
+export const defaultChart = () => ({ title: "New chart", min: 1, max: 4 })
