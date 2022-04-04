@@ -1,14 +1,14 @@
-import { render as baseRender, screen } from "@testing-library/react"
+import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { MockedProvider, MockedResponse } from "@apollo/client/testing"
+import { MockedResponse } from "@apollo/client/testing"
 import { Create, defaultChart, defaultDimensions } from "./Create"
-import { MemoryRouter, Route, Routes } from "react-router-dom"
+import { Route, Routes } from "react-router-dom"
 import {
   CreateChartDocument,
   CreateDimensionsDocument,
 } from "./__generated__/api"
 import { ReactNode } from "react"
-import { finishMutations } from "../test-utils"
+import { finishMutations, render as baseRender } from "../test-utils"
 
 describe("Create", () => {
   const chartMock = {
@@ -52,14 +52,11 @@ describe("Create", () => {
     routes,
   }: { mocks?: MockedResponse[]; routes?: ReactNode } = {}) => {
     baseRender(
-      <MemoryRouter>
-        <MockedProvider mocks={mocks} addTypename={false}>
-          <Routes>
-            <Route path="/" element={<Create />} />
-            {routes}
-          </Routes>
-        </MockedProvider>
-      </MemoryRouter>
+      <Routes>
+        <Route path="/" element={<Create />} />
+        {routes}
+      </Routes>,
+      { mocks }
     )
   }
 
