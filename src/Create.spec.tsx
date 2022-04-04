@@ -41,6 +41,8 @@ describe("Create", () => {
             variables: {
               chart: {
                 title: "New chart",
+                min: 1,
+                max: 4,
               },
             },
           },
@@ -76,6 +78,8 @@ describe("Create", () => {
         variables: {
           chart: {
             title: "New chart",
+            min: 1,
+            max: 4,
           },
         },
       },
