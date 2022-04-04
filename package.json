@@ -6,6 +6,7 @@
   "scripts": {
     "test": "jest",
     "start": "webpack serve",
+    "prebuild": "npm run update-graphql-schema",
     "build": "webpack",
     "format": "prettier --write .",
     "cypress:test": "cypress",
