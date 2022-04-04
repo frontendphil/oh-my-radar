@@ -1,2 +1,8 @@
 coverage:
   range: "85...100"
+
+flags:
+  ui:
+    paths:
+      - ".*"
+    carryforward: true
