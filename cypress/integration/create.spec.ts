@@ -7,7 +7,7 @@ describe("Create", () => {
     cy.findByRole("figure", { name: "New chart" }).should("exist")
   })
 
-  it.only("creates default dimensions for a chart.", () => {
+  it("creates default dimensions for a chart.", () => {
     cy.visit("/")
 
     cy.findByRole("button", { name: "Create new chart" }).click()
