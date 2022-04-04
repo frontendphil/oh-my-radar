@@ -12,7 +12,7 @@ export const Create = () => {
     <Button
       onClick={() =>
         addChart({
-          variables: { chart: { title: "New chart" } },
+          variables: { chart: { title: "New chart", min: 1, max: 4 } },
           onCompleted: ({ insert_charts_one }) => {
             invariant(
               insert_charts_one,
