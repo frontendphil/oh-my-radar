@@ -1,4 +1,8 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const { EnvironmentPlugin } = require("webpack")
+const { config } = require("dotenv")
+
+config()
 
 const { NODE_ENV } = process.env
 
@@ -25,5 +29,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    new EnvironmentPlugin("HASURA_ADMIN_SECRET"),
   ],
 }
