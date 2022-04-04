@@ -1,8 +1,11 @@
 coverage:
-  range: "85...100"
-
-flags:
-  ui:
-    paths:
-      - ".*"
-    carryforward: true
+  status:
+    project:
+      unit:
+        target: 90%
+        flags:
+          - unit
+      e2e:
+        target: 90%
+        flags:
+          - e2e
