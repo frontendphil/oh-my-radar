@@ -1,4 +1,8 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin")
+const { EnvironmentPlugin } = require("webpack")
+const { config } = require("dotenv")
+
+config()
 
 const { NODE_ENV } = process.env
 
@@ -8,6 +12,9 @@ module.exports = {
   devtool: "inline-source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
+  },
+  devServer: {
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -22,5 +29,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    new EnvironmentPlugin("HASURA_ADMIN_SECRET"),
   ],
 }

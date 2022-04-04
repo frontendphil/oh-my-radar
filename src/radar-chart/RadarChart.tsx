@@ -13,7 +13,7 @@ type Props = {
   dimensions: Dimension[]
   range: Range
   size?: number
-  children: ReactNode
+  children?: ReactNode
 }
 
 export function RadarChart({

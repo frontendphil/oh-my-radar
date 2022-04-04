@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { App } from "./App"
+import { DevConfiguration } from "./DevConfiguration"
 
-describe("App", () => {
+describe("DevConfiguration", () => {
   it("is possible to change the title of the cart.", async () => {
-    render(<App />)
+    render(<DevConfiguration />)
 
     await userEvent.clear(screen.getByRole("textbox", { name: "Title" }))
 
@@ -36,7 +36,7 @@ describe("App", () => {
       }
 
       it('is possible to add dimensions with "Enter".', async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
@@ -52,7 +52,7 @@ describe("App", () => {
       })
 
       it("is not possible to add dimensions that already exist.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addDimension("Test")
         await addDimension("Test")
@@ -66,7 +66,7 @@ describe("App", () => {
       })
 
       it("is not possible to add dimensions with an empty name.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addDimension("")
 
@@ -79,7 +79,7 @@ describe("App", () => {
       })
 
       it("clears the add input when a new dimension has been added.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addDimension("Test")
 
@@ -102,7 +102,7 @@ describe("App", () => {
       }
 
       it('is possible to add new dimensions with the "Add" button.', async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
@@ -122,7 +122,7 @@ describe("App", () => {
       })
 
       it("is not possible to add dimensions that already exist.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addDimension("Test")
         await addDimension("Test")
@@ -136,7 +136,7 @@ describe("App", () => {
       })
 
       it("is not possible to add dimensions with an empty name.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addDimension(" ")
 
@@ -149,7 +149,7 @@ describe("App", () => {
       })
 
       it("clears the add input when a new dimension has been added.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addDimension("Test")
 
@@ -160,7 +160,7 @@ describe("App", () => {
     })
 
     it("is possible to remove dimensions.", async () => {
-      render(<App />)
+      render(<DevConfiguration />)
 
       await addDimension("Test")
 
@@ -206,7 +206,7 @@ describe("App", () => {
     }
 
     it("is possible to change the upper bound of the selection range.", async () => {
-      render(<App />)
+      render(<DevConfiguration />)
 
       await addDimension("Test")
 
@@ -221,7 +221,7 @@ describe("App", () => {
     })
 
     it("is possible to change the lower bound of the selection range", async () => {
-      render(<App />)
+      render(<DevConfiguration />)
 
       await addDimension("Test")
 
@@ -239,7 +239,7 @@ describe("App", () => {
     })
 
     it("is not possible to enter an upper bound that is below the lower bound.", async () => {
-      render(<App />)
+      render(<DevConfiguration />)
 
       await setMin(4)
       await setMax(3)
@@ -250,7 +250,7 @@ describe("App", () => {
     })
 
     it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
-      render(<App />)
+      render(<DevConfiguration />)
 
       await setMax(6)
       await setMin(8)
@@ -269,7 +269,7 @@ describe("App", () => {
     }
 
     it("is possible to select a value.", async () => {
-      render(<App />)
+      render(<DevConfiguration />)
 
       await userEvent.click(screen.getByRole("radio", { name: "One - 1" }))
 
@@ -279,7 +279,7 @@ describe("App", () => {
     })
 
     it("renders a figure when all options of a selection have been set.", async () => {
-      render(<App />)
+      render(<DevConfiguration />)
 
       await selectValues()
 
@@ -295,7 +295,7 @@ describe("App", () => {
       }
 
       it("should be possible to change the active selection", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addSelection("jane")
 
@@ -309,7 +309,7 @@ describe("App", () => {
       })
 
       it("disables the button for the active selection.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addSelection("jane")
 
@@ -325,7 +325,7 @@ describe("App", () => {
 
     describe("Selection color", () => {
       it("is possible to change the color of a selection.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await userEvent.click(
           screen.getByRole("button", { name: 'Color for "john"' })
@@ -355,7 +355,7 @@ describe("App", () => {
       }
 
       it("is possible to add a selection.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Add a selection" }),
@@ -368,7 +368,7 @@ describe("App", () => {
       })
 
       it("clears the input after a new selection was added.", async () => {
-        render(<App />)
+        render(<DevConfiguration />)
 
         await addSelection("jane")
 

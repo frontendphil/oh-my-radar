@@ -8,7 +8,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: npm ci
+      - run: npm run update-graphql-schema
+        env:
+          HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
       - run: npm test -- --coverage --runInBand
+        env:
+          HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
       - uses: codecov/codecov-action@v2.1.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

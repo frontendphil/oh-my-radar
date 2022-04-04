@@ -6,7 +6,7 @@ type ChartState = {
   [selection: string]: SelectionState
 }
 
-export const App = () => {
+export const DevConfiguration = () => {
   const [chartState, setChartState] = useState<ChartState>({})
   const size = useAutoResize()
   const [activeParticipantId, setActiveParticipantId] = useState<string>("john")
