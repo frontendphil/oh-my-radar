@@ -3,8 +3,7 @@ import invariant from "invariant"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Admin } from "./Admin"
-import { Create } from "./Create"
+import { Admin, Create } from "./pages"
 
 import { DevConfiguration } from "./DevConfiguration"
 

@@ -8,7 +8,7 @@ import {
   CreateDimensionsDocument,
 } from "./__generated__/api"
 import { ReactNode } from "react"
-import { finishMutations } from "./test-utils"
+import { finishMutations } from "../test-utils"
 
 describe("Create", () => {
   const chartMock = {

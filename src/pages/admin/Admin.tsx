@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import invariant from "invariant"
-import { RadarChart } from "./radar-chart"
+import { RadarChart } from "../../radar-chart"
 import { useGetChartQuery } from "./__generated__/api"
 
 export const Admin = () => {
