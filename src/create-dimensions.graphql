@@ -1,0 +1,7 @@
+mutation CreateDimensions($dimensions: [dimensions_insert_input!]!) {
+  insert_dimensions(objects: $dimensions) {
+    returning {
+      id
+    }
+  }
+}

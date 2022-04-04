@@ -14,7 +14,7 @@ export const Admin = () => {
 
   invariant(data?.charts_by_pk, "Could not load chart data")
 
-  const { title } = data.charts_by_pk
+  const { title, dimensions, min, max } = data.charts_by_pk
 
-  return <RadarChart title={title} dimensions={[]} range={[0, 1]} />
+  return <RadarChart title={title} dimensions={dimensions} range={[min, max]} />
 }

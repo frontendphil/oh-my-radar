@@ -16,7 +16,7 @@ type Props = {
   children: (dimension: Dimension, slot: Slot) => ReactNode
 }
 
-export const Slots = ({ children, groupRole }: Props) => {
+export const Slots = ({ children, groupRole = "figure" }: Props) => {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()

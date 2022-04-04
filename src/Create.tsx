@@ -1,12 +1,17 @@
 import invariant from "invariant"
 import { useNavigate } from "react-router-dom"
 import { Button } from "./form-controls"
-import { useCreateChartMutation } from "./__generated__/api"
+import {
+  useCreateChartMutation,
+  useCreateDimensionsMutation,
+} from "./__generated__/api"
 
 export const Create = () => {
   const navigate = useNavigate()
 
-  const [addChart, { loading }] = useCreateChartMutation()
+  const [addChart, { loading: loadingChart }] = useCreateChartMutation()
+  const [addDimensions, { loading: loadingDimensions }] =
+    useCreateDimensionsMutation()
 
   return (
     <Button
@@ -21,12 +26,25 @@ export const Create = () => {
 
             const { id } = insert_charts_one
 
-            navigate(`/admin/${id}`)
+            addDimensions({
+              variables: {
+                dimensions: [
+                  { title: "One", chartId: id },
+                  { title: "Two", chartId: id },
+                  { title: "Three", chartId: id },
+                ],
+              },
+              onCompleted: () => {
+                navigate(`/admin/${id}`)
+              },
+            })
           },
         })
       }
     >
-      {loading ? "Creating your chart..." : "Create new chart"}
+      {loadingChart || loadingDimensions
+        ? "Creating your chart..."
+        : "Create new chart"}
     </Button>
   )
 }
