@@ -19,7 +19,7 @@ jobs:
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-      - uses: codecov/codecov-action@v2.1.0
+      - uses: codecov/codecov-action@v3.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: e2e
