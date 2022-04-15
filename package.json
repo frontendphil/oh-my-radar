@@ -35,7 +35,7 @@
     "@graphql-codegen/typescript-operations": "2.3.5",
     "@graphql-codegen/typescript-react-apollo": "3.2.11",
     "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
-    "@percy/cli": "1.0.7",
+    "@percy/cli": "1.0.8",
     "@percy/cypress": "3.1.1",
     "@testing-library/cypress": "8.0.2",
     "@testing-library/jest-dom": "5.16.4",
