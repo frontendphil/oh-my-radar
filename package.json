@@ -90,8 +90,8 @@
   },
   "dependencies": {
     "@apollo/client": "3.5.10",
-    "@reach/listbox": "0.16.2",
-    "@reach/visually-hidden": "0.16.0",
+    "@reach/listbox": "0.17.0",
+    "@reach/visually-hidden": "0.17.0",
     "graphql": "15.8.0",
     "invariant": "2.2.4",
     "react-router-dom": "6.3.0",
