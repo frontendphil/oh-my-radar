@@ -1,0 +1,5 @@
+mutation DeleteDimension($id: uuid!) {
+  delete_dimensions_by_pk(id: $id) {
+    id
+  }
+}

@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 import { Input, NumberInput } from "../form-controls"
 import { Dimension, Range, Participant } from "../radar-chart"
+import { NewDimension } from "../radar-chart/types"
 
 import { Dimensions } from "./Dimensions"
 import { Participants } from "./Participants"
@@ -16,6 +17,8 @@ type Props = {
   activeParticipantId?: string
   configuration: Configuration
   onChange: (configuration: Configuration) => void
+  onAddDimension: (dimension: NewDimension) => void
+  onRemoveDimension: (dimensionId: string) => void
   onSubmit: () => void
   onActivateParticipant?: (selectionId: string) => void
 }
@@ -24,6 +27,8 @@ export const ChartConfiguration = ({
   configuration,
   activeParticipantId,
   onChange,
+  onAddDimension,
+  onRemoveDimension,
   onSubmit,
   onActivateParticipant,
 }: Props) => {
@@ -37,6 +42,7 @@ export const ChartConfiguration = ({
         label="Title"
         value={title}
         onChange={(title) => onChange({ ...configuration, title })}
+        onBlur={onSubmit}
       />
 
       <Participants
@@ -65,18 +71,8 @@ export const ChartConfiguration = ({
 
       <Dimensions
         dimensions={dimensions}
-        onAdd={(dimensionDescriptor) =>
-          onChange({
-            ...configuration,
-            dimensions: [...configuration.dimensions, dimensionDescriptor],
-          })
-        }
-        onRemove={(dimensionId) =>
-          onChange({
-            ...configuration,
-            dimensions: dimensions.filter(({ id }) => id !== dimensionId),
-          })
-        }
+        onAdd={onAddDimension}
+        onRemove={onRemoveDimension}
       />
 
       <NumberInput
