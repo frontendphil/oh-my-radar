@@ -57,6 +57,7 @@ export const DevConfiguration = () => {
           }}
           onChange={onChangeConfiguration}
           onActivateParticipant={setActiveParticipantId}
+          onSubmit={() => {}}
         />
       </div>
     </div>

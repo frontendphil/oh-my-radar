@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "prestart": "npm run update-graphql-schema",
     "start": "webpack serve",
     "prebuild": "npm run update-graphql-schema",
     "build": "webpack",

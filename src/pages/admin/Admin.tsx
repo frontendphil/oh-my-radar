@@ -19,10 +19,11 @@ export const Admin = () => {
       return
     }
 
-    const { title, min, max } = data.charts_by_pk
+    const { title, min, max, dimensions } = data.charts_by_pk
 
     updateConfiguration({
       title,
+      dimensions,
       range: [min, max],
     })
   }, [data?.charts_by_pk, updateConfiguration])
@@ -33,32 +34,27 @@ export const Admin = () => {
 
   invariant(data?.charts_by_pk, "Could not load chart data")
 
-  const { title, dimensions, min, max } = data.charts_by_pk
+  const { title, dimensions, range } = configuration
+
+  const [min, max] = range
 
   return (
     <div className="grid grid-cols-2">
       <div className="m-24">
-        <RadarChart
-          title={title}
-          dimensions={dimensions}
-          range={configuration.range}
-        >
+        <RadarChart title={title} dimensions={dimensions} range={range}>
           <Selection active name="example" />
         </RadarChart>
       </div>
       <div className="mt-24 mr-24">
-        {!loading && (
-          <ChartConfiguration
-            configuration={configuration}
-            onChange={({ title, range }) => {
-              const [min, max] = range
-
-              updateChart({
-                variables: { pk: { id }, payload: { title, min, max } },
-              })
-            }}
-          />
-        )}
+        <ChartConfiguration
+          configuration={configuration}
+          onChange={updateConfiguration}
+          onSubmit={() => {
+            updateChart({
+              variables: { pk: { id }, payload: { title, min, max } },
+            })
+          }}
+        />
       </div>
     </div>
   )

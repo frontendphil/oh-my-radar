@@ -4,5 +4,7 @@ mutation UpdateChart(
 ) {
   update_charts_by_pk(pk_columns: $pk, _set: $payload) {
     id
+    min
+    max
   }
 }

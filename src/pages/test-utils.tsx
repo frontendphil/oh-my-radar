@@ -54,19 +54,27 @@ export const render = (
   )
 }
 
-type Chart = Omit<GetChartQuery["charts_by_pk"], "__typename">
+type ItemType<T> = T extends (infer U)[] ? U : never
 
-export const createChart = (chart: Chart = {}): Chart => ({
+type Chart = Omit<NonNullable<GetChartQuery["charts_by_pk"]>, "__typename">
+
+export const createChart = (
+  chart: Partial<Chart> = {}
+): NonNullable<GetChartQuery["charts_by_pk"]> => ({
   title: "Test chart",
   min: 1,
   max: 4,
+  dimensions: [],
   ...chart,
-  id: v4(),
 })
 
+type Dimension = Omit<ItemType<Chart["dimensions"]>, "__typename">
+
 export const createDimension = (
-  dimension: Dimensions_Insert_Input = {}
-): Exact<Dimensions_Insert_Input> => ({
+  dimension: Partial<Dimension> = {}
+): ItemType<Chart["dimensions"]> => ({
+  title: "Test dimension",
+
   ...dimension,
 
   id: v4(),

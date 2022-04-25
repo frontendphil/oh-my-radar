@@ -16,6 +16,7 @@ type Props = {
   activeParticipantId?: string
   configuration: Configuration
   onChange: (configuration: Configuration) => void
+  onSubmit: () => void
   onActivateParticipant?: (selectionId: string) => void
 }
 
@@ -23,6 +24,7 @@ export const ChartConfiguration = ({
   configuration,
   activeParticipantId,
   onChange,
+  onSubmit,
   onActivateParticipant,
 }: Props) => {
   const { title, participants, dimensions, range } = configuration
@@ -80,23 +82,33 @@ export const ChartConfiguration = ({
       <NumberInput
         label="Min value"
         value={min}
+        isValid={(value) =>
+          value < max ? [true] : [false, `Min value must be less than ${max}`]
+        }
         onChange={(value) =>
           onChange({
             ...configuration,
-            range: [Math.min(value, max - 1), max],
+            range: [value, max],
           })
         }
+        onBlur={onSubmit}
       />
 
       <NumberInput
         label="Max value"
         value={max}
+        isValid={(value) =>
+          value > min
+            ? [true]
+            : [false, `Max value must be greater than ${min}`]
+        }
         onChange={(value) =>
           onChange({
             ...configuration,
-            range: [min, Math.max(value, min + 2)],
+            range: [min, value],
           })
         }
+        onBlur={onSubmit}
       />
     </div>
   )

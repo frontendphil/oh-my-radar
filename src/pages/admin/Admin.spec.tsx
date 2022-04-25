@@ -8,46 +8,50 @@ import {
   render,
 } from "../test-utils"
 import { Admin } from "./Admin"
-import { GetChartDocument, UpdateChartDocument } from "./__generated__/api"
+import {
+  Charts_Set_Input,
+  GetChartDocument,
+  GetChartQuery,
+  UpdateChartDocument,
+} from "./__generated__/api"
 
 describe("Admin", () => {
   describe("Range", () => {
-    const chart = createChart({ dimensions: [createDimension()] })
+    const dimensions = [
+      createDimension({ title: "One" }),
+      createDimension({ title: "Two" }),
+      createDimension({ title: "Three" }),
+    ]
 
-    const chartMock = {
+    const getChartMock = (
+      id: string,
+      charts_by_pk: GetChartQuery["charts_by_pk"]
+    ) => ({
       request: {
         query: GetChartDocument,
-        variables: { id: "chart-id" },
+        variables: { id },
       },
       result: {
         data: {
-          charts_by_pk: {
-            id: "chart-id",
-            title: "Test chart",
-            min: 1,
-            max: 4,
-
-            dimensions: [
-              {
-                id: "dimension-1",
-                title: "Test",
-              },
-            ],
-          },
+          charts_by_pk,
         },
       },
-    }
+    })
 
-    const updateMock = {
+    const mutateChartMock = (id: string, payload: Charts_Set_Input) => ({
       request: {
         query: UpdateChartDocument,
         variables: {
-          pk: { id: "chart-id" },
-          payload: { min: 10 },
+          pk: { id },
+          payload,
         },
       },
-      result: {},
-    }
+      result: {
+        data: {
+          update_charts_by_pk: { id, ...payload },
+        },
+      },
+    })
 
     const setMin = async (value: number) => {
       await userEvent.clear(
@@ -57,6 +61,7 @@ describe("Admin", () => {
         screen.getByRole("spinbutton", { name: "Min value" }),
         value.toString()
       )
+      await userEvent.tab()
     }
 
     const setMax = async (value: number) => {
@@ -67,9 +72,19 @@ describe("Admin", () => {
         screen.getByRole("spinbutton", { name: "Max value" }),
         value.toString()
       )
+      await userEvent.tab()
     }
 
-    it.only("is possible to change the upper bound of the selection range.", async () => {
+    it("is possible to change the upper bound of the selection range.", async () => {
+      const chart = createChart({ dimensions })
+
+      const chartMock = getChartMock("chart-id", chart)
+      const updateMock = mutateChartMock("chart-id", {
+        title: chart.title,
+        min: chart.min,
+        max: 10,
+      })
+
       render(<Admin />, {
         mocks: [chartMock, updateMock],
         path: "/admin/:id",
@@ -78,20 +93,39 @@ describe("Admin", () => {
 
       await finishQueries(chartMock)
 
+      await userEvent.clear(
+        screen.getByRole("spinbutton", { name: "Max value" })
+      )
       await userEvent.type(
         screen.getByRole("spinbutton", { name: "Max value" }),
         "10"
       )
+      await userEvent.tab()
 
-      await finishMutations()
+      await finishMutations(updateMock)
 
       expect(
-        screen.getByRole("radio", { name: "Test - 10" })
+        screen.getByRole("radio", { name: "One - 10" })
       ).toBeInTheDocument()
     })
 
     it("is possible to change the lower bound of the selection range", async () => {
-      render(<Admin />)
+      const chart = createChart({ dimensions })
+
+      const chartMock = getChartMock("chart-id", chart)
+      const updateMock = mutateChartMock("chart-id", {
+        title: chart.title,
+        max: chart.max,
+        min: 0,
+      })
+
+      render(<Admin />, {
+        mocks: [chartMock, updateMock],
+        path: "/admin/:id",
+        route: "/admin/chart-id",
+      })
+
+      await finishQueries(chartMock)
 
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Min value" })
@@ -100,32 +134,65 @@ describe("Admin", () => {
         screen.getByRole("spinbutton", { name: "Min value" }),
         "0"
       )
+      await userEvent.tab()
 
-      expect(
-        screen.getByRole("radio", { name: "Test - 0" })
-      ).toBeInTheDocument()
+      await finishMutations(updateMock)
+
+      expect(screen.getByRole("radio", { name: "One - 0" })).toBeInTheDocument()
     })
 
     it("is not possible to enter an upper bound that is below the lower bound.", async () => {
-      render(<Admin />)
+      const chart = createChart({ min: 4, max: 4 })
+      const chartMock = getChartMock("chart-id", chart)
+      const updateMock = mutateChartMock("chart-id", {
+        title: chart.title,
+        min: chart.min,
+        max: chart.max,
+      })
 
-      await setMin(4)
+      render(<Admin />, {
+        mocks: [chartMock, updateMock],
+        path: "/admin/:id",
+        route: "/admin/chart-id",
+      })
+
+      await finishQueries(chartMock)
+
       await setMax(3)
 
-      expect(screen.getByRole("spinbutton", { name: "Max value" })).toHaveValue(
-        5
+      await finishMutations(updateMock)
+
+      expect(
+        screen.getByRole("spinbutton", { name: "Max value" })
+      ).toHaveAccessibleDescription(
+        `Max value must be greater than ${chart.min}`
       )
     })
 
     it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
-      render(<Admin />)
+      const chart = createChart({ min: 3, max: 5 })
+      const chartMock = getChartMock("chart-id", chart)
+      const updateMock = mutateChartMock("chart-id", {
+        title: chart.title,
+        max: chart.max,
+        min: chart.min,
+      })
 
-      await setMax(6)
-      await setMin(8)
+      render(<Admin />, {
+        mocks: [chartMock, updateMock],
+        path: "/admin/:id",
+        route: "/admin/chart-id",
+      })
 
-      expect(screen.getByRole("spinbutton", { name: "Min value" })).toHaveValue(
-        5
-      )
+      await finishQueries(chartMock)
+
+      await setMin(6)
+
+      await finishMutations(updateMock)
+
+      expect(
+        screen.getByRole("spinbutton", { name: "Min value" })
+      ).toHaveAccessibleDescription(`Min value must be less than ${chart.max}`)
     })
   })
 })
