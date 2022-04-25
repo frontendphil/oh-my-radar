@@ -1,11 +1,19 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { finishMutations, finishQueries, render } from "../test-utils"
+import {
+  createChart,
+  createDimension,
+  finishMutations,
+  finishQueries,
+  render,
+} from "../test-utils"
 import { Admin } from "./Admin"
 import { GetChartDocument, UpdateChartDocument } from "./__generated__/api"
 
 describe("Admin", () => {
   describe("Range", () => {
+    const chart = createChart({ dimensions: [createDimension()] })
+
     const chartMock = {
       request: {
         query: GetChartDocument,
