@@ -92,7 +92,7 @@
     "@heroicons/react": "1.0.6",
     "@reach/listbox": "0.17.0",
     "@reach/visually-hidden": "0.17.0",
-    "graphql": "15.8.0",
+    "graphql": "16.4.0",
     "invariant": "2.2.4",
     "react-router-dom": "6.3.0"
   },
