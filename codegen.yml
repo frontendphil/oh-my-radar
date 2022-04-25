@@ -27,3 +27,11 @@ generates:
       - typescript-react-apollo
     config:
       withHooks: true
+  src/pages/results/__generated__/api.ts:
+    documents: src/pages/results/**/*.{ts,graphql}
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true

@@ -44,7 +44,7 @@ export const Participate = () => {
       <Button
         onClick={() => {
           insertParticipant({
-            variables: { participant: { chartId, name, color: Colors.pink } },
+            variables: { participant: { chartId, name, color: Colors.blue } },
             onCompleted: (data) => {
               invariant(
                 data.insert_participants_one,
