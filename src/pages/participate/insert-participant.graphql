@@ -1,0 +1,5 @@
+mutation InsertParticipant($participant: participants_insert_input!) {
+  insert_participants_one(object: $participant) {
+    id
+  }
+}

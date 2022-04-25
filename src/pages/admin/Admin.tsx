@@ -1,7 +1,10 @@
 import { useParams } from "react-router-dom"
 import invariant from "invariant"
 import { RadarChart, Selection } from "../../radar-chart"
-import { useGetChartQuery, useUpdateChartMutation } from "./__generated__/api"
+import {
+  useAdminGetChartQuery,
+  useUpdateChartMutation,
+} from "./__generated__/api"
 
 import { ChartConfiguration, useConfiguration } from "../../chart-configuration"
 import { useEffect } from "react"
@@ -15,7 +18,7 @@ export const Admin = () => {
 
   const [configuration, updateConfiguration] = useConfiguration()
 
-  const { loading, data } = useGetChartQuery({ variables: { id } })
+  const { loading, data } = useAdminGetChartQuery({ variables: { id } })
   const [updateChart] = useUpdateChartMutation()
   const [insertDimension] = useInsertDimensionMutation()
   const [deleteDimension] = useDeleteDimensionMutation()

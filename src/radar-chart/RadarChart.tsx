@@ -29,7 +29,7 @@ export function RadarChart({
     <RadarContext.Provider
       value={{ diagramWidth: size - 2 * STEP_RADIUS, dimensions, range }}
     >
-      <div className="relative">
+      <div className="relative" style={{ width: size, height: size }}>
         <div
           style={{
             position: "absolute",

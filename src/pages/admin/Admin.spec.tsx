@@ -1,17 +1,12 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import {
-  createChart,
-  createDimension,
-  finishMutations,
-  finishQueries,
-  render,
-} from "../test-utils"
+import { finishMutations, finishQueries, render } from "../test-utils"
 import { Admin } from "./Admin"
+import { createChart, createDimension } from "./test-utils"
 import {
+  AdminGetChartDocument,
+  AdminGetChartQuery,
   Charts_Set_Input,
-  GetChartDocument,
-  GetChartQuery,
   UpdateChartDocument,
 } from "./__generated__/api"
 
@@ -25,10 +20,10 @@ describe("Admin", () => {
 
     const getChartMock = (
       id: string,
-      charts_by_pk: GetChartQuery["charts_by_pk"]
+      charts_by_pk: AdminGetChartQuery["charts_by_pk"]
     ) => ({
       request: {
-        query: GetChartDocument,
+        query: AdminGetChartDocument,
         variables: { id },
       },
       result: {

@@ -1,4 +1,4 @@
-query AdminGetChart($id: uuid!) {
+query ParticipantGetChart($id: uuid!) {
   charts_by_pk(id: $id) {
     title
     min

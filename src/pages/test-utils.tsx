@@ -2,12 +2,6 @@ import { act } from "react-dom/test-utils"
 import { render as baseRender } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { MockedProvider, MockedResponse } from "@apollo/client/testing"
-import {
-  Dimensions_Insert_Input,
-  Exact,
-  GetChartQuery,
-} from "./admin/__generated__/api"
-import { v4 } from "uuid"
 
 const zeroTimeout = () => new Promise<void>((resolve) => setTimeout(resolve, 0))
 
@@ -54,28 +48,4 @@ export const render = (
   )
 }
 
-type ItemType<T> = T extends (infer U)[] ? U : never
-
-type Chart = Omit<NonNullable<GetChartQuery["charts_by_pk"]>, "__typename">
-
-export const createChart = (
-  chart: Partial<Chart> = {}
-): NonNullable<GetChartQuery["charts_by_pk"]> => ({
-  title: "Test chart",
-  min: 1,
-  max: 4,
-  dimensions: [],
-  ...chart,
-})
-
-type Dimension = Omit<ItemType<Chart["dimensions"]>, "__typename">
-
-export const createDimension = (
-  dimension: Partial<Dimension> = {}
-): ItemType<Chart["dimensions"]> => ({
-  title: "Test dimension",
-
-  ...dimension,
-
-  id: v4(),
-})
+export type ItemType<T> = T extends (infer U)[] ? U : never

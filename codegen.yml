@@ -19,3 +19,11 @@ generates:
       - typescript-react-apollo
     config:
       withHooks: true
+  src/pages/participate/__generated__/api.ts:
+    documents: src/pages/participate/**/*.{ts,graphql}
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
