@@ -4,5 +4,5 @@ coverage
 
 .env
 schema.graphql
-__generated__
+api.ts
 .nyc_output

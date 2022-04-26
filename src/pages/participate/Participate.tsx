@@ -12,7 +12,7 @@ import {
   useInsertParticipantMutation,
   useInsertSelectionsMutation,
   useParticipantGetChartQuery,
-} from "./__generated__/api"
+} from "./api"
 
 export const Participate = () => {
   const { id: chartId } = useParams()

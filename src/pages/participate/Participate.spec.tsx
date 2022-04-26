@@ -12,7 +12,7 @@ import {
   ParticipantGetChartQuery,
   Participants_Set_Input,
   Selection_Set_Input,
-} from "./__generated__/api"
+} from "./api"
 
 describe("Participate", () => {
   const getChartMock = (

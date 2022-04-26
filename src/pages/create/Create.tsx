@@ -1,10 +1,7 @@
 import invariant from "invariant"
 import { useNavigate } from "react-router-dom"
 import { Button } from "../../form-controls"
-import {
-  useCreateChartMutation,
-  useCreateDimensionsMutation,
-} from "./__generated__/api"
+import { useCreateChartMutation, useCreateDimensionsMutation } from "./api"
 
 export const Create = () => {
   const navigate = useNavigate()

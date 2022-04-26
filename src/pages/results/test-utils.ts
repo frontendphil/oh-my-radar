@@ -1,7 +1,7 @@
 import { v4 } from "uuid"
 import { Colors } from "../../radar-chart"
 import { ItemType } from "../test-utils"
-import { ResultGetChartQuery } from "./__generated__/api"
+import { ResultGetChartQuery } from "./api"
 
 type Chart = Omit<
   NonNullable<ResultGetChartQuery["charts_by_pk"]>,

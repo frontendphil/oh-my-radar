@@ -3,15 +3,14 @@ import invariant from "invariant"
 import { RadarChart, Selection } from "../../radar-chart"
 import {
   useAdminGetChartQuery,
+  useDeleteDimensionMutation,
+  useInsertDimensionMutation,
   useUpdateChartMutation,
-} from "./__generated__/api"
+} from "./api"
 
 import { useConfiguration, Dimensions } from "../../chart-configuration"
 import { useEffect } from "react"
-import {
-  useDeleteDimensionMutation,
-  useInsertDimensionMutation,
-} from "../create/__generated__/api"
+
 import { Input, NumberInput } from "../../form-controls"
 
 export const Admin = () => {
