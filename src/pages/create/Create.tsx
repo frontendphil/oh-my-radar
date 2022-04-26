@@ -1,6 +1,6 @@
 import invariant from "invariant"
 import { useNavigate } from "react-router-dom"
-import { Button } from "../../form-controls"
+import { PrimaryButton } from "../../form-controls"
 import { useCreateChartMutation, useCreateDimensionsMutation } from "./api"
 
 export const Create = () => {
@@ -10,35 +10,38 @@ export const Create = () => {
   const [addDimensions, { loading: loadingDimensions }] =
     useCreateDimensionsMutation()
 
+  const loading = loadingChart || loadingDimensions
+
   return (
-    <Button
-      onClick={() =>
-        addChart({
-          variables: { chart: defaultChart() },
-          onCompleted: ({ insert_charts_one }) => {
-            invariant(
-              insert_charts_one,
-              "Something went wrong creating the chart."
-            )
+    <div className="flex h-screen w-full items-center justify-center">
+      <PrimaryButton
+        disabled={loading}
+        onClick={() =>
+          addChart({
+            variables: { chart: defaultChart() },
+            onCompleted: ({ insert_charts_one }) => {
+              invariant(
+                insert_charts_one,
+                "Something went wrong creating the chart."
+              )
 
-            const { id } = insert_charts_one
+              const { id } = insert_charts_one
 
-            addDimensions({
-              variables: {
-                dimensions: defaultDimensions(id),
-              },
-              onCompleted: () => {
-                navigate(`/admin/${id}`)
-              },
-            })
-          },
-        })
-      }
-    >
-      {loadingChart || loadingDimensions
-        ? "Creating your chart..."
-        : "Create new chart"}
-    </Button>
+              addDimensions({
+                variables: {
+                  dimensions: defaultDimensions(id),
+                },
+                onCompleted: () => {
+                  navigate(`/admin/${id}`)
+                },
+              })
+            },
+          })
+        }
+      >
+        {loading ? "Creating your chart..." : "Create new chart"}
+      </PrimaryButton>
+    </div>
   )
 }
 
