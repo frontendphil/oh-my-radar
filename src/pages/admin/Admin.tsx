@@ -6,12 +6,13 @@ import {
   useUpdateChartMutation,
 } from "./__generated__/api"
 
-import { ChartConfiguration, useConfiguration } from "../../chart-configuration"
+import { useConfiguration, Dimensions } from "../../chart-configuration"
 import { useEffect } from "react"
 import {
   useDeleteDimensionMutation,
   useInsertDimensionMutation,
 } from "../create/__generated__/api"
+import { Input, NumberInput } from "../../form-controls"
 
 export const Admin = () => {
   const { id } = useParams()
@@ -47,6 +48,12 @@ export const Admin = () => {
 
   const [min, max] = range
 
+  const saveChart = () => {
+    updateChart({
+      variables: { pk: { id }, payload: { title, min, max } },
+    })
+  }
+
   return (
     <div className="grid grid-cols-2">
       <div className="m-24">
@@ -55,10 +62,16 @@ export const Admin = () => {
         </RadarChart>
       </div>
       <div className="mt-24 mr-24">
-        <ChartConfiguration
-          configuration={configuration}
-          onChange={updateConfiguration}
-          onAddDimension={(dimension) => {
+        <Input
+          label="Title"
+          value={title}
+          onChange={(title) => updateConfiguration({ title })}
+          onBlur={saveChart}
+        />
+
+        <Dimensions
+          dimensions={dimensions}
+          onAdd={(dimension) => {
             insertDimension({
               variables: { dimension: { chartId: id, ...dimension } },
               onCompleted: (data) => {
@@ -75,7 +88,7 @@ export const Admin = () => {
               },
             })
           }}
-          onRemoveDimension={(dimensionId) => {
+          onRemove={(dimensionId) => {
             deleteDimension({
               variables: { id: dimensionId },
               onCompleted: () => {
@@ -85,11 +98,36 @@ export const Admin = () => {
               },
             })
           }}
-          onSubmit={() => {
-            updateChart({
-              variables: { pk: { id }, payload: { title, min, max } },
+        />
+
+        <NumberInput
+          label="Min value"
+          value={min}
+          isValid={(value) =>
+            value < max ? [true] : [false, `Min value must be less than ${max}`]
+          }
+          onChange={(value) =>
+            updateConfiguration({
+              range: [value, max],
             })
-          }}
+          }
+          onBlur={saveChart}
+        />
+
+        <NumberInput
+          label="Max value"
+          value={max}
+          isValid={(value) =>
+            value > min
+              ? [true]
+              : [false, `Max value must be greater than ${min}`]
+          }
+          onChange={(value) =>
+            updateConfiguration({
+              range: [min, value],
+            })
+          }
+          onBlur={saveChart}
         />
       </div>
     </div>

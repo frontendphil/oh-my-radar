@@ -11,43 +11,79 @@ import {
 } from "./__generated__/api"
 
 describe("Admin", () => {
+  const dimensions = [
+    createDimension({ title: "One" }),
+    createDimension({ title: "Two" }),
+    createDimension({ title: "Three" }),
+  ]
+
+  const getChartMock = (
+    id: string,
+    charts_by_pk: AdminGetChartQuery["charts_by_pk"]
+  ) => ({
+    request: {
+      query: AdminGetChartDocument,
+      variables: { id },
+    },
+    result: {
+      data: {
+        charts_by_pk,
+      },
+    },
+  })
+
+  const mutateChartMock = (id: string, payload: Charts_Set_Input) => ({
+    request: {
+      query: UpdateChartDocument,
+      variables: {
+        pk: { id },
+        payload,
+      },
+    },
+    result: {
+      data: {
+        update_charts_by_pk: { id, ...payload },
+      },
+    },
+  })
+
+  describe("Title", () => {
+    it("is possible to change the title of the cart.", async () => {
+      const chart = createChart({ title: "Initial title" })
+      const chartMock = getChartMock("chart-id", chart)
+      const updateMock = mutateChartMock("chart-id", {
+        title: "Changed title",
+        min: chart.min,
+        max: chart.max,
+      })
+
+      render(<Admin />, {
+        mocks: [chartMock, updateMock],
+        path: "/admin/:id",
+        route: "/admin/chart-id",
+      })
+
+      await finishQueries(chartMock)
+
+      await userEvent.clear(screen.getByRole("textbox", { name: "Title" }))
+
+      await userEvent.type(
+        screen.getByRole("textbox", { name: "Title" }),
+        "Changed title",
+        {}
+      )
+
+      await userEvent.tab()
+
+      await finishMutations(updateMock)
+
+      expect(
+        screen.getByRole("figure", { name: "Changed title" })
+      ).toBeInTheDocument()
+    })
+  })
+
   describe("Range", () => {
-    const dimensions = [
-      createDimension({ title: "One" }),
-      createDimension({ title: "Two" }),
-      createDimension({ title: "Three" }),
-    ]
-
-    const getChartMock = (
-      id: string,
-      charts_by_pk: AdminGetChartQuery["charts_by_pk"]
-    ) => ({
-      request: {
-        query: AdminGetChartDocument,
-        variables: { id },
-      },
-      result: {
-        data: {
-          charts_by_pk,
-        },
-      },
-    })
-
-    const mutateChartMock = (id: string, payload: Charts_Set_Input) => ({
-      request: {
-        query: UpdateChartDocument,
-        variables: {
-          pk: { id },
-          payload,
-        },
-      },
-      result: {
-        data: {
-          update_charts_by_pk: { id, ...payload },
-        },
-      },
-    })
-
     const setMin = async (value: number) => {
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Min value" })
