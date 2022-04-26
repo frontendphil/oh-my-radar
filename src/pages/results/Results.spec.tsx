@@ -7,10 +7,7 @@ import {
   createParticipant,
   createSelection,
 } from "./test-utils"
-import {
-  ResultGetChartDocument,
-  ResultGetChartQuery,
-} from "./__generated__/api"
+import { ResultGetChartDocument, ResultGetChartQuery } from "./api"
 
 describe("Results", () => {
   const getChartMock = (

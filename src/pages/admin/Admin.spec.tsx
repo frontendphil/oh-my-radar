@@ -12,7 +12,7 @@ import {
   Dimensions_Insert_Input,
   InsertDimensionDocument,
   UpdateChartDocument,
-} from "./__generated__/api"
+} from "./api"
 
 describe("Admin", () => {
   const getChartMock = (

@@ -2,7 +2,7 @@ import invariant from "invariant"
 import { useParams } from "react-router-dom"
 import { Participants } from "../../chart-configuration"
 import { Colors, Participant, RadarChart, Selection } from "../../radar-chart"
-import { useResultGetChartQuery } from "./__generated__/api"
+import { useResultGetChartQuery } from "./api"
 
 export const Results = () => {
   const { id } = useParams()

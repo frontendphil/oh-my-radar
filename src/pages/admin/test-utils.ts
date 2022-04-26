@@ -1,6 +1,6 @@
 import { v4 } from "uuid"
 import { ItemType } from "../test-utils"
-import { AdminGetChartQuery } from "./__generated__/api"
+import { AdminGetChartQuery } from "./api"
 
 type Chart = Omit<NonNullable<AdminGetChartQuery["charts_by_pk"]>, "__typename">
 

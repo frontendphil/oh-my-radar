@@ -3,10 +3,7 @@ import userEvent from "@testing-library/user-event"
 import { MockedResponse } from "@apollo/client/testing"
 import { Create, defaultChart, defaultDimensions } from "./Create"
 import { Route, Routes } from "react-router-dom"
-import {
-  CreateChartDocument,
-  CreateDimensionsDocument,
-} from "./__generated__/api"
+import { CreateChartDocument, CreateDimensionsDocument } from "./api"
 import { ReactNode } from "react"
 import { finishMutations, render as baseRender } from "../test-utils"
 
