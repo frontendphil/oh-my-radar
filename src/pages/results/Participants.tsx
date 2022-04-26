@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { v4 } from "uuid"
-import { Button, ColorSelect, Input } from "../form-controls"
-import { List, ListItem } from "../layout"
-import { Colors, Participant } from "../radar-chart"
+import { Button, ColorSelect, Input } from "../../form-controls"
+import { List, ListItem } from "../../layout"
+import { Colors, Participant } from "../../radar-chart"
 
 type Props = {
   participants: Participant[]
