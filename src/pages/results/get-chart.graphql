@@ -1,0 +1,20 @@
+query ResultGetChart($id: uuid!) {
+  charts_by_pk(id: $id) {
+    title
+    min
+    max
+    dimensions {
+      id
+      title
+    }
+    participants {
+      id
+      name
+      color
+      selections {
+        dimensionId
+        value
+      }
+    }
+  }
+}

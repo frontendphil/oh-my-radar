@@ -3,7 +3,32 @@ schema:
   - schema.graphql
 documents: src/**/*.{ts,graphql}
 generates:
-  src/__generated__/api.ts:
+  src/pages/create/__generated__/api.ts:
+    documents: src/pages/create/**/*.{ts,graphql}
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
+  src/pages/admin/__generated__/api.ts:
+    documents: src/pages/admin/**/*.{ts,graphql}
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
+  src/pages/participate/__generated__/api.ts:
+    documents: src/pages/participate/**/*.{ts,graphql}
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      withHooks: true
+  src/pages/results/__generated__/api.ts:
+    documents: src/pages/results/**/*.{ts,graphql}
     plugins:
       - typescript
       - typescript-operations

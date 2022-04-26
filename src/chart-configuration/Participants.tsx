@@ -6,10 +6,10 @@ import { Colors, Participant } from "../radar-chart"
 
 type Props = {
   participants: Participant[]
-  activeParticipantId: string
+  activeParticipantId?: string
   onAdd: (participant: Participant) => void
   onChange: (participant: Participant) => void
-  onActivate: (selectionId: string) => void
+  onActivate?: (selectionId: string) => void
 }
 
 export const Participants = ({
@@ -33,7 +33,12 @@ export const Participants = ({
                 <Button
                   disabled={activeParticipantId === id}
                   aria-label={`Activate "${name}"`}
-                  onClick={() => onActivate(id)}
+                  onClick={() => {
+                    if (!onActivate) {
+                      return
+                    }
+                    onActivate(id)
+                  }}
                 >
                   Activate
                 </Button>

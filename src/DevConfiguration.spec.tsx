@@ -237,28 +237,6 @@ describe("DevConfiguration", () => {
         screen.getByRole("radio", { name: "Test - 0" })
       ).toBeInTheDocument()
     })
-
-    it("is not possible to enter an upper bound that is below the lower bound.", async () => {
-      render(<DevConfiguration />)
-
-      await setMin(4)
-      await setMax(3)
-
-      expect(screen.getByRole("spinbutton", { name: "Max value" })).toHaveValue(
-        5
-      )
-    })
-
-    it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
-      render(<DevConfiguration />)
-
-      await setMax(6)
-      await setMin(8)
-
-      expect(screen.getByRole("spinbutton", { name: "Min value" })).toHaveValue(
-        5
-      )
-    })
   })
 
   describe("Selection", () => {

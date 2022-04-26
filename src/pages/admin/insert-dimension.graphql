@@ -1,0 +1,6 @@
+mutation InsertDimension($dimension: dimensions_insert_input!) {
+  insert_dimensions_one(object: $dimension) {
+    id
+    title
+  }
+}

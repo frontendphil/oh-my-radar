@@ -1,0 +1,7 @@
+mutation InsertSelections($selections: [selection_insert_input!]!) {
+  insert_selection(objects: $selections) {
+    returning {
+      chartId
+    }
+  }
+}

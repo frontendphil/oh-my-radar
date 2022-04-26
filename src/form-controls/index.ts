@@ -1,4 +1,5 @@
 export { Input } from "./Input"
+export { NumberInput } from "./NumberInput"
 export { InputWithButton } from "./InputWithButton"
 export { Button } from "./Button"
 export { ColorSelect } from "./ColorSelect"

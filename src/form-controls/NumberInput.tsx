@@ -1,5 +1,5 @@
 import invariant from "invariant"
-import { HTMLAttributes, useEffect, useState } from "react"
+import { HTMLAttributes, ReactNode, useEffect, useState } from "react"
 import { CoreInput } from "./CoreInput"
 import { Label } from "./Label"
 import { useId } from "./useId"
@@ -8,11 +8,22 @@ type Props = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
   label: string
   value?: number
   onChange?: (value: number) => void
+  isValid?: (
+    value: number
+  ) => [valid: true] | [valid: false, description: string]
 }
 
-export const NumberInput = ({ label, value, onChange, ...rest }: Props) => {
+export const NumberInput = ({
+  label,
+  value,
+  onChange,
+  isValid = () => [true],
+  ...rest
+}: Props) => {
   const id = useId()
+  const errorId = useId()
   const [internalValue, setInternalValue] = useState(value?.toString())
+  const [error, setError] = useState<string | undefined>()
 
   useEffect(() => {
     setInternalValue(value?.toString())
@@ -26,6 +37,7 @@ export const NumberInput = ({ label, value, onChange, ...rest }: Props) => {
         {...rest}
         type="number"
         id={id}
+        aria-describedby={errorId}
         value={internalValue}
         onChange={(event) => {
           if (!onChange) {
@@ -43,9 +55,26 @@ export const NumberInput = ({ label, value, onChange, ...rest }: Props) => {
             return
           }
 
-          onChange(event.target.valueAsNumber)
+          const [valid, description] = isValid(event.target.valueAsNumber)
+
+          if (valid) {
+            setError(undefined)
+            onChange(event.target.valueAsNumber)
+          } else {
+            setError(description)
+          }
         }}
       />
+
+      {error && <Error id={errorId}>{error}</Error>}
     </div>
   )
 }
+
+type ErrorProps = HTMLAttributes<HTMLDivElement>
+
+const Error = ({ children, ...rest }: ErrorProps) => (
+  <div {...rest} className="ml-2 mt-1 text-sm text-red-500">
+    {children}
+  </div>
+)

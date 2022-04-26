@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { v4 } from "uuid"
 import { ChartConfiguration, useConfiguration } from "./chart-configuration"
 import { RadarChart, Selection, SelectionState, Colors } from "./radar-chart"
 
@@ -55,8 +56,19 @@ export const DevConfiguration = () => {
             participants,
             range,
           }}
+          onAddDimension={(dimension) =>
+            onChangeConfiguration({
+              dimensions: [...dimensions, { id: v4(), ...dimension }],
+            })
+          }
+          onRemoveDimension={(dimensionId) =>
+            onChangeConfiguration({
+              dimensions: dimensions.filter(({ id }) => id !== dimensionId),
+            })
+          }
           onChange={onChangeConfiguration}
           onActivateParticipant={setActiveParticipantId}
+          onSubmit={() => {}}
         />
       </div>
     </div>

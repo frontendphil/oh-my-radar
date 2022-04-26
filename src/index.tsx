@@ -3,8 +3,7 @@ import invariant from "invariant"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Admin } from "./Admin"
-import { Create } from "./Create"
+import { Admin, Create, Participate, Results } from "./pages"
 
 import { DevConfiguration } from "./DevConfiguration"
 
@@ -37,6 +36,8 @@ root.render(
         <Routes>
           <Route index element={<Create />} />
           <Route path="/admin/:id" element={<Admin />} />
+          <Route path="/participate/:id" element={<Participate />} />
+          <Route path="/results/:id" element={<Results />} />
           <Route path="/dev-configuration" element={<DevConfiguration />} />
         </Routes>
       </BrowserRouter>

@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { Input } from "../form-controls"
-import { NumberInput } from "../form-controls/NumberInput"
+import { useCallback, useState } from "react"
+import { Input, NumberInput } from "../form-controls"
 import { Dimension, Range, Participant } from "../radar-chart"
+import { NewDimension } from "../radar-chart/types"
 
 import { Dimensions } from "./Dimensions"
 import { Participants } from "./Participants"
@@ -14,16 +14,22 @@ type Configuration = {
 }
 
 type Props = {
-  activeParticipantId: string
+  activeParticipantId?: string
   configuration: Configuration
   onChange: (configuration: Configuration) => void
-  onActivateParticipant: (selectionId: string) => void
+  onAddDimension: (dimension: NewDimension) => void
+  onRemoveDimension: (dimensionId: string) => void
+  onSubmit: () => void
+  onActivateParticipant?: (selectionId: string) => void
 }
 
 export const ChartConfiguration = ({
   configuration,
   activeParticipantId,
   onChange,
+  onAddDimension,
+  onRemoveDimension,
+  onSubmit,
   onActivateParticipant,
 }: Props) => {
   const { title, participants, dimensions, range } = configuration
@@ -36,6 +42,7 @@ export const ChartConfiguration = ({
         label="Title"
         value={title}
         onChange={(title) => onChange({ ...configuration, title })}
+        onBlur={onSubmit}
       />
 
       <Participants
@@ -64,47 +71,63 @@ export const ChartConfiguration = ({
 
       <Dimensions
         dimensions={dimensions}
-        onAdd={(dimensionDescriptor) =>
-          onChange({
-            ...configuration,
-            dimensions: [...configuration.dimensions, dimensionDescriptor],
-          })
-        }
-        onRemove={(dimensionId) =>
-          onChange({
-            ...configuration,
-            dimensions: dimensions.filter(({ id }) => id !== dimensionId),
-          })
-        }
+        onAdd={onAddDimension}
+        onRemove={onRemoveDimension}
       />
 
       <NumberInput
         label="Min value"
         value={min}
+        isValid={(value) =>
+          value < max ? [true] : [false, `Min value must be less than ${max}`]
+        }
         onChange={(value) =>
           onChange({
             ...configuration,
-            range: [Math.min(value, max - 1), max],
+            range: [value, max],
           })
         }
+        onBlur={onSubmit}
       />
 
       <NumberInput
         label="Max value"
         value={max}
+        isValid={(value) =>
+          value > min
+            ? [true]
+            : [false, `Max value must be greater than ${min}`]
+        }
         onChange={(value) =>
           onChange({
             ...configuration,
-            range: [min, Math.max(value, min + 2)],
+            range: [min, value],
           })
         }
+        onBlur={onSubmit}
       />
     </div>
   )
 }
 
 export function useConfiguration(
-  initialValue: Configuration
-): [Configuration, (configuration: Configuration) => void] {
-  return useState<Configuration>(initialValue)
+  initialValue: Partial<Configuration> = {}
+): [Configuration, (configuration: Partial<Configuration>) => void] {
+  const [configuration, setConfiguration] = useState<Configuration>({
+    title: initialValue.title ?? "",
+    range: initialValue.range ?? [0, 1],
+    dimensions: initialValue.dimensions ?? [],
+    participants: initialValue.participants ?? [],
+  })
+
+  const updateConfiguration = useCallback(
+    (updatedConfiguration: Partial<Configuration>) =>
+      setConfiguration((currentConfiguration) => ({
+        ...currentConfiguration,
+        ...updatedConfiguration,
+      })),
+    []
+  )
+
+  return [configuration, updateConfiguration]
 }

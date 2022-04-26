@@ -1,13 +1,13 @@
 import { useState } from "react"
-import { v4 } from "uuid"
 import { Button, InputWithButton } from "../form-controls"
 import { List, ListItem } from "../layout"
 import { Dimension } from "../radar-chart"
+import { NewDimension } from "../radar-chart/types"
 
 type Props = {
   dimensions: Dimension[]
 
-  onAdd: (dimension: Dimension) => void
+  onAdd: (dimension: NewDimension) => void
   onRemove: (dimensionId: string) => void
 }
 
@@ -58,7 +58,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
             return
           }
 
-          onAdd({ id: v4(), title: newDimension })
+          onAdd({ title: newDimension })
           setNewDimension("")
         }}
       >
@@ -69,7 +69,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
           }
           aria-label={`Add dimension "${newDimension}"`}
           onClick={() => {
-            onAdd({ id: v4(), title: newDimension })
+            onAdd({ title: newDimension })
             setNewDimension("")
           }}
         >
