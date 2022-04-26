@@ -5,8 +5,6 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Admin, Create, Participate, Results } from "./pages"
 
-import { DevConfiguration } from "./DevConfiguration"
-
 import "./main.css"
 
 const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET
@@ -38,7 +36,6 @@ root.render(
           <Route path="/admin/:id" element={<Admin />} />
           <Route path="/participate/:id" element={<Participate />} />
           <Route path="/results/:id" element={<Results />} />
-          <Route path="/dev-configuration" element={<DevConfiguration />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>
