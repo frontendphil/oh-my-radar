@@ -1,5 +1,6 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { v4 } from "uuid"
 import { finishMutations, finishQueries, render } from "../test-utils"
 import { Admin } from "./Admin"
 import { createChart, createDimension } from "./test-utils"
@@ -7,16 +8,13 @@ import {
   AdminGetChartDocument,
   AdminGetChartQuery,
   Charts_Set_Input,
+  DeleteDimensionDocument,
+  Dimensions_Insert_Input,
+  InsertDimensionDocument,
   UpdateChartDocument,
 } from "./__generated__/api"
 
 describe("Admin", () => {
-  const dimensions = [
-    createDimension({ title: "One" }),
-    createDimension({ title: "Two" }),
-    createDimension({ title: "Three" }),
-  ]
-
   const getChartMock = (
     id: string,
     charts_by_pk: AdminGetChartQuery["charts_by_pk"]
@@ -83,7 +81,106 @@ describe("Admin", () => {
     })
   })
 
+  describe("Dimensions", () => {
+    const insertDimensionMock = (dimension: Dimensions_Insert_Input) => ({
+      request: {
+        query: InsertDimensionDocument,
+        variables: {
+          dimension,
+        },
+      },
+      result: {
+        data: {
+          insert_dimensions_one: {
+            id: v4(),
+            ...dimension,
+          },
+        },
+      },
+    })
+
+    const deleteDimensionMock = (id: string) => ({
+      request: {
+        query: DeleteDimensionDocument,
+        variables: {
+          id,
+        },
+      },
+      result: {
+        data: {
+          delete_dimensions_by_pk: {
+            id,
+          },
+        },
+      },
+    })
+
+    it("is possible to add a dimension.", async () => {
+      const chart = createChart()
+      const chartMock = getChartMock("chart-id", chart)
+      const insertMock = insertDimensionMock({
+        chartId: "chart-id",
+        title: "New dimension",
+      })
+
+      render(<Admin />, {
+        mocks: [chartMock, insertMock],
+        path: "/admin/:id",
+        route: "/admin/chart-id",
+      })
+
+      await finishQueries(chartMock)
+
+      await userEvent.type(
+        screen.getByRole("textbox", { name: "Add dimension" }),
+        "New dimension{enter}"
+      )
+
+      await finishMutations(insertMock)
+
+      expect(
+        screen.getByRole("listitem", { name: "New dimension" })
+      ).toBeInTheDocument()
+    })
+
+    it("should be possible to remove a dimension", async () => {
+      const dimension = createDimension({ title: "Dimension" })
+
+      const chartMock = getChartMock(
+        "chart-id",
+        createChart({
+          dimensions: [dimension],
+        })
+      )
+      const deleteMock = deleteDimensionMock(dimension.id)
+
+      render(<Admin />, {
+        mocks: [chartMock, deleteMock],
+        path: "/admin/:id",
+        route: "/admin/chart-id",
+      })
+
+      await finishQueries(chartMock)
+
+      await userEvent.click(
+        screen.getByRole("button", { name: 'Remove dimension "Dimension"' })
+      )
+
+      await finishMutations(deleteMock)
+
+      expect(
+        screen.queryByRole("listitem", { name: "Dimension" })
+      ).not.toBeInTheDocument()
+    })
+  })
+
   describe("Range", () => {
+    const dimensions = [
+      createDimension({ title: "One" }),
+      createDimension({ title: "Two" }),
+      createDimension({ title: "Three" }),
+    ]
+
     const setMin = async (value: number) => {
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Min value" })
