@@ -1,4 +1,4 @@
-describe("Smoke test", () => {
+describe.skip("Smoke test", () => {
   it("shows the application", () => {
     cy.visit("/dev-configuration")
 

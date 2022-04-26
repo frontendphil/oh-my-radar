@@ -8,10 +8,11 @@ import {
   useUpdateChartMutation,
 } from "./api"
 
-import { useConfiguration, Dimensions } from "../../chart-configuration"
 import { useEffect } from "react"
 
 import { Input, NumberInput } from "../../form-controls"
+import { useConfiguration } from "./useConfiguration"
+import { Dimensions } from "./Dimensions"
 
 export const Admin = () => {
   const { id } = useParams()

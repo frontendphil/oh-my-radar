@@ -22,5 +22,3 @@ export type Dimension = {
   id: string
   title: string
 }
-
-export type NewDimension = Omit<Dimension, "id">

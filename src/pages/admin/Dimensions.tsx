@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { Button, InputWithButton } from "../form-controls"
-import { List, ListItem } from "../layout"
-import { Dimension } from "../radar-chart"
-import { NewDimension } from "../radar-chart/types"
+import { Button, InputWithButton } from "../../form-controls"
+import { List, ListItem } from "../../layout"
+import { Dimension } from "../../radar-chart"
+
+export type NewDimension = Omit<Dimension, "id">
 
 type Props = {
   dimensions: Dimension[]

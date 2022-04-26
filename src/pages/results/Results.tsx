@@ -1,8 +1,9 @@
 import invariant from "invariant"
 import { useParams } from "react-router-dom"
-import { Participants } from "../../chart-configuration"
+
 import { Colors, Participant, RadarChart, Selection } from "../../radar-chart"
 import { useResultGetChartQuery } from "./api"
+import { Participants } from "./Participants"
 
 export const Results = () => {
   const { id } = useParams()
@@ -41,7 +42,6 @@ export const Results = () => {
       <div className="mt-24">
         <Participants
           participants={participants.map(toParticipant)}
-          onAdd={() => {}}
           onChange={() => {}}
         />
       </div>
