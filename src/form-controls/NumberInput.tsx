@@ -1,5 +1,5 @@
 import invariant from "invariant"
-import { HTMLAttributes, ReactNode, useEffect, useId, useState } from "react"
+import { HTMLAttributes, useEffect, useId, useState } from "react"
 import { CoreInput } from "./CoreInput"
 import { Label } from "./Label"
 
