@@ -25,6 +25,12 @@ export const Participate = () => {
   const [selection, setSelection] = useState<SelectionState>({})
   const [name, setName] = useState("")
 
+  const [finished, setFinished] = useState(false)
+
+  if (finished) {
+    return <>Thank you</>
+  }
+
   if (loading) {
     return null
   }
@@ -64,6 +70,7 @@ export const Participate = () => {
                     })
                   ),
                 },
+                onCompleted: () => setFinished(true),
               })
             },
           })
