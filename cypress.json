@@ -1,3 +1,4 @@
 {
-  "projectId": "1iahcp"
+  "projectId": "1iahcp",
+  "supportFile": "cypress/support/index.ts"
 }
