@@ -9,7 +9,7 @@ module.exports = {
     name: "oh-my-radar",
     tagName: "gql",
     localSchemaFile: "schema.graphql",
-    excludes: ["**/__generated__/**/*"],
+    excludes: ["**/api.ts"],
     service: {
       name: "oh-my-radar",
       url: "https://graphql-dev.oh-my-radar.com/v1/graphql",
