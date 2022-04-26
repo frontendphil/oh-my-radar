@@ -42,7 +42,6 @@ export const Results = () => {
       <div className="mt-24">
         <Participants
           participants={participants.map(toParticipant)}
-          onAdd={() => {}}
           onChange={() => {}}
         />
       </div>
