@@ -6,6 +6,6 @@ coverage:
         flags:
           - unit
       e2e:
-        target: 90%
+        target: 80%
         flags:
           - e2e
