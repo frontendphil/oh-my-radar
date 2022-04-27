@@ -60,7 +60,7 @@
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-react": "7.29.4",
-    "eslint-plugin-react-hooks": "^4.4.0",
+    "eslint-plugin-react-hooks": "4.5.0",
     "html-webpack-plugin": "5.5.0",
     "husky": "7.0.4",
     "identity-obj-proxy": "3.0.0",
@@ -71,8 +71,8 @@
     "postcss-loader": "6.2.1",
     "prettier": "2.6.2",
     "prettier-plugin-tailwindcss": "0.1.10",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
     "style-loader": "3.3.1",
     "tailwindcss": "3.0.24",
     "ts-jest": "27.1.4",
@@ -102,7 +102,7 @@
   },
   "overrides": {
     "graphql": "15.8.0",
-    "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
   }
 }

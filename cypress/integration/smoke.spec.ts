@@ -1,11 +1,11 @@
-describe.skip("Smoke test", () => {
+describe("Smoke test", () => {
   it("shows the application", () => {
-    cy.visit("/dev-configuration")
+    cy.visit("/")
 
-    cy.findByRole("figure", { name: "Test" }).should("exist")
+    cy.percySnapshot()
   })
 
-  it("renders selections correctly.", () => {
+  it.skip("renders selections correctly.", () => {
     cy.visit("/dev-configuration")
 
     cy.findByRole("radio", { name: "One - 1" }).click()
@@ -17,7 +17,7 @@ describe.skip("Smoke test", () => {
     cy.percySnapshot()
   })
 
-  it("renders multiple selection correctly.", () => {
+  it.skip("renders multiple selection correctly.", () => {
     cy.visit("/dev-configuration")
 
     cy.findByRole("radio", { name: "One - 1" }).click()
