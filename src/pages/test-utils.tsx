@@ -3,7 +3,8 @@ import { render as baseRender } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { MockedProvider, MockedResponse } from "@apollo/client/testing"
 
-const zeroTimeout = () => new Promise<void>((resolve) => setTimeout(resolve, 1))
+const zeroTimeout = () =>
+  new Promise<void>((resolve) => setTimeout(resolve, 10))
 
 export const finishMutations = async (...mutations: unknown[]) => {
   await act(async () => {
