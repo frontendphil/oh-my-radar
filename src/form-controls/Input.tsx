@@ -14,7 +14,7 @@ export const Input = ({ label, onChange, ...rest }: Props) => {
   const id = useId()
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-1">
       <Label htmlFor={id}>{label}</Label>
 
       <CoreInput

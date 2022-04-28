@@ -70,7 +70,7 @@ export function RadarChart({
                     key={step}
                     x={x}
                     y={y}
-                    className="fill-slate-500 stroke-transparent"
+                    className="fill-yellow-400 stroke-transparent"
                   />
                 )}
               </Slots>
@@ -97,7 +97,7 @@ const Dimension = ({ angle, diagramWidth }: DimensionProps) => {
         y1={diagramWidth / 2}
         x2={diagramWidth}
         y2={diagramWidth / 2}
-        className="stroke-slate-500"
+        className="stroke-yellow-300"
       />
     </g>
   )
@@ -110,10 +110,10 @@ const Circles = () => {
 
   return (
     <>
-      {steps.map((step) => (
+      {steps.reverse().map((step) => (
         <circle
           key={step}
-          className="fill-transparent stroke-slate-400"
+          className="fill-transparent stroke-yellow-300"
           cx="50%"
           cy="50%"
           r={getLengthToSelection(diagramWidth, range, step)}

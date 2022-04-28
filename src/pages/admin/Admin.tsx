@@ -10,7 +10,7 @@ import {
 
 import { useEffect } from "react"
 
-import { Input, NumberInput } from "../../form-controls"
+import { Form, Input, NumberInput } from "../../form-controls"
 import { useConfiguration } from "./useConfiguration"
 import { Dimensions } from "./Dimensions"
 
@@ -62,73 +62,79 @@ export const Admin = () => {
         </RadarChart>
       </div>
       <div className="mt-24 mr-24">
-        <Input
-          label="Title"
-          value={title}
-          onChange={(title) => updateConfiguration({ title })}
-          onBlur={saveChart}
-        />
+        <Form>
+          <Input
+            label="Title"
+            value={title}
+            onChange={(title) => updateConfiguration({ title })}
+            onBlur={saveChart}
+          />
 
-        <Dimensions
-          dimensions={dimensions}
-          onAdd={(dimension) => {
-            insertDimension({
-              variables: { dimension: { chartId: id, ...dimension } },
-              onCompleted: (data) => {
-                invariant(
-                  data.insert_dimensions_one,
-                  "Dimension could not be created."
-                )
+          <Dimensions
+            dimensions={dimensions}
+            onAdd={(dimension) => {
+              insertDimension({
+                variables: { dimension: { chartId: id, ...dimension } },
+                onCompleted: (data) => {
+                  invariant(
+                    data.insert_dimensions_one,
+                    "Dimension could not be created."
+                  )
 
-                const { id, title } = data.insert_dimensions_one
+                  const { id, title } = data.insert_dimensions_one
 
-                updateConfiguration({
-                  dimensions: [...configuration.dimensions, { id, title }],
-                })
-              },
-            })
-          }}
-          onRemove={(dimensionId) => {
-            deleteDimension({
-              variables: { id: dimensionId },
-              onCompleted: () => {
-                updateConfiguration({
-                  dimensions: dimensions.filter(({ id }) => id !== dimensionId),
-                })
-              },
-            })
-          }}
-        />
+                  updateConfiguration({
+                    dimensions: [...configuration.dimensions, { id, title }],
+                  })
+                },
+              })
+            }}
+            onRemove={(dimensionId) => {
+              deleteDimension({
+                variables: { id: dimensionId },
+                onCompleted: () => {
+                  updateConfiguration({
+                    dimensions: dimensions.filter(
+                      ({ id }) => id !== dimensionId
+                    ),
+                  })
+                },
+              })
+            }}
+          />
 
-        <NumberInput
-          label="Min value"
-          value={min}
-          isValid={(value) =>
-            value < max ? [true] : [false, `Min value must be less than ${max}`]
-          }
-          onChange={(value) =>
-            updateConfiguration({
-              range: [value, max],
-            })
-          }
-          onBlur={saveChart}
-        />
+          <NumberInput
+            label="Min value"
+            value={min}
+            isValid={(value) =>
+              value < max
+                ? [true]
+                : [false, `Min value must be less than ${max}`]
+            }
+            onChange={(value) =>
+              updateConfiguration({
+                range: [value, max],
+              })
+            }
+            onBlur={saveChart}
+          />
 
-        <NumberInput
-          label="Max value"
-          value={max}
-          isValid={(value) =>
-            value > min
-              ? [true]
-              : [false, `Max value must be greater than ${min}`]
-          }
-          onChange={(value) =>
-            updateConfiguration({
-              range: [min, value],
-            })
-          }
-          onBlur={saveChart}
-        />
+          <NumberInput
+            label="Max value"
+            value={max}
+            isValid={(value) =>
+              value > min
+                ? [true]
+                : [false, `Max value must be greater than ${min}`]
+            }
+            onChange={(value) =>
+              updateConfiguration({
+                range: [min, value],
+              })
+            }
+            onBlur={saveChart}
+          />
+        </Form>
       </div>
     </div>
   )
