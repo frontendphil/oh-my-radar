@@ -7,6 +7,6 @@ type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
 export const PrimaryButton = (props: ButtonProps) => (
   <button
     {...props}
-    className="rounded bg-teal-500 py-2 px-3 text-white shadow-lg disabled:opacity-75"
+    className="rounded bg-gradient-to-r  from-purple-600 to-purple-500 py-2 px-3 text-white shadow-lg ring-0 hover:shadow-2xl  hover:shadow-purple-700 focus:ring-2 focus:ring-purple-300 focus-visible:ring-purple-300 disabled:opacity-75"
   />
 )
