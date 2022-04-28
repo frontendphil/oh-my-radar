@@ -5,3 +5,7 @@
 body {
   @apply h-screen bg-slate-800 text-white;
 }
+
+#app {
+  @apply h-full;
+}

@@ -55,13 +55,13 @@ export const Admin = () => {
   }
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="m-24">
+    <div className="flex h-full">
+      <div className="flex flex-1 items-center justify-center bg-gray-800">
         <RadarChart title={title} dimensions={dimensions} range={range}>
-          <Selection active name="example" />
+          <Selection name="example" />
         </RadarChart>
       </div>
-      <div className="mt-24 mr-24">
+      <div className="sticky h-full border-l-2 border-slate-700 p-12">
         <Form>
           <Input
             label="Title"
