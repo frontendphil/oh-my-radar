@@ -92,7 +92,7 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "3.5.10",
+    "@apollo/client": "3.6.0",
     "@reach/listbox": "0.17.0",
     "@reach/visually-hidden": "0.17.0",
     "graphql": "15.8.0",
