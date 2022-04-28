@@ -8,9 +8,11 @@ type Configuration = {
   dimensions: Dimension[]
 }
 
+type UpdateFn = (configuration: Configuration) => Partial<Configuration>
+
 export function useConfiguration(
   initialValue: Partial<Configuration> = {}
-): [Configuration, (configuration: Partial<Configuration>) => void] {
+): [Configuration, (configuration: Partial<Configuration> | UpdateFn) => void] {
   const [configuration, setConfiguration] = useState<Configuration>({
     title: initialValue.title ?? "",
     range: initialValue.range ?? [0, 1],
@@ -19,11 +21,16 @@ export function useConfiguration(
   })
 
   const updateConfiguration = useCallback(
-    (updatedConfiguration: Partial<Configuration>) =>
-      setConfiguration((currentConfiguration) => ({
-        ...currentConfiguration,
-        ...updatedConfiguration,
-      })),
+    (updatedConfiguration: Partial<Configuration> | UpdateFn) =>
+      typeof updatedConfiguration === "function"
+        ? setConfiguration((currentConfiguration) => ({
+            ...currentConfiguration,
+            ...updatedConfiguration(currentConfiguration),
+          }))
+        : setConfiguration((currentConfiguration) => ({
+            ...currentConfiguration,
+            ...updatedConfiguration,
+          })),
     []
   )
 

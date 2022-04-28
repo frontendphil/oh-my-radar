@@ -24,12 +24,15 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
 
       {dimensions.length > 0 && (
         <List id={listId} className="flex flex-col gap-1">
-          {dimensions.map(({ id, title }) => (
+          {dimensions.map(({ id, title, deleted }) => (
             <ListItem
               key={id}
               aria-label={title}
+              dirty={id === "new"}
+              deleted={deleted}
               action={
                 <IconButton
+                  disabled={id === "new" || deleted}
                   aria-label={`Remove dimension "${title}"`}
                   onClick={() => onRemove(id)}
                   icon={TrashIcon}

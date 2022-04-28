@@ -107,6 +107,13 @@ export const Admin = () => {
           <Dimensions
             dimensions={dimensions}
             onAdd={(dimension) => {
+              updateConfiguration({
+                dimensions: [
+                  ...configuration.dimensions,
+                  { ...dimension, id: "new" },
+                ],
+              })
+
               insertDimension({
                 variables: { dimension: { chartId: id, ...dimension } },
                 onCompleted: (data) => {
@@ -117,13 +124,24 @@ export const Admin = () => {
 
                   const { id, title } = data.insert_dimensions_one
 
-                  updateConfiguration({
-                    dimensions: [...configuration.dimensions, { id, title }],
-                  })
+                  updateConfiguration((currentConfiguration) => ({
+                    dimensions: currentConfiguration.dimensions.map(
+                      (dimension) =>
+                        dimension.id === "new" ? { id, title } : dimension
+                    ),
+                  }))
                 },
               })
             }}
             onRemove={(dimensionId) => {
+              updateConfiguration({
+                dimensions: dimensions.map((dimension) =>
+                  dimension.id === dimensionId
+                    ? { ...dimension, deleted: true }
+                    : dimension
+                ),
+              })
+
               deleteDimension({
                 variables: { id: dimensionId },
                 onCompleted: () => {

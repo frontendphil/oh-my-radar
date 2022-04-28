@@ -21,4 +21,5 @@ export type Participant = {
 export type Dimension = {
   id: string
   title: string
+  deleted?: boolean
 }
