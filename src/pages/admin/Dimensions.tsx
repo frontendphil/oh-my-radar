@@ -1,5 +1,6 @@
 import { useId, useState } from "react"
-import { Button, InputWithButton } from "../../form-controls"
+import { TrashIcon } from "@heroicons/react/outline"
+import { Button, IconButton, InputWithButton } from "../../form-controls"
 import { Label } from "../../form-controls/Label"
 import { List, ListItem } from "../../layout"
 import { Dimension } from "../../radar-chart"
@@ -18,7 +19,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
   const listId = useId()
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       <Label htmlFor={listId}>Dimensions</Label>
 
       {dimensions.length > 0 && (
@@ -28,12 +29,11 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
               key={id}
               aria-label={title}
               action={
-                <Button
+                <IconButton
                   aria-label={`Remove dimension "${title}"`}
                   onClick={() => onRemove(id)}
-                >
-                  Remove
-                </Button>
+                  icon={TrashIcon}
+                />
               }
             >
               {title}

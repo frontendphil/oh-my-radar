@@ -8,7 +8,7 @@ type Props = HTMLAttributes<HTMLLIElement> & {
 export const ListItem = ({ children, action, ...rest }: Props) => (
   <li
     {...rest}
-    className="flex items-center justify-between border-b border-slate-300"
+    className="flex items-center justify-between border-b border-slate-600 py-2 pr-2"
   >
     <span className="px-4">{children}</span>
 

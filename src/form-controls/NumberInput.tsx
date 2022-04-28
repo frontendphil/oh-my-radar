@@ -1,5 +1,6 @@
 import invariant from "invariant"
 import { HTMLAttributes, useEffect, useId, useState } from "react"
+import { InputLayout } from "../layout"
 import { CoreInput } from "./CoreInput"
 import { Label } from "./Label"
 
@@ -29,7 +30,7 @@ export const NumberInput = ({
   }, [value])
 
   return (
-    <div className="flex flex-col">
+    <InputLayout>
       <Label htmlFor={id}>{label}</Label>
 
       <CoreInput
@@ -66,7 +67,7 @@ export const NumberInput = ({
       />
 
       {error && <Error id={errorId}>{error}</Error>}
-    </div>
+    </InputLayout>
   )
 }
 

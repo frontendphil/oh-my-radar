@@ -3,5 +3,5 @@ import { ReactNode } from "react"
 type Props = { children: ReactNode }
 
 export const FormGroup = ({ children }: Props) => (
-  <div className="flex gap-4">{children}</div>
+  <div className="grid grid-cols-2 gap-4">{children}</div>
 )

@@ -70,39 +70,6 @@ export const Admin = () => {
             onBlur={saveChart}
           />
 
-          <Dimensions
-            dimensions={dimensions}
-            onAdd={(dimension) => {
-              insertDimension({
-                variables: { dimension: { chartId: id, ...dimension } },
-                onCompleted: (data) => {
-                  invariant(
-                    data.insert_dimensions_one,
-                    "Dimension could not be created."
-                  )
-
-                  const { id, title } = data.insert_dimensions_one
-
-                  updateConfiguration({
-                    dimensions: [...configuration.dimensions, { id, title }],
-                  })
-                },
-              })
-            }}
-            onRemove={(dimensionId) => {
-              deleteDimension({
-                variables: { id: dimensionId },
-                onCompleted: () => {
-                  updateConfiguration({
-                    dimensions: dimensions.filter(
-                      ({ id }) => id !== dimensionId
-                    ),
-                  })
-                },
-              })
-            }}
-          />
-
           <FormGroup>
             <NumberInput
               label="Min value"
@@ -136,6 +103,39 @@ export const Admin = () => {
               onBlur={saveChart}
             />
           </FormGroup>
+
+          <Dimensions
+            dimensions={dimensions}
+            onAdd={(dimension) => {
+              insertDimension({
+                variables: { dimension: { chartId: id, ...dimension } },
+                onCompleted: (data) => {
+                  invariant(
+                    data.insert_dimensions_one,
+                    "Dimension could not be created."
+                  )
+
+                  const { id, title } = data.insert_dimensions_one
+
+                  updateConfiguration({
+                    dimensions: [...configuration.dimensions, { id, title }],
+                  })
+                },
+              })
+            }}
+            onRemove={(dimensionId) => {
+              deleteDimension({
+                variables: { id: dimensionId },
+                onCompleted: () => {
+                  updateConfiguration({
+                    dimensions: dimensions.filter(
+                      ({ id }) => id !== dimensionId
+                    ),
+                  })
+                },
+              })
+            }}
+          />
         </Form>
       </div>
     </div>

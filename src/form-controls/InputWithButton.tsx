@@ -1,5 +1,6 @@
 import invariant from "invariant"
 import { HTMLAttributes, ReactNode, useId } from "react"
+import { InputLayout } from "../layout"
 import { CoreInput } from "./CoreInput"
 import { Label } from "./Label"
 
@@ -19,7 +20,7 @@ export const InputWithButton = ({
   const id = useId()
 
   return (
-    <div className="flex flex-col gap-1">
+    <InputLayout>
       <Label htmlFor={id}>{label}</Label>
 
       <div className="flex gap-2">
@@ -42,6 +43,6 @@ export const InputWithButton = ({
         />
         {children}
       </div>
-    </div>
+    </InputLayout>
   )
 }
