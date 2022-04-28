@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useId, useState } from "react"
 import { Button, InputWithButton } from "../../form-controls"
+import { Label } from "../../form-controls/Label"
 import { List, ListItem } from "../../layout"
 import { Dimension } from "../../radar-chart"
 
@@ -14,11 +15,14 @@ type Props = {
 
 export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
   const [newDimension, setNewDimension] = useState("")
+  const listId = useId()
 
   return (
     <div className="flex flex-col gap-2">
+      <Label htmlFor={listId}>Dimensions</Label>
+
       {dimensions.length > 0 && (
-        <List aria-label="Dimensions" className="flex flex-col gap-1">
+        <List id={listId} className="flex flex-col gap-1">
           {dimensions.map(({ id, title }) => (
             <ListItem
               key={id}

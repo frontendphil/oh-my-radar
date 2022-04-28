@@ -65,7 +65,7 @@ export const Text = ({ id, children, x, y }: TextProps) => {
 
   return (
     <div id={id} style={{ position: "absolute", top: y, left: x }}>
-      <span className="relative text-white" ref={ref} style={{ left, top }}>
+      <span className="relative" ref={ref} style={{ left, top }}>
         {children}
       </span>
     </div>

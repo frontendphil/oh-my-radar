@@ -7,6 +7,6 @@ type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
 export const Button = (props: ButtonProps) => (
   <button
     {...props}
-    className="disabled::bg-slate-100 rounded bg-slate-200 py-2 px-3 text-slate-800 disabled:text-slate-500"
+    className="rounded bg-gradient-to-r from-purple-600 to-purple-500 py-2 px-3 text-white transition-all disabled:cursor-not-allowed disabled:from-gray-600 disabled:to-gray-500 disabled:opacity-75"
   />
 )

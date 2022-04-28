@@ -10,7 +10,7 @@ import {
 
 import { useEffect } from "react"
 
-import { Form, Input, NumberInput } from "../../form-controls"
+import { Form, FormGroup, Input, NumberInput } from "../../form-controls"
 import { useConfiguration } from "./useConfiguration"
 import { Dimensions } from "./Dimensions"
 
@@ -103,37 +103,39 @@ export const Admin = () => {
             }}
           />
 
-          <NumberInput
-            label="Min value"
-            value={min}
-            isValid={(value) =>
-              value < max
-                ? [true]
-                : [false, `Min value must be less than ${max}`]
-            }
-            onChange={(value) =>
-              updateConfiguration({
-                range: [value, max],
-              })
-            }
-            onBlur={saveChart}
-          />
+          <FormGroup>
+            <NumberInput
+              label="Min value"
+              value={min}
+              isValid={(value) =>
+                value < max
+                  ? [true]
+                  : [false, `Min value must be less than ${max}`]
+              }
+              onChange={(value) =>
+                updateConfiguration({
+                  range: [value, max],
+                })
+              }
+              onBlur={saveChart}
+            />
 
-          <NumberInput
-            label="Max value"
-            value={max}
-            isValid={(value) =>
-              value > min
-                ? [true]
-                : [false, `Max value must be greater than ${min}`]
-            }
-            onChange={(value) =>
-              updateConfiguration({
-                range: [min, value],
-              })
-            }
-            onBlur={saveChart}
-          />
+            <NumberInput
+              label="Max value"
+              value={max}
+              isValid={(value) =>
+                value > min
+                  ? [true]
+                  : [false, `Max value must be greater than ${min}`]
+              }
+              onChange={(value) =>
+                updateConfiguration({
+                  range: [min, value],
+                })
+              }
+              onBlur={saveChart}
+            />
+          </FormGroup>
         </Form>
       </div>
     </div>
