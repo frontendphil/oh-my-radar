@@ -27,11 +27,13 @@ describe("Create", () => {
     cy.findByRole("presentation", { name: "Three - 4" }).should("exist")
   })
 
-  it.only("matches the snapshot.", () => {
+  it("matches the snapshot.", () => {
     cy.visit("/")
 
     cy.findByRole("button", { name: "Create new chart" }).click()
 
     cy.waitFor("network")
+
+    cy.percySnapshot()
   })
 })
