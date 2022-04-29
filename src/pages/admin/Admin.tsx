@@ -156,18 +156,20 @@ export const Admin = () => {
           />
         </Form>
 
-        <hr className="my-12" />
+        <hr className="my-12 border-yellow-500" />
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-10">
           <Input
             disabled
             label="Participant view"
+            hint="Give this link to the people who should fill out this chart."
             value={`${location.origin}/participate/${id}`}
           />
 
           <Input
             disabled
             label="Results view"
+            hint="Use this link to see all answers that have been submitted. Everyone with this link can see the results."
             value={`${location.origin}/results/${id}`}
           />
         </div>

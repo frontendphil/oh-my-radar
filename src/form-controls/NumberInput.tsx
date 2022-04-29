@@ -2,6 +2,7 @@ import invariant from "invariant"
 import { HTMLAttributes, useEffect, useId, useState } from "react"
 import { InputLayout } from "../layout"
 import { CoreInput } from "./CoreInput"
+import { Error } from "./Error"
 import { Label } from "./Label"
 
 type Props = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
@@ -30,9 +31,7 @@ export const NumberInput = ({
   }, [value])
 
   return (
-    <InputLayout>
-      <Label htmlFor={id}>{label}</Label>
-
+    <InputLayout label={<Label htmlFor={id}>{label}</Label>}>
       <CoreInput
         {...rest}
         type="number"
@@ -70,11 +69,3 @@ export const NumberInput = ({
     </InputLayout>
   )
 }
-
-type ErrorProps = HTMLAttributes<HTMLDivElement>
-
-const Error = ({ children, ...rest }: ErrorProps) => (
-  <div {...rest} className="ml-2 mt-1 text-sm text-red-500">
-    {children}
-  </div>
-)

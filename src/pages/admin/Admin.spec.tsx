@@ -307,6 +307,16 @@ describe("Admin", () => {
           screen.getByRole("textbox", { name: "Participant view" })
         ).toBeDisabled()
       })
+
+      it("explains the participants view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Participant view" })
+        ).toHaveAccessibleDescription(
+          "Give this link to the people who should fill out this chart."
+        )
+      })
     })
 
     describe("Results", () => {
@@ -324,6 +334,16 @@ describe("Admin", () => {
         expect(
           screen.getByRole("textbox", { name: "Results view" })
         ).toBeDisabled()
+      })
+
+      it("explains the results view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Results view" })
+        ).toHaveAccessibleDescription(
+          "Use this link to see all answers that have been submitted. Everyone with this link can see the results."
+        )
       })
     })
   })
