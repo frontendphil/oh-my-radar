@@ -155,6 +155,22 @@ export const Admin = () => {
             }}
           />
         </Form>
+
+        <hr className="my-12" />
+
+        <div className="flex flex-col gap-4">
+          <Input
+            disabled
+            label="Participant view"
+            value={`${location.origin}/participate/${id}`}
+          />
+
+          <Input
+            disabled
+            label="Results view"
+            value={`${location.origin}/results/${id}`}
+          />
+        </div>
       </div>
     </div>
   )

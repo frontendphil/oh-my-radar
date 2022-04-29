@@ -289,4 +289,42 @@ describe("Admin", () => {
       ).toHaveAccessibleDescription(`Min value must be less than ${chart.max}`)
     })
   })
+
+  describe("Links", () => {
+    describe("Participants", () => {
+      it("shows a link to the view for participants.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Participant view" })
+        ).toHaveValue(`${window.location.origin}/participate/chart-id`)
+      })
+
+      it("shows disables the input for the participant view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Participant view" })
+        ).toBeDisabled()
+      })
+    })
+
+    describe("Results", () => {
+      it("shows a link to the results view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Results view" })
+        ).toHaveValue(`${window.location.origin}/results/chart-id`)
+      })
+
+      it("shows disables the input for results view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Results view" })
+        ).toBeDisabled()
+      })
+    })
+  })
 })
