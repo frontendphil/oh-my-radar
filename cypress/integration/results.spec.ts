@@ -16,11 +16,13 @@ describe("Results", () => {
           `${url} was supposed to be a "string".`
         )
 
-        cy.visit(url)
+        cy.location().then((location) => {
+          cy.visit(url.replace("http://localhost", location.origin))
 
-        cy.waitFor("network")
+          cy.waitFor("network")
 
-        cy.percySnapshot()
+          cy.percySnapshot()
+        })
       })
   })
 })

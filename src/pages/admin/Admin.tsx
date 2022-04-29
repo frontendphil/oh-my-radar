@@ -54,6 +54,8 @@ export const Admin = () => {
     })
   }
 
+  const origin = "Cypress" in window ? "http://localhost" : location.origin
+
   return (
     <div className="flex h-full">
       <div className="flex flex-1 items-center justify-center bg-gray-800">
@@ -163,14 +165,14 @@ export const Admin = () => {
             disabled
             label="Participant view"
             hint="Give this link to the people who should fill out this chart."
-            value={`${location.origin}/participate/${id}`}
+            value={`${origin}/participate/${id}`}
           />
 
           <Input
             disabled
             label="Results view"
             hint="Use this link to see all answers that have been submitted. Everyone with this link can see the results."
-            value={`${location.origin}/results/${id}`}
+            value={`${origin}/results/${id}`}
           />
         </div>
       </div>
