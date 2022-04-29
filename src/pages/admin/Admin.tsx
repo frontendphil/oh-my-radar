@@ -162,14 +162,14 @@ export const Admin = () => {
 
         <div className="flex flex-col gap-10">
           <Input
-            readOnly
+            disabled
             label="Participant view"
             hint="Give this link to the people who should fill out this chart."
             value={`${origin}/participate/${id}`}
           />
 
           <Input
-            readOnly
+            disabled
             label="Results view"
             hint="Use this link to see all answers that have been submitted. Everyone with this link can see the results."
             value={`${origin}/results/${id}`}
