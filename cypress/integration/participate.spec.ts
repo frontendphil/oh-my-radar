@@ -18,6 +18,8 @@ describe("Participate", () => {
 
         cy.visit(url)
 
+        cy.waitFor("network")
+
         cy.percySnapshot()
       })
   })
