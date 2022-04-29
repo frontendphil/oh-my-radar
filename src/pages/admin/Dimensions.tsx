@@ -1,5 +1,7 @@
-import { useState } from "react"
-import { Button, InputWithButton } from "../../form-controls"
+import { useId, useState } from "react"
+import { TrashIcon } from "@heroicons/react/outline"
+import { Button, IconButton, InputWithButton } from "../../form-controls"
+import { Label } from "../../form-controls/Label"
 import { List, ListItem } from "../../layout"
 import { Dimension } from "../../radar-chart"
 
@@ -14,22 +16,27 @@ type Props = {
 
 export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
   const [newDimension, setNewDimension] = useState("")
+  const listId = useId()
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
+      <Label htmlFor={listId}>Dimensions</Label>
+
       {dimensions.length > 0 && (
-        <List aria-label="Dimensions" className="flex flex-col gap-1">
-          {dimensions.map(({ id, title }) => (
+        <List id={listId} className="flex flex-col gap-1">
+          {dimensions.map(({ id, title, deleted }) => (
             <ListItem
               key={id}
               aria-label={title}
+              dirty={id === "new"}
+              deleted={deleted}
               action={
-                <Button
+                <IconButton
+                  disabled={id === "new" || deleted}
                   aria-label={`Remove dimension "${title}"`}
                   onClick={() => onRemove(id)}
-                >
-                  Remove
-                </Button>
+                  icon={TrashIcon}
+                />
               }
             >
               {title}

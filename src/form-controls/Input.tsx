@@ -1,5 +1,6 @@
 import invariant from "invariant"
 import { HTMLAttributes, useId } from "react"
+import { InputLayout } from "../layout"
 import { CoreInput } from "./CoreInput"
 
 import { Label } from "./Label"
@@ -14,7 +15,7 @@ export const Input = ({ label, onChange, ...rest }: Props) => {
   const id = useId()
 
   return (
-    <div className="flex flex-col">
+    <InputLayout>
       <Label htmlFor={id}>{label}</Label>
 
       <CoreInput
@@ -33,6 +34,6 @@ export const Input = ({ label, onChange, ...rest }: Props) => {
           onChange(event.target.value)
         }}
       />
-    </div>
+    </InputLayout>
   )
 }

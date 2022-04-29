@@ -1,12 +1,9 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { v4 } from "uuid"
-import { finishMutations, finishQueries, render } from "../test-utils"
-import { Admin } from "./Admin"
-import { createChart, createDimension } from "./test-utils"
+import { finishMutations } from "../test-utils"
+import { createChart, createDimension, renderChart } from "./test-utils"
 import {
-  AdminGetChartDocument,
-  AdminGetChartQuery,
   Charts_Set_Input,
   DeleteDimensionDocument,
   Dimensions_Insert_Input,
@@ -15,21 +12,6 @@ import {
 } from "./api"
 
 describe("Admin", () => {
-  const getChartMock = (
-    id: string,
-    charts_by_pk: AdminGetChartQuery["charts_by_pk"]
-  ) => ({
-    request: {
-      query: AdminGetChartDocument,
-      variables: { id },
-    },
-    result: {
-      data: {
-        charts_by_pk,
-      },
-    },
-  })
-
   const mutateChartMock = (id: string, payload: Charts_Set_Input) => ({
     request: {
       query: UpdateChartDocument,
@@ -48,20 +30,13 @@ describe("Admin", () => {
   describe("Title", () => {
     it("is possible to change the title of the cart.", async () => {
       const chart = createChart({ title: "Initial title" })
-      const chartMock = getChartMock("chart-id", chart)
       const updateMock = mutateChartMock("chart-id", {
         title: "Changed title",
         min: chart.min,
         max: chart.max,
       })
 
-      render(<Admin />, {
-        mocks: [chartMock, updateMock],
-        path: "/admin/:id",
-        route: "/admin/chart-id",
-      })
-
-      await finishQueries(chartMock)
+      await renderChart("chart-id", chart, { mocks: [updateMock] })
 
       await userEvent.clear(screen.getByRole("textbox", { name: "Title" }))
 
@@ -115,52 +90,67 @@ describe("Admin", () => {
       },
     })
 
-    it("is possible to add a dimension.", async () => {
-      const chart = createChart()
-      const chartMock = getChartMock("chart-id", chart)
-      const insertMock = insertDimensionMock({
-        chartId: "chart-id",
-        title: "New dimension",
+    describe("Adding a new dimension.", () => {
+      it("immediately shows the new dimension but disables it.", async () => {
+        const chart = createChart()
+        const insertMock = insertDimensionMock({
+          chartId: "chart-id",
+          title: "New dimension",
+        })
+
+        await renderChart("chart-id", chart, { mocks: [insertMock] })
+
+        await userEvent.type(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          "New dimension{enter}"
+        )
+
+        expect(
+          screen.getByRole("listitem", { name: "New dimension" })
+        ).toBeInTheDocument()
+        expect(
+          screen.getByRole("button", {
+            name: `Remove dimension "New dimension"`,
+          })
+        ).toBeDisabled()
       })
 
-      render(<Admin />, {
-        mocks: [chartMock, insertMock],
-        path: "/admin/:id",
-        route: "/admin/chart-id",
+      it("enables the dimension when it has been added.", async () => {
+        const chart = createChart()
+        const insertMock = insertDimensionMock({
+          chartId: "chart-id",
+          title: "New dimension",
+        })
+
+        await renderChart("chart-id", chart, { mocks: [insertMock] })
+
+        await userEvent.type(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          "New dimension{enter}"
+        )
+
+        await finishMutations(insertMock)
+
+        expect(
+          screen.getByRole("listitem", { name: "New dimension" })
+        ).toBeInTheDocument()
+        expect(
+          screen.getByRole("button", {
+            name: `Remove dimension "New dimension"`,
+          })
+        ).toBeEnabled()
       })
-
-      await finishQueries(chartMock)
-
-      await userEvent.type(
-        screen.getByRole("textbox", { name: "Add dimension" }),
-        "New dimension{enter}"
-      )
-
-      await finishMutations(insertMock)
-
-      expect(
-        screen.getByRole("listitem", { name: "New dimension" })
-      ).toBeInTheDocument()
     })
 
     it("should be possible to remove a dimension", async () => {
       const dimension = createDimension({ title: "Dimension" })
 
-      const chartMock = getChartMock(
-        "chart-id",
-        createChart({
-          dimensions: [dimension],
-        })
-      )
+      const chart = createChart({
+        dimensions: [dimension],
+      })
       const deleteMock = deleteDimensionMock(dimension.id)
 
-      render(<Admin />, {
-        mocks: [chartMock, deleteMock],
-        path: "/admin/:id",
-        route: "/admin/chart-id",
-      })
-
-      await finishQueries(chartMock)
+      await renderChart("chart-id", chart, { mocks: [deleteMock] })
 
       await userEvent.click(
         screen.getByRole("button", { name: 'Remove dimension "Dimension"' })
@@ -206,20 +196,13 @@ describe("Admin", () => {
     it("is possible to change the upper bound of the selection range.", async () => {
       const chart = createChart({ dimensions })
 
-      const chartMock = getChartMock("chart-id", chart)
       const updateMock = mutateChartMock("chart-id", {
         title: chart.title,
         min: chart.min,
         max: 10,
       })
 
-      render(<Admin />, {
-        mocks: [chartMock, updateMock],
-        path: "/admin/:id",
-        route: "/admin/chart-id",
-      })
-
-      await finishQueries(chartMock)
+      await renderChart("chart-id", chart, { mocks: [updateMock] })
 
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Max value" })
@@ -233,27 +216,20 @@ describe("Admin", () => {
       await finishMutations(updateMock)
 
       expect(
-        screen.getByRole("radio", { name: "One - 10" })
+        screen.getByRole("presentation", { name: "One - 10" })
       ).toBeInTheDocument()
     })
 
     it("is possible to change the lower bound of the selection range", async () => {
       const chart = createChart({ dimensions })
 
-      const chartMock = getChartMock("chart-id", chart)
       const updateMock = mutateChartMock("chart-id", {
         title: chart.title,
         max: chart.max,
         min: 0,
       })
 
-      render(<Admin />, {
-        mocks: [chartMock, updateMock],
-        path: "/admin/:id",
-        route: "/admin/chart-id",
-      })
-
-      await finishQueries(chartMock)
+      await renderChart("chart-id", chart, { mocks: [updateMock] })
 
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Min value" })
@@ -266,25 +242,21 @@ describe("Admin", () => {
 
       await finishMutations(updateMock)
 
-      expect(screen.getByRole("radio", { name: "One - 0" })).toBeInTheDocument()
+      expect(
+        screen.getByRole("presentation", { name: "One - 0" })
+      ).toBeInTheDocument()
     })
 
     it("is not possible to enter an upper bound that is below the lower bound.", async () => {
       const chart = createChart({ min: 4, max: 4 })
-      const chartMock = getChartMock("chart-id", chart)
+
       const updateMock = mutateChartMock("chart-id", {
         title: chart.title,
         min: chart.min,
         max: chart.max,
       })
 
-      render(<Admin />, {
-        mocks: [chartMock, updateMock],
-        path: "/admin/:id",
-        route: "/admin/chart-id",
-      })
-
-      await finishQueries(chartMock)
+      await renderChart("chart-id", chart, { mocks: [updateMock] })
 
       await setMax(3)
 
@@ -299,20 +271,14 @@ describe("Admin", () => {
 
     it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
       const chart = createChart({ min: 3, max: 5 })
-      const chartMock = getChartMock("chart-id", chart)
+
       const updateMock = mutateChartMock("chart-id", {
         title: chart.title,
         max: chart.max,
         min: chart.min,
       })
 
-      render(<Admin />, {
-        mocks: [chartMock, updateMock],
-        path: "/admin/:id",
-        route: "/admin/chart-id",
-      })
-
-      await finishQueries(chartMock)
+      await renderChart("chart-id", chart, { mocks: [updateMock] })
 
       await setMin(6)
 

@@ -10,7 +10,7 @@ import {
 
 import { useEffect } from "react"
 
-import { Input, NumberInput } from "../../form-controls"
+import { Form, FormGroup, Input, NumberInput } from "../../form-controls"
 import { useConfiguration } from "./useConfiguration"
 import { Dimensions } from "./Dimensions"
 
@@ -55,80 +55,106 @@ export const Admin = () => {
   }
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="m-24">
+    <div className="flex h-full">
+      <div className="flex flex-1 items-center justify-center bg-gray-800">
         <RadarChart title={title} dimensions={dimensions} range={range}>
-          <Selection active name="example" />
+          <Selection name="example" />
         </RadarChart>
       </div>
-      <div className="mt-24 mr-24">
-        <Input
-          label="Title"
-          value={title}
-          onChange={(title) => updateConfiguration({ title })}
-          onBlur={saveChart}
-        />
+      <div className="sticky h-full border-l-2 border-slate-700 p-12">
+        <Form>
+          <Input
+            label="Title"
+            value={title}
+            onChange={(title) => updateConfiguration({ title })}
+            onBlur={saveChart}
+          />
 
-        <Dimensions
-          dimensions={dimensions}
-          onAdd={(dimension) => {
-            insertDimension({
-              variables: { dimension: { chartId: id, ...dimension } },
-              onCompleted: (data) => {
-                invariant(
-                  data.insert_dimensions_one,
-                  "Dimension could not be created."
-                )
-
-                const { id, title } = data.insert_dimensions_one
-
+          <FormGroup>
+            <NumberInput
+              label="Min value"
+              value={min}
+              isValid={(value) =>
+                value < max
+                  ? [true]
+                  : [false, `Min value must be less than ${max}`]
+              }
+              onChange={(value) =>
                 updateConfiguration({
-                  dimensions: [...configuration.dimensions, { id, title }],
+                  range: [value, max],
                 })
-              },
-            })
-          }}
-          onRemove={(dimensionId) => {
-            deleteDimension({
-              variables: { id: dimensionId },
-              onCompleted: () => {
+              }
+              onBlur={saveChart}
+            />
+
+            <NumberInput
+              label="Max value"
+              value={max}
+              isValid={(value) =>
+                value > min
+                  ? [true]
+                  : [false, `Max value must be greater than ${min}`]
+              }
+              onChange={(value) =>
                 updateConfiguration({
-                  dimensions: dimensions.filter(({ id }) => id !== dimensionId),
+                  range: [min, value],
                 })
-              },
-            })
-          }}
-        />
+              }
+              onBlur={saveChart}
+            />
+          </FormGroup>
 
-        <NumberInput
-          label="Min value"
-          value={min}
-          isValid={(value) =>
-            value < max ? [true] : [false, `Min value must be less than ${max}`]
-          }
-          onChange={(value) =>
-            updateConfiguration({
-              range: [value, max],
-            })
-          }
-          onBlur={saveChart}
-        />
+          <Dimensions
+            dimensions={dimensions}
+            onAdd={(dimension) => {
+              updateConfiguration({
+                dimensions: [
+                  ...configuration.dimensions,
+                  { ...dimension, id: "new" },
+                ],
+              })
 
-        <NumberInput
-          label="Max value"
-          value={max}
-          isValid={(value) =>
-            value > min
-              ? [true]
-              : [false, `Max value must be greater than ${min}`]
-          }
-          onChange={(value) =>
-            updateConfiguration({
-              range: [min, value],
-            })
-          }
-          onBlur={saveChart}
-        />
+              insertDimension({
+                variables: { dimension: { chartId: id, ...dimension } },
+                onCompleted: (data) => {
+                  invariant(
+                    data.insert_dimensions_one,
+                    "Dimension could not be created."
+                  )
+
+                  const { id, title } = data.insert_dimensions_one
+
+                  updateConfiguration((currentConfiguration) => ({
+                    dimensions: currentConfiguration.dimensions.map(
+                      (dimension) =>
+                        dimension.id === "new" ? { id, title } : dimension
+                    ),
+                  }))
+                },
+              })
+            }}
+            onRemove={(dimensionId) => {
+              updateConfiguration({
+                dimensions: dimensions.map((dimension) =>
+                  dimension.id === dimensionId
+                    ? { ...dimension, deleted: true }
+                    : dimension
+                ),
+              })
+
+              deleteDimension({
+                variables: { id: dimensionId },
+                onCompleted: () => {
+                  updateConfiguration({
+                    dimensions: dimensions.filter(
+                      ({ id }) => id !== dimensionId
+                    ),
+                  })
+                },
+              })
+            }}
+          />
+        </Form>
       </div>
     </div>
   )

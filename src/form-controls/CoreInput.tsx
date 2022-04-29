@@ -5,10 +5,10 @@ type Props = HTMLAttributes<HTMLInputElement> & {
   value?: string
 }
 
-export const CoreInput = (props: Props) => (
+export const CoreInput = ({ className, ...rest }: Props) => (
   <input
     type="text"
-    {...props}
-    className="rounded border border-slate-400 px-2 py-2"
+    {...rest}
+    className={`${className} rounded border-b border-slate-400 bg-white bg-opacity-10 px-2 py-2 text-white outline-none transition-all focus:border-yellow-400`}
   />
 )

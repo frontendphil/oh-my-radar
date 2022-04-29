@@ -7,6 +7,6 @@ type Props = HTMLAttributes<HTMLLabelElement> & {
 export const Label = (props: Props) => (
   <label
     {...props}
-    className="block text-sm font-bold uppercase text-slate-500"
+    className="flex bg-gradient-to-r from-yellow-400 to-yellow-800 bg-clip-text text-sm font-bold uppercase text-transparent"
   />
 )

@@ -93,6 +93,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.6.0",
+    "@heroicons/react": "1.0.6",
     "@reach/listbox": "0.17.0",
     "@reach/visually-hidden": "0.17.0",
     "graphql": "15.8.0",
