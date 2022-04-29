@@ -44,13 +44,13 @@ const getChartMock = (
 })
 
 type RenderOptions = {
+  chart?: Partial<Chart>
   mocks?: MockedResponse[]
 }
 
 export const renderChart = async (
   chartId: string,
-  chart: Partial<Chart>,
-  { mocks = [] }: RenderOptions
+  { mocks = [], chart = createChart() }: RenderOptions
 ): Promise<ReturnType<typeof render>> => {
   const chartMock = getChartMock(chartId, createChart(chart))
 
