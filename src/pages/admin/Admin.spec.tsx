@@ -233,7 +233,7 @@ describe("Admin", () => {
       await finishMutations(updateMock)
 
       expect(
-        screen.getByRole("radio", { name: "One - 10" })
+        screen.getByRole("presentation", { name: "One - 10" })
       ).toBeInTheDocument()
     })
 
@@ -266,7 +266,9 @@ describe("Admin", () => {
 
       await finishMutations(updateMock)
 
-      expect(screen.getByRole("radio", { name: "One - 0" })).toBeInTheDocument()
+      expect(
+        screen.getByRole("presentation", { name: "One - 0" })
+      ).toBeInTheDocument()
     })
 
     it("is not possible to enter an upper bound that is below the lower bound.", async () => {
