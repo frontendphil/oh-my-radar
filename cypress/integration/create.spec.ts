@@ -32,8 +32,8 @@ describe("Create", () => {
 
     cy.findByRole("button", { name: "Create new chart" }).click()
 
-    cy.waitFor("network")
-
-    cy.percySnapshot()
+    cy.waitFor("network").then(() => {
+      cy.percySnapshot()
+    })
   })
 })
