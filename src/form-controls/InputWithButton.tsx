@@ -20,9 +20,7 @@ export const InputWithButton = ({
   const id = useId()
 
   return (
-    <InputLayout>
-      <Label htmlFor={id}>{label}</Label>
-
+    <InputLayout label={<Label htmlFor={id}>{label}</Label>}>
       <div className="flex gap-2">
         <CoreInput
           {...rest}

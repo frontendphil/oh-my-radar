@@ -36,7 +36,7 @@ describe("Admin", () => {
         max: chart.max,
       })
 
-      await renderChart("chart-id", chart, { mocks: [updateMock] })
+      await renderChart("chart-id", { mocks: [updateMock], chart })
 
       await userEvent.clear(screen.getByRole("textbox", { name: "Title" }))
 
@@ -92,13 +92,12 @@ describe("Admin", () => {
 
     describe("Adding a new dimension.", () => {
       it("immediately shows the new dimension but disables it.", async () => {
-        const chart = createChart()
         const insertMock = insertDimensionMock({
           chartId: "chart-id",
           title: "New dimension",
         })
 
-        await renderChart("chart-id", chart, { mocks: [insertMock] })
+        await renderChart("chart-id", { mocks: [insertMock] })
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
@@ -116,13 +115,12 @@ describe("Admin", () => {
       })
 
       it("enables the dimension when it has been added.", async () => {
-        const chart = createChart()
         const insertMock = insertDimensionMock({
           chartId: "chart-id",
           title: "New dimension",
         })
 
-        await renderChart("chart-id", chart, { mocks: [insertMock] })
+        await renderChart("chart-id", { mocks: [insertMock] })
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
@@ -145,12 +143,14 @@ describe("Admin", () => {
     it("should be possible to remove a dimension", async () => {
       const dimension = createDimension({ title: "Dimension" })
 
-      const chart = createChart({
-        dimensions: [dimension],
-      })
       const deleteMock = deleteDimensionMock(dimension.id)
 
-      await renderChart("chart-id", chart, { mocks: [deleteMock] })
+      await renderChart("chart-id", {
+        chart: {
+          dimensions: [dimension],
+        },
+        mocks: [deleteMock],
+      })
 
       await userEvent.click(
         screen.getByRole("button", { name: 'Remove dimension "Dimension"' })
@@ -202,7 +202,7 @@ describe("Admin", () => {
         max: 10,
       })
 
-      await renderChart("chart-id", chart, { mocks: [updateMock] })
+      await renderChart("chart-id", { chart, mocks: [updateMock] })
 
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Max value" })
@@ -229,7 +229,7 @@ describe("Admin", () => {
         min: 0,
       })
 
-      await renderChart("chart-id", chart, { mocks: [updateMock] })
+      await renderChart("chart-id", { chart, mocks: [updateMock] })
 
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Min value" })
@@ -256,7 +256,7 @@ describe("Admin", () => {
         max: chart.max,
       })
 
-      await renderChart("chart-id", chart, { mocks: [updateMock] })
+      await renderChart("chart-id", { chart, mocks: [updateMock] })
 
       await setMax(3)
 
@@ -278,7 +278,7 @@ describe("Admin", () => {
         min: chart.min,
       })
 
-      await renderChart("chart-id", chart, { mocks: [updateMock] })
+      await renderChart("chart-id", { chart, mocks: [updateMock] })
 
       await setMin(6)
 
@@ -287,6 +287,64 @@ describe("Admin", () => {
       expect(
         screen.getByRole("spinbutton", { name: "Min value" })
       ).toHaveAccessibleDescription(`Min value must be less than ${chart.max}`)
+    })
+  })
+
+  describe("Links", () => {
+    describe("Participants", () => {
+      it("shows a link to the view for participants.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Participant view" })
+        ).toHaveValue(`${window.location.origin}/participate/chart-id`)
+      })
+
+      it("shows disables the input for the participant view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Participant view" })
+        ).toBeDisabled()
+      })
+
+      it("explains the participants view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Participant view" })
+        ).toHaveAccessibleDescription(
+          "Give this link to the people who should fill out this chart."
+        )
+      })
+    })
+
+    describe("Results", () => {
+      it("shows a link to the results view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Results view" })
+        ).toHaveValue(`${window.location.origin}/results/chart-id`)
+      })
+
+      it("shows disables the input for results view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Results view" })
+        ).toBeDisabled()
+      })
+
+      it("explains the results view.", async () => {
+        await renderChart("chart-id")
+
+        expect(
+          screen.getByRole("textbox", { name: "Results view" })
+        ).toHaveAccessibleDescription(
+          "Use this link to see all answers that have been submitted. Everyone with this link can see the results."
+        )
+      })
     })
   })
 })

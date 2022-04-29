@@ -1,26 +1,28 @@
 import invariant from "invariant"
-import { HTMLAttributes, useId } from "react"
+import { AllHTMLAttributes, useId } from "react"
 import { InputLayout } from "../layout"
 import { CoreInput } from "./CoreInput"
+import { Hint } from "./Hint"
 
 import { Label } from "./Label"
 
-type Props = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
+type Props = Omit<AllHTMLAttributes<HTMLInputElement>, "onChange"> & {
   label: string
   value?: string
+  hint?: string
   onChange?: (value: string) => void
 }
 
-export const Input = ({ label, onChange, ...rest }: Props) => {
+export const Input = ({ label, hint, onChange, ...rest }: Props) => {
   const id = useId()
+  const hintId = useId()
 
   return (
-    <InputLayout>
-      <Label htmlFor={id}>{label}</Label>
-
+    <InputLayout label={<Label htmlFor={id}>{label}</Label>}>
       <CoreInput
         {...rest}
         id={id}
+        aria-describedby={hintId}
         onChange={(event) => {
           if (!onChange) {
             return
@@ -34,6 +36,8 @@ export const Input = ({ label, onChange, ...rest }: Props) => {
           onChange(event.target.value)
         }}
       />
+
+      {hint && <Hint id={hintId}>{hint}</Hint>}
     </InputLayout>
   )
 }
