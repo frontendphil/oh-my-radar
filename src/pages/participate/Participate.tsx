@@ -48,6 +48,7 @@ export const Participate = () => {
       <Input label="Name" value={name} onChange={setName} />
 
       <Button
+        disabled={name.trim() === ""}
         onClick={() => {
           insertParticipant({
             variables: { participant: { chartId, name, color: Colors.blue } },

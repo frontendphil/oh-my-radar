@@ -127,4 +127,21 @@ describe("Participate", () => {
       expect(screen.getByText("Thank you")).toBeInTheDocument()
     })
   })
+
+  it("disables the submit button when the user has not entered a name.", async () => {
+    await renderChart("chart-id")
+
+    expect(screen.getByRole("button", { name: "Submit" })).toBeDisabled()
+  })
+
+  it("enables the submit button when the user has entered a name.", async () => {
+    await renderChart("chart-id")
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "John Doe"
+    )
+
+    expect(screen.getByRole("button", { name: "Submit" })).toBeEnabled()
+  })
 })
