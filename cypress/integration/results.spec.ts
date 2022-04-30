@@ -17,7 +17,7 @@ describe("Results", () => {
         )
 
         cy.location().then((location) => {
-          const [, id] = location.pathname.split("/results/")
+          const [, id] = location.pathname.split("/admin/")
 
           cy.visit(`${location.origin}/results/${id}`)
 
