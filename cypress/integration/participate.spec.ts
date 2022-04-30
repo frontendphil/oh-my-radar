@@ -17,7 +17,9 @@ describe("Participate", () => {
         )
 
         cy.location().then((location) => {
-          cy.visit(url.replace("http://localhost", location.origin))
+          const [, id] = location.pathname.split("/participate/")
+
+          cy.visit(`${location.origin}/participate/${id}`)
 
           cy.waitFor("network")
 
