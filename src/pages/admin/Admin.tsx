@@ -17,6 +17,8 @@ import { Dimensions } from "./Dimensions"
 export const Admin = () => {
   const { id } = useParams()
 
+  invariant(id, "Cannot show a chart without an id.")
+
   const [configuration, updateConfiguration] = useConfiguration()
 
   const { loading, data } = useAdminGetChartQuery({ variables: { id } })
@@ -53,8 +55,6 @@ export const Admin = () => {
       variables: { pk: { id }, payload: { title, min, max } },
     })
   }
-
-  const origin = "Cypress" in window ? "http://localhost" : location.origin
 
   return (
     <div className="flex h-full">
@@ -165,17 +165,25 @@ export const Admin = () => {
             disabled
             label="Participant view"
             hint="Give this link to the people who should fill out this chart."
-            value={`${origin}/participate/${id}`}
+            value={resourceURL("participate", id)}
           />
 
           <Input
             disabled
             label="Results view"
             hint="Use this link to see all answers that have been submitted. Everyone with this link can see the results."
-            value={`${origin}/results/${id}`}
+            value={resourceURL("results", id)}
           />
         </div>
       </div>
     </div>
   )
+}
+
+const resourceURL = (resource: string, id: string) => {
+  if ("Cypress" in window) {
+    return `http://test-host.com/${resource}/test-id`
+  }
+
+  return `${location.origin}/${resource}/${id}`
 }
