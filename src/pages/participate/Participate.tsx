@@ -1,7 +1,7 @@
 import invariant from "invariant"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { Button, Input } from "../../form-controls"
+import { Button, Input, InputWithButton } from "../../form-controls"
 import {
   Colors,
   RadarChart,
@@ -45,40 +45,40 @@ export const Participate = () => {
         <Selection active name="" value={selection} onChange={setSelection} />
       </RadarChart>
 
-      <Input label="Name" value={name} onChange={setName} />
+      <InputWithButton label="Name" value={name} onChange={setName}>
+        <Button
+          disabled={name.trim() === ""}
+          onClick={() => {
+            insertParticipant({
+              variables: { participant: { chartId, name, color: Colors.blue } },
+              onCompleted: (data) => {
+                invariant(
+                  data.insert_participants_one,
+                  "Could not insert participant"
+                )
 
-      <Button
-        disabled={name.trim() === ""}
-        onClick={() => {
-          insertParticipant({
-            variables: { participant: { chartId, name, color: Colors.blue } },
-            onCompleted: (data) => {
-              invariant(
-                data.insert_participants_one,
-                "Could not insert participant"
-              )
+                const { id: participantId } = data.insert_participants_one
 
-              const { id: participantId } = data.insert_participants_one
-
-              insertSelections({
-                variables: {
-                  selections: Object.entries(selection).map(
-                    ([dimensionId, value]) => ({
-                      chartId,
-                      dimensionId,
-                      participantId,
-                      value,
-                    })
-                  ),
-                },
-                onCompleted: () => setFinished(true),
-              })
-            },
-          })
-        }}
-      >
-        Submit
-      </Button>
+                insertSelections({
+                  variables: {
+                    selections: Object.entries(selection).map(
+                      ([dimensionId, value]) => ({
+                        chartId,
+                        dimensionId,
+                        participantId,
+                        value,
+                      })
+                    ),
+                  },
+                  onCompleted: () => setFinished(true),
+                })
+              },
+            })
+          }}
+        >
+          Submit
+        </Button>
+      </InputWithButton>
     </div>
   )
 }
