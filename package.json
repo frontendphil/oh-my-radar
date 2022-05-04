@@ -51,7 +51,7 @@
     "@typescript-eslint/eslint-plugin": "5.22.0",
     "@typescript-eslint/parser": "5.22.0",
     "apollo": "2.33.11",
-    "autoprefixer": "10.4.6",
+    "autoprefixer": "10.4.7",
     "cross-fetch": "3.1.5",
     "css-loader": "6.7.1",
     "cypress": "9.6.0",
