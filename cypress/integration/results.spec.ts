@@ -22,8 +22,6 @@ describe("Results", () => {
           cy.visit(`${location.origin}/results/${id}`)
 
           cy.waitFor("network")
-
-          cy.percySnapshot()
         })
       })
   })

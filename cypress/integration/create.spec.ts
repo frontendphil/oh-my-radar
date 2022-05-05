@@ -3,8 +3,6 @@ describe("Create", () => {
     cy.visit("/")
 
     cy.findByRole("button", { name: "Create new chart" }).should("exist")
-
-    cy.percySnapshot()
   })
 
   it("creates default dimensions and range for a chart.", () => {
@@ -25,7 +23,5 @@ describe("Create", () => {
     cy.findByRole("figure", { name: "Three" }).should("exist")
     cy.findByRole("presentation", { name: "Three - 1" }).should("exist")
     cy.findByRole("presentation", { name: "Three - 4" }).should("exist")
-
-    cy.percySnapshot()
   })
 })
