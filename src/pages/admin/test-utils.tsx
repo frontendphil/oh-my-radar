@@ -1,6 +1,5 @@
 import { MockedResponse } from "@apollo/client/testing"
-import { v4 } from "uuid"
-import { finishQueries, ItemType, render } from "../test-utils"
+import { finishQueries, ItemType, render, uuid } from "../test-utils"
 import { Admin } from "./Admin"
 import { AdminGetChartDocument, AdminGetChartQuery } from "./api"
 
@@ -25,7 +24,7 @@ export const createDimension = (
 
   ...dimension,
 
-  id: v4(),
+  id: uuid(),
 })
 
 const getChartMock = (

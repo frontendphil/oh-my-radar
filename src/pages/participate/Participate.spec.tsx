@@ -1,8 +1,7 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { v4 } from "uuid"
 import { Colors } from "../../radar-chart"
-import { finishMutations, finishQueries, render } from "../test-utils"
+import { finishMutations, finishQueries, render, uuid } from "../test-utils"
 import { Participate } from "./Participate"
 import { createChart, createDimension } from "./test-utils"
 import {
@@ -40,7 +39,7 @@ describe("Participate", () => {
     result: {
       data: {
         insert_participants_one: {
-          id: v4(),
+          id: uuid(),
         },
       },
     },
