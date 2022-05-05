@@ -22,8 +22,6 @@ describe("Participate", () => {
           cy.visit(`${location.origin}/participate/${id}`)
 
           cy.waitFor("network")
-
-          cy.percySnapshot()
         })
       })
   })
