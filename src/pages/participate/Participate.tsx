@@ -1,9 +1,10 @@
 import invariant from "invariant"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { Button, Input, InputWithButton } from "../../form-controls"
+import { Button, InputWithButton } from "../../form-controls"
 import {
   Colors,
+  Dimension,
   RadarChart,
   Selection,
   SelectionState,
@@ -47,7 +48,9 @@ export const Participate = () => {
 
       <InputWithButton label="Name" value={name} onChange={setName}>
         <Button
-          disabled={name.trim() === ""}
+          disabled={
+            name.trim() === "" || !isSelectionCompleted(dimensions, selection)
+          }
           onClick={() => {
             insertParticipant({
               variables: { participant: { chartId, name, color: Colors.blue } },
@@ -82,3 +85,8 @@ export const Participate = () => {
     </div>
   )
 }
+
+const isSelectionCompleted = (
+  dimensions: Dimension[],
+  selection: SelectionState
+): boolean => dimensions.every(({ id }) => selection[id] != null)
