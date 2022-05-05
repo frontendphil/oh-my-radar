@@ -11,9 +11,11 @@ jobs:
       - run: npm run update-graphql-schema
         env:
           HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
+          GRAPHQL_ENDPOINT: ${{ secrets.GRAPHQL_ENDPOINT }}
       - run: npm test -- --coverage --runInBand
         env:
           HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
+          GRAPHQL_ENDPOINT: ${{ secrets.GRAPHQL_ENDPOINT }}
       - uses: codecov/codecov-action@v3.1.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
