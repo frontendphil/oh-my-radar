@@ -17,6 +17,7 @@ jobs:
           HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
           GRAPHQL_ENDPOINT: ${{ secrets.GRAPHQL_ENDPOINT }}
       - uses: codecov/codecov-action@v3.1.0
+        if: ${{ !contains(github.event.pull_request.labels.*.name, 'renovate') }}
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unit
