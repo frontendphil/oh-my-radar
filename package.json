@@ -64,6 +64,7 @@
     "identity-obj-proxy": "3.0.0",
     "is-ci": "3.0.1",
     "jest": "28.0.3",
+    "jest-environment-jsdom": "^28.0.2",
     "jest-watch-typeahead": "1.1.0",
     "postcss": "8.4.13",
     "postcss-loader": "6.2.1",
