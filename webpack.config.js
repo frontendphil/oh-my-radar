@@ -36,6 +36,6 @@ module.exports = {
       template: "./public/index.html",
       publicPath: "/",
     }),
-    new EnvironmentPlugin("HASURA_ADMIN_SECRET"),
+    new EnvironmentPlugin("HASURA_ADMIN_SECRET", "GRAPHQL_ENDPOINT"),
   ],
 }
