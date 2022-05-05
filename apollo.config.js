@@ -2,7 +2,7 @@ const dotenv = require("dotenv")
 
 dotenv.config()
 
-const { HASURA_ADMIN_SECRET } = process.env
+const { HASURA_ADMIN_SECRET, GRAPHQL_ENDPOINT } = process.env
 
 module.exports = {
   client: {
@@ -12,7 +12,7 @@ module.exports = {
     excludes: ["**/api.ts"],
     service: {
       name: "oh-my-radar",
-      url: "https://graphql-dev.oh-my-radar.com/v1/graphql",
+      url: GRAPHQL_ENDPOINT,
       headers: {
         "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
       },

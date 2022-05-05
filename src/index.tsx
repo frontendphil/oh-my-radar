@@ -14,8 +14,12 @@ invariant(
   "HASURA_ADMIN_SECRET environment variable missing"
 )
 
+const GRAPHQL_ENDPOINT = process.env.GRAPHQL_ENDPOINT
+
+invariant(GRAPHQL_ENDPOINT, "GRAPHQL_ENDPOINT environment variable missing")
+
 const client = new ApolloClient({
-  uri: "https://graphql-dev.oh-my-radar.com/v1/graphql",
+  uri: GRAPHQL_ENDPOINT,
   cache: new InMemoryCache(),
   headers: {
     "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
