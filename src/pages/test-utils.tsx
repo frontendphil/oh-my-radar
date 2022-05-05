@@ -1,4 +1,5 @@
 import { act } from "react-dom/test-utils"
+import crypto from "crypto"
 import { render as baseRender } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { MockedProvider, MockedResponse } from "@apollo/client/testing"
@@ -50,3 +51,5 @@ export const render = (
 }
 
 export type ItemType<T> = T extends (infer U)[] ? U : never
+
+export const uuid = () => crypto.randomUUID()

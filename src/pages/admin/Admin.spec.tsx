@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { v4 } from "uuid"
-import { finishMutations } from "../test-utils"
+import { finishMutations, uuid } from "../test-utils"
 import { createChart, createDimension, renderChart } from "./test-utils"
 import {
   Charts_Set_Input,
@@ -67,7 +66,7 @@ describe("Admin", () => {
       result: {
         data: {
           insert_dimensions_one: {
-            id: v4(),
+            id: uuid(),
             ...dimension,
           },
         },

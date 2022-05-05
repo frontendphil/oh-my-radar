@@ -1,6 +1,5 @@
-import { v4 } from "uuid"
 import { Colors } from "../../radar-chart"
-import { ItemType } from "../test-utils"
+import { ItemType, uuid } from "../test-utils"
 import { ResultGetChartQuery } from "./api"
 
 type Chart = Omit<
@@ -28,7 +27,7 @@ export const createDimension = (
 
   ...dimension,
 
-  id: v4(),
+  id: uuid(),
 })
 
 type Participant = Omit<ItemType<Chart["participants"]>, "__typename">
@@ -43,7 +42,7 @@ export const createParticipant = (
 
   ...participant,
 
-  id: v4(),
+  id: uuid(),
 })
 
 type Selection = Omit<ItemType<Participant["selections"]>, "__typename">
@@ -51,7 +50,7 @@ type Selection = Omit<ItemType<Participant["selections"]>, "__typename">
 export const createSelection = (
   selection: Partial<Selection>
 ): ItemType<Participant["selections"]> => ({
-  dimensionId: v4(),
+  dimensionId: uuid(),
   value: -1,
 
   ...selection,

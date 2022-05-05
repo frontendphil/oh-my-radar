@@ -1,5 +1,4 @@
-import { v4 } from "uuid"
-import { ItemType } from "../test-utils"
+import { ItemType, uuid } from "../test-utils"
 import { ParticipantGetChartQuery } from "./api"
 
 type Chart = Omit<
@@ -26,5 +25,5 @@ export const createDimension = (
 
   ...dimension,
 
-  id: v4(),
+  id: uuid(),
 })
