@@ -8,7 +8,6 @@ module.exports = {
   client: {
     name: "oh-my-radar",
     tagName: "gql",
-    localSchemaFile: "schema.graphql",
     excludes: ["**/api.ts"],
     service: {
       name: "oh-my-radar",
