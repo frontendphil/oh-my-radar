@@ -11,6 +11,8 @@ import {
 } from "./api"
 
 describe("Admin", () => {
+  const chartId = "chart-id"
+
   const mutateChartMock = (id: string, payload: Charts_Set_Input) => ({
     request: {
       query: UpdateChartDocument,
@@ -29,13 +31,13 @@ describe("Admin", () => {
   describe("Title", () => {
     it("is possible to change the title of the cart.", async () => {
       const chart = createChart({ title: "Initial title" })
-      const updateMock = mutateChartMock("chart-id", {
+      const updateMock = mutateChartMock(chartId, {
         title: "Changed title",
         min: chart.min,
         max: chart.max,
       })
 
-      await renderChart("chart-id", { mocks: [updateMock], chart })
+      await renderChart({ chartId, mocks: [updateMock], chart })
 
       await userEvent.clear(screen.getByRole("textbox", { name: "Title" }))
 
@@ -92,11 +94,11 @@ describe("Admin", () => {
     describe("Adding a new dimension.", () => {
       it("immediately shows the new dimension but disables it.", async () => {
         const insertMock = insertDimensionMock({
-          chartId: "chart-id",
+          chartId,
           title: "New dimension",
         })
 
-        await renderChart("chart-id", { mocks: [insertMock] })
+        await renderChart({ chartId, mocks: [insertMock] })
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
@@ -115,11 +117,11 @@ describe("Admin", () => {
 
       it("enables the dimension when it has been added.", async () => {
         const insertMock = insertDimensionMock({
-          chartId: "chart-id",
+          chartId,
           title: "New dimension",
         })
 
-        await renderChart("chart-id", { mocks: [insertMock] })
+        await renderChart({ chartId, mocks: [insertMock] })
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Add dimension" }),
@@ -144,7 +146,7 @@ describe("Admin", () => {
 
       const deleteMock = deleteDimensionMock(dimension.id)
 
-      await renderChart("chart-id", {
+      await renderChart({
         chart: {
           dimensions: [dimension],
         },
@@ -195,13 +197,13 @@ describe("Admin", () => {
     it("is possible to change the upper bound of the selection range.", async () => {
       const chart = createChart({ dimensions })
 
-      const updateMock = mutateChartMock("chart-id", {
+      const updateMock = mutateChartMock(chartId, {
         title: chart.title,
         min: chart.min,
         max: 10,
       })
 
-      await renderChart("chart-id", { chart, mocks: [updateMock] })
+      await renderChart({ chartId, chart, mocks: [updateMock] })
 
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Max value" })
@@ -222,13 +224,13 @@ describe("Admin", () => {
     it("is possible to change the lower bound of the selection range", async () => {
       const chart = createChart({ dimensions })
 
-      const updateMock = mutateChartMock("chart-id", {
+      const updateMock = mutateChartMock(chartId, {
         title: chart.title,
         max: chart.max,
         min: 0,
       })
 
-      await renderChart("chart-id", { chart, mocks: [updateMock] })
+      await renderChart({ chartId, chart, mocks: [updateMock] })
 
       await userEvent.clear(
         screen.getByRole("spinbutton", { name: "Min value" })
@@ -249,13 +251,13 @@ describe("Admin", () => {
     it("is not possible to enter an upper bound that is below the lower bound.", async () => {
       const chart = createChart({ min: 4, max: 4 })
 
-      const updateMock = mutateChartMock("chart-id", {
+      const updateMock = mutateChartMock(chartId, {
         title: chart.title,
         min: chart.min,
         max: chart.max,
       })
 
-      await renderChart("chart-id", { chart, mocks: [updateMock] })
+      await renderChart({ chartId, chart, mocks: [updateMock] })
 
       await setMax(3)
 
@@ -271,13 +273,13 @@ describe("Admin", () => {
     it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
       const chart = createChart({ min: 3, max: 5 })
 
-      const updateMock = mutateChartMock("chart-id", {
+      const updateMock = mutateChartMock(chartId, {
         title: chart.title,
         max: chart.max,
         min: chart.min,
       })
 
-      await renderChart("chart-id", { chart, mocks: [updateMock] })
+      await renderChart({ chartId, chart, mocks: [updateMock] })
 
       await setMin(6)
 
@@ -292,7 +294,7 @@ describe("Admin", () => {
   describe("Links", () => {
     describe("Participants", () => {
       it("shows a link to the view for participants.", async () => {
-        await renderChart("chart-id")
+        await renderChart()
 
         expect(
           screen.getByRole("textbox", { name: "Participant view" })
@@ -300,7 +302,7 @@ describe("Admin", () => {
       })
 
       it("shows disables the input for the participant view.", async () => {
-        await renderChart("chart-id")
+        await renderChart()
 
         expect(
           screen.getByRole("textbox", { name: "Participant view" })
@@ -308,7 +310,7 @@ describe("Admin", () => {
       })
 
       it("explains the participants view.", async () => {
-        await renderChart("chart-id")
+        await renderChart()
 
         expect(
           screen.getByRole("textbox", { name: "Participant view" })
@@ -320,7 +322,7 @@ describe("Admin", () => {
 
     describe("Results", () => {
       it("shows a link to the results view.", async () => {
-        await renderChart("chart-id")
+        await renderChart()
 
         expect(
           screen.getByRole("textbox", { name: "Results view" })
@@ -328,7 +330,7 @@ describe("Admin", () => {
       })
 
       it("shows disables the input for results view.", async () => {
-        await renderChart("chart-id")
+        await renderChart()
 
         expect(
           screen.getByRole("textbox", { name: "Results view" })
@@ -336,7 +338,7 @@ describe("Admin", () => {
       })
 
       it("explains the results view.", async () => {
-        await renderChart("chart-id")
+        await renderChart()
 
         expect(
           screen.getByRole("textbox", { name: "Results view" })

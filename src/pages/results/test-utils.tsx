@@ -1,6 +1,8 @@
+import { MockedResponse } from "@apollo/client/testing"
 import { Colors } from "../../radar-chart"
-import { ItemType, uuid } from "../test-utils"
-import { ResultGetChartQuery } from "./api"
+import { finishQueries, ItemType, render, uuid } from "../test-utils"
+import { ResultGetChartDocument, ResultGetChartQuery } from "./api"
+import { Results } from "./Results"
 
 type Chart = Omit<
   NonNullable<ResultGetChartQuery["charts_by_pk"]>,
@@ -55,3 +57,44 @@ export const createSelection = (
 
   ...selection,
 })
+
+const getChartMock = (
+  id: string,
+  charts_by_pk: ResultGetChartQuery["charts_by_pk"]
+) => ({
+  request: {
+    query: ResultGetChartDocument,
+    variables: {
+      id,
+    },
+  },
+  result: {
+    data: {
+      charts_by_pk,
+    },
+  },
+})
+
+type RenderOptions = {
+  chartId?: string
+  mocks?: MockedResponse[]
+  chart?: Partial<Chart>
+}
+
+export const renderChart = async ({
+  chartId = "chart-id",
+  chart,
+  mocks = [],
+}: RenderOptions): Promise<ReturnType<typeof render>> => {
+  const chartMock = getChartMock(chartId, createChart(chart))
+
+  const renderResult = render(<Results />, {
+    mocks: [chartMock, ...mocks],
+    path: "/results/:id",
+    route: `/results/${chartId}`,
+  })
+
+  await finishQueries(chartMock)
+
+  return renderResult
+}
