@@ -1,36 +1,16 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { Colors } from "../../radar-chart"
-import { finishMutations, finishQueries, render, uuid } from "../test-utils"
-import { Participate } from "./Participate"
-import { createChart, createDimension } from "./test-utils"
+import { finishMutations, uuid } from "../test-utils"
+import { createDimension, renderChart } from "./test-utils"
 import {
   InsertParticipantDocument,
   InsertSelectionsDocument,
-  ParticipantGetChartDocument,
-  ParticipantGetChartQuery,
   Participants_Set_Input,
   Selection_Set_Input,
 } from "./api"
 
 describe("Participate", () => {
-  const getChartMock = (
-    id: string,
-    charts_by_pk: ParticipantGetChartQuery["charts_by_pk"]
-  ) => ({
-    request: {
-      query: ParticipantGetChartDocument,
-      variables: {
-        id,
-      },
-    },
-    result: {
-      data: {
-        charts_by_pk,
-      },
-    },
-  })
-
   const insertParticipantMock = (participant: Participants_Set_Input) => ({
     request: {
       query: InsertParticipantDocument,
@@ -75,16 +55,7 @@ describe("Participate", () => {
     }
 
     it("is possible to make a selection.", async () => {
-      const chart = createChart({ dimensions })
-      const chartMock = getChartMock("chart-id", chart)
-
-      render(<Participate />, {
-        mocks: [chartMock],
-        path: "/participate/:id",
-        route: "/participate/chart-id",
-      })
-
-      await finishQueries(chartMock)
+      await renderChart({ chart: { dimensions } })
 
       await selectValues()
 
@@ -102,12 +73,11 @@ describe("Participate", () => {
     })
 
     it("it creates all necessary data when the user hits submit.", async () => {
-      const chart = createChart({ dimensions })
-      const chartMock = getChartMock("chart-id", chart)
+      const chartId = "chart-id"
 
       const participantMock = insertParticipantMock({
         name: "John Doe",
-        chartId: "chart-id",
+        chartId,
         color: Colors.blue,
       })
 
@@ -121,32 +91,30 @@ describe("Participate", () => {
 
       const selectionsMock = insertSelectionsMock([
         {
-          chartId: "chart-id",
+          chartId,
           dimensionId: dimensionOne.id,
           participantId,
           value: 1,
         },
         {
-          chartId: "chart-id",
+          chartId,
           dimensionId: dimensionTwo.id,
           participantId,
           value: 1,
         },
         {
-          chartId: "chart-id",
+          chartId,
           dimensionId: dimensionThree.id,
           participantId,
           value: 1,
         },
       ])
 
-      render(<Participate />, {
-        mocks: [chartMock, participantMock, selectionsMock],
-        path: "/participate/:id",
-        route: "/participate/chart-id",
+      await renderChart({
+        chartId,
+        chart: { dimensions },
+        mocks: [participantMock, selectionsMock],
       })
-
-      await finishQueries(chartMock)
 
       await selectValues()
 
@@ -161,5 +129,42 @@ describe("Participate", () => {
 
       expect(screen.getByText("Thank you")).toBeInTheDocument()
     })
+  })
+
+  it("disabled the submit button when the user has not made a complete selection.", async () => {
+    const dimensionOne = createDimension({ title: "One" })
+    const dimensionTwo = createDimension({ title: "Two" })
+    const dimensionThree = createDimension({ title: "Three" })
+
+    const dimensions = [dimensionOne, dimensionTwo, dimensionThree]
+
+    await renderChart({ chart: { dimensions } })
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "John Doe"
+    )
+
+    await userEvent.click(screen.getByRole("radio", { name: "One - 1" }))
+    await userEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
+
+    expect(screen.getByRole("button", { name: "Submit" })).toBeDisabled()
+  })
+
+  it("disables the submit button when the user has not entered a name.", async () => {
+    await renderChart()
+
+    expect(screen.getByRole("button", { name: "Submit" })).toBeDisabled()
+  })
+
+  it("enables the submit button when the user has entered a name.", async () => {
+    await renderChart()
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "John Doe"
+    )
+
+    expect(screen.getByRole("button", { name: "Submit" })).toBeEnabled()
   })
 })

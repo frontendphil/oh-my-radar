@@ -1,9 +1,10 @@
 import invariant from "invariant"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { Button, Input } from "../../form-controls"
+import { Button, InputWithButton } from "../../form-controls"
 import {
   Colors,
+  Dimension,
   RadarChart,
   Selection,
   SelectionState,
@@ -40,44 +41,58 @@ export const Participate = () => {
   const { title, dimensions, min, max } = data.charts_by_pk
 
   return (
-    <div className="m-24">
+    <div className="mt-24 flex flex-col items-center justify-center gap-12">
       <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-        <Selection active name="" value={selection} onChange={setSelection} />
+        <Selection
+          active
+          name={name}
+          color={Colors.purple}
+          value={selection}
+          onChange={setSelection}
+        />
       </RadarChart>
 
-      <Input label="Name" value={name} onChange={setName} />
+      <InputWithButton label="Name" value={name} onChange={setName}>
+        <Button
+          disabled={
+            name.trim() === "" || !isSelectionCompleted(dimensions, selection)
+          }
+          onClick={() => {
+            insertParticipant({
+              variables: { participant: { chartId, name, color: Colors.blue } },
+              onCompleted: (data) => {
+                invariant(
+                  data.insert_participants_one,
+                  "Could not insert participant"
+                )
 
-      <Button
-        onClick={() => {
-          insertParticipant({
-            variables: { participant: { chartId, name, color: Colors.blue } },
-            onCompleted: (data) => {
-              invariant(
-                data.insert_participants_one,
-                "Could not insert participant"
-              )
+                const { id: participantId } = data.insert_participants_one
 
-              const { id: participantId } = data.insert_participants_one
-
-              insertSelections({
-                variables: {
-                  selections: Object.entries(selection).map(
-                    ([dimensionId, value]) => ({
-                      chartId,
-                      dimensionId,
-                      participantId,
-                      value,
-                    })
-                  ),
-                },
-                onCompleted: () => setFinished(true),
-              })
-            },
-          })
-        }}
-      >
-        Submit
-      </Button>
+                insertSelections({
+                  variables: {
+                    selections: Object.entries(selection).map(
+                      ([dimensionId, value]) => ({
+                        chartId,
+                        dimensionId,
+                        participantId,
+                        value,
+                      })
+                    ),
+                  },
+                  onCompleted: () => setFinished(true),
+                })
+              },
+            })
+          }}
+        >
+          Submit
+        </Button>
+      </InputWithButton>
     </div>
   )
 }
+
+const isSelectionCompleted = (
+  dimensions: Dimension[],
+  selection: SelectionState
+): boolean => dimensions.every(({ id }) => selection[id] != null)
