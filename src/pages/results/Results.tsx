@@ -1,5 +1,6 @@
 import invariant from "invariant"
 import { useParams } from "react-router-dom"
+import { Canvas, SidePanel, View } from "../../layout"
 
 import { Colors, Participant, RadarChart, Selection } from "../../radar-chart"
 import { useResultGetChartQuery } from "./api"
@@ -24,8 +25,8 @@ export const Results = () => {
   }))
 
   return (
-    <div className="grid grid-cols-2">
-      <div className="m-24">
+    <View>
+      <Canvas>
         <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
           {participantsWithColors.map(({ id, name, color, selections }) => (
             <Selection
@@ -42,15 +43,14 @@ export const Results = () => {
             />
           ))}
         </RadarChart>
-      </div>
+      </Canvas>
 
-      <div className="mt-24">
+      <SidePanel>
         <Participants
           participants={participantsWithColors.map(toParticipant)}
-          onChange={() => {}}
         />
-      </div>
-    </div>
+      </SidePanel>
+    </View>
   )
 }
 
