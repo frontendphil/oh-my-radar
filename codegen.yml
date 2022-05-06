@@ -1,6 +1,8 @@
 overwrite: true
 schema:
-  - schema.graphql
+  - ${GRAPHQL_ENDPOINT}:
+      headers:
+        x-hasura-admin-secret: ${HASURA_ADMIN_SECRET}
 generates:
   src/pages/create/api.ts:
     documents: src/pages/create/**/*.{ts,graphql}
