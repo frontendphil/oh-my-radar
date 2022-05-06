@@ -4,55 +4,6 @@ import { Slots } from "./Slots"
 import { Step } from "./Step"
 import { Colors, SelectionState } from "./types"
 
-type ColorConfiguration = {
-  fill: string
-  stroke: string
-}
-
-export const getSelectionColor = (color: Colors): ColorConfiguration =>
-  colors[color].plane
-
-const colors = {
-  [Colors.pink]: {
-    plane: {
-      fill: "fill-pink-200",
-      stroke: "stroke-pink-700",
-    },
-    circle: {
-      hover: "hover:fill-pink-500",
-      selected: "fill-pink-500",
-    },
-  },
-  [Colors.blue]: {
-    plane: {
-      fill: "fill-blue-200",
-      stroke: "stroke-blue-700",
-    },
-    circle: { hover: "hover:fill-blue-500", selected: "fill-blue-500" },
-  },
-  [Colors.green]: {
-    plane: {
-      fill: "fill-emerald-200",
-      stroke: "stroke-emerald-700",
-    },
-    circle: { hover: "hover:fill-emerald-500", selected: "fill-emerald-500" },
-  },
-  [Colors.purple]: {
-    plane: {
-      fill: "fill-purple-200",
-      stroke: "stroke-purple-700",
-    },
-    circle: { hover: "hover:fill-purple-500", selected: "fill-purple-500" },
-  },
-  [Colors.yellow]: {
-    plane: {
-      fill: "fill-yellow-200",
-      stroke: "stroke-yellow-700",
-    },
-    circle: { hover: "hover:fill-yellow-500", selected: "fill-yellow-500" },
-  },
-}
-
 type Props = {
   name: string
   value?: SelectionState
@@ -120,4 +71,53 @@ export function Selection({
       </Slots>
     </>
   )
+}
+
+type ColorConfiguration = {
+  fill: string
+  stroke: string
+}
+
+export const getSelectionColor = (color: Colors): ColorConfiguration =>
+  colors[color].plane
+
+const colors = {
+  [Colors.pink]: {
+    plane: {
+      fill: "fill-pink-200",
+      stroke: "stroke-pink-700",
+    },
+    circle: {
+      hover: "hover:fill-pink-500",
+      selected: "fill-pink-500",
+    },
+  },
+  [Colors.blue]: {
+    plane: {
+      fill: "fill-blue-200",
+      stroke: "stroke-blue-700",
+    },
+    circle: { hover: "hover:fill-blue-500", selected: "fill-blue-500" },
+  },
+  [Colors.green]: {
+    plane: {
+      fill: "fill-emerald-200",
+      stroke: "stroke-emerald-700",
+    },
+    circle: { hover: "hover:fill-emerald-500", selected: "fill-emerald-500" },
+  },
+  [Colors.purple]: {
+    plane: {
+      fill: "fill-purple-200",
+      stroke: "stroke-purple-700",
+    },
+    circle: { hover: "hover:fill-purple-500", selected: "fill-purple-500" },
+  },
+  [Colors.yellow]: {
+    plane: {
+      fill: "fill-yellow-200",
+      stroke: "stroke-yellow-700",
+    },
+    circle: { hover: "hover:fill-yellow-500", selected: "fill-yellow-500" },
+  },
 }
