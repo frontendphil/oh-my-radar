@@ -18,15 +18,20 @@ export const Results = () => {
 
   const { title, min, max, dimensions, participants } = data.charts_by_pk
 
+  const participantsWithColors = participants.map((participant, index) => ({
+    ...participant,
+    color: getColor(index),
+  }))
+
   return (
     <div className="grid grid-cols-2">
       <div className="m-24">
         <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-          {participants.map(({ id, name, color, selections }) => (
+          {participantsWithColors.map(({ id, name, color, selections }) => (
             <Selection
               key={id}
               name={name}
-              color={isColor(color) ? color : undefined}
+              color={color}
               value={selections.reduce(
                 (result, { dimensionId, value }) => ({
                   ...result,
@@ -41,15 +46,13 @@ export const Results = () => {
 
       <div className="mt-24">
         <Participants
-          participants={participants.map(toParticipant)}
+          participants={participantsWithColors.map(toParticipant)}
           onChange={() => {}}
         />
       </div>
     </div>
   )
 }
-
-const isColor = (color: unknown): color is Colors => true
 
 const toParticipant = (participant: unknown): Participant => {
   invariant(isParticipant(participant), "No participant")
@@ -58,3 +61,9 @@ const toParticipant = (participant: unknown): Participant => {
 }
 
 const isParticipant = (participant: unknown): participant is Participant => true
+
+export const getColor = (index: number): Colors => {
+  const allColors = Object.values(Colors)
+
+  return allColors[index % allColors.length]
+}

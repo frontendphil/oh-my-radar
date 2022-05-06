@@ -4,10 +4,12 @@ import { Slots } from "./Slots"
 import { Step } from "./Step"
 import { Colors, SelectionState } from "./types"
 
+type AvailableColors = keyof typeof colors
+
 type Props = {
   name: string
   value?: SelectionState
-  color?: keyof typeof colors
+  color?: AvailableColors
   active?: boolean
   onChange?: (value: SelectionState) => void
 }
