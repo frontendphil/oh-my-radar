@@ -15,14 +15,24 @@ export const Participants = ({ participants }: Props) => {
       <List id={id}>
         {participants.map(({ id, name, color }) => (
           <ListItem key={id} aria-label={name}>
-            <div className="flex items-center gap-4">
-              <Color color={color} />
-
-              {name}
-            </div>
+            <Participant name={name} color={color} />
           </ListItem>
         ))}
       </List>
     </InputLayout>
+  )
+}
+
+const Participant = ({ color, name }: Pick<Participant, "color" | "name">) => {
+  const id = useId()
+
+  return (
+    <div className="flex items-center gap-4">
+      <input defaultChecked id={id} type="checkbox" />
+
+      <Color color={color} />
+
+      <label htmlFor={id}>{name}</label>
+    </div>
   )
 }
