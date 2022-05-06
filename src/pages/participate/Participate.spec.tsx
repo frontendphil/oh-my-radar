@@ -1,7 +1,7 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { Colors } from "../../radar-chart"
-import { finishMutations } from "../test-utils"
+import { finishMutations, uuid } from "../test-utils"
 import { createDimension, renderChart } from "./test-utils"
 import {
   InsertParticipantDocument,
