@@ -41,9 +41,15 @@ export const Participate = () => {
   const { title, dimensions, min, max } = data.charts_by_pk
 
   return (
-    <div className="m-24">
+    <div className="mt-24 flex flex-col items-center justify-center gap-12">
       <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-        <Selection active name="" value={selection} onChange={setSelection} />
+        <Selection
+          active
+          name={name}
+          color={Colors.purple}
+          value={selection}
+          onChange={setSelection}
+        />
       </RadarChart>
 
       <InputWithButton label="Name" value={name} onChange={setName}>
