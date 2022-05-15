@@ -1,4 +1,4 @@
-import { HTMLAttributes, useId } from "react"
+import { useId } from "react"
 import { Color, Label } from "../../form-controls"
 import { InputLayout, List, ListItem } from "../../layout"
 import { Participant } from "../../radar-chart"
