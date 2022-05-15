@@ -56,7 +56,7 @@ type RenderOptions = {
 export const renderChart = async ({
   chartId = "chart-id",
   mocks = [],
-  chart = createChart(),
+  chart,
 }: RenderOptions = {}): Promise<ReturnType<typeof render>> => {
   const chartMock = getChartMock(chartId, createChart(chart))
 

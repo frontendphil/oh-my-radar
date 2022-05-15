@@ -13,6 +13,7 @@ import { useEffect } from "react"
 import { Form, FormGroup, Input, NumberInput } from "../../form-controls"
 import { useConfiguration } from "./useConfiguration"
 import { Dimensions } from "./Dimensions"
+import { Canvas, SidePanel, View } from "../../layout"
 
 export const Admin = () => {
   const { id } = useParams()
@@ -57,13 +58,13 @@ export const Admin = () => {
   }
 
   return (
-    <div className="flex h-full">
-      <div className="flex flex-1 items-center justify-center bg-gray-800">
+    <View>
+      <Canvas>
         <RadarChart title={title} dimensions={dimensions} range={range}>
           <Selection name="example" />
         </RadarChart>
-      </div>
-      <div className="sticky h-full border-l-2 border-slate-700 p-12">
+      </Canvas>
+      <SidePanel>
         <Form>
           <Input
             label="Title"
@@ -175,8 +176,8 @@ export const Admin = () => {
             value={resourceURL("results", id)}
           />
         </div>
-      </div>
-    </div>
+      </SidePanel>
+    </View>
   )
 }
 

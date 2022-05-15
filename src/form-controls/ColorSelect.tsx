@@ -79,7 +79,7 @@ type ColorProps = HTMLAttributes<HTMLDivElement> & {
   color: Colors
 }
 
-const Color = ({ color, ...rest }: ColorProps) => {
+export const Color = ({ color, ...rest }: ColorProps) => {
   const { fill, stroke } = getSelectionColor(color)
 
   return (

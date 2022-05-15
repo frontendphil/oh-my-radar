@@ -1,14 +1,25 @@
 import invariant from "invariant"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { Canvas, SidePanel, View } from "../../layout"
 
 import { Colors, Participant, RadarChart, Selection } from "../../radar-chart"
 import { useResultGetChartQuery } from "./api"
-import { Participants } from "./Participants"
+import { ParticipantSelect } from "./ParticipantSelect"
 
 export const Results = () => {
   const { id } = useParams()
+  const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
 
   const { loading, data } = useResultGetChartQuery({ variables: { id } })
+
+  useEffect(() => {
+    if (data?.charts_by_pk?.participants) {
+      setSelectedParticipants(
+        data?.charts_by_pk?.participants.map(({ id }) => id)
+      )
+    }
+  }, [data?.charts_by_pk?.participants])
 
   if (loading) {
     return null
@@ -18,38 +29,44 @@ export const Results = () => {
 
   const { title, min, max, dimensions, participants } = data.charts_by_pk
 
-  return (
-    <div className="grid grid-cols-2">
-      <div className="m-24">
-        <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-          {participants.map(({ id, name, color, selections }) => (
-            <Selection
-              key={id}
-              name={name}
-              color={isColor(color) ? color : undefined}
-              value={selections.reduce(
-                (result, { dimensionId, value }) => ({
-                  ...result,
-                  [dimensionId]: value,
-                }),
-                {}
-              )}
-            />
-          ))}
-        </RadarChart>
-      </div>
+  const participantsWithColors = participants.map((participant, index) => ({
+    ...participant,
+    color: getColor(index),
+  }))
 
-      <div className="mt-24">
-        <Participants
-          participants={participants.map(toParticipant)}
-          onChange={() => {}}
+  return (
+    <View>
+      <Canvas>
+        <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
+          {participantsWithColors
+            .filter(({ id }) => selectedParticipants.includes(id))
+            .map(({ id, name, color, selections }) => (
+              <Selection
+                key={id}
+                name={name}
+                color={color}
+                value={selections.reduce(
+                  (result, { dimensionId, value }) => ({
+                    ...result,
+                    [dimensionId]: value,
+                  }),
+                  {}
+                )}
+              />
+            ))}
+        </RadarChart>
+      </Canvas>
+
+      <SidePanel>
+        <ParticipantSelect
+          participants={participantsWithColors.map(toParticipant)}
+          value={selectedParticipants}
+          onChange={setSelectedParticipants}
         />
-      </div>
-    </div>
+      </SidePanel>
+    </View>
   )
 }
-
-const isColor = (color: unknown): color is Colors => true
 
 const toParticipant = (participant: unknown): Participant => {
   invariant(isParticipant(participant), "No participant")
@@ -58,3 +75,9 @@ const toParticipant = (participant: unknown): Participant => {
 }
 
 const isParticipant = (participant: unknown): participant is Participant => true
+
+export const getColor = (index: number): Colors => {
+  const allColors = Object.values(Colors)
+
+  return allColors[index % allColors.length]
+}
