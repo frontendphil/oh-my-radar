@@ -1,6 +1,6 @@
 import { useId } from "react"
 import { Color, Label } from "../../form-controls"
-import { InputLayout, List, ListItem } from "../../layout"
+import { Hint, InputLayout, List, ListItem } from "../../layout"
 import { Participant } from "../../radar-chart"
 
 type Props = {
@@ -11,6 +11,10 @@ type Props = {
 
 export const ParticipantSelect = ({ participants, value, onChange }: Props) => {
   const id = useId()
+
+  if (participants.length === 0) {
+    return <Hint>No submissions yet</Hint>
+  }
 
   return (
     <InputLayout label={<Label htmlFor={id}>Participants</Label>}>

@@ -57,4 +57,10 @@ describe("Results", () => {
       screen.queryByRole("figure", { name: participant.name })
     ).not.toBeInTheDocument()
   })
+
+  it("shows a message when no one has submitted something.", async () => {
+    await renderChart({ chart: { dimensions, participants: [] } })
+
+    expect(screen.getByText("No submissions yet")).toBeInTheDocument()
+  })
 })
