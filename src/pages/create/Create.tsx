@@ -1,7 +1,9 @@
 import invariant from "invariant"
 import { useNavigate } from "react-router-dom"
 import { PrimaryButton } from "../../form-controls"
+import { View } from "../../layout"
 import { useCreateChartMutation, useCreateDimensionsMutation } from "./api"
+import { Demo } from "./Demo"
 
 export const Create = () => {
   const navigate = useNavigate()
@@ -13,35 +15,43 @@ export const Create = () => {
   const loading = loadingChart || loadingDimensions
 
   return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <PrimaryButton
-        disabled={loading}
-        onClick={() =>
-          addChart({
-            variables: { chart: defaultChart() },
-            onCompleted: ({ insert_charts_one }) => {
-              invariant(
-                insert_charts_one,
-                "Something went wrong creating the chart."
-              )
+    <View>
+      <div className="grid h-screen w-full grid-cols-2 ">
+        <div className="p-24">
+          <Demo />
+        </div>
 
-              const { id } = insert_charts_one
+        <div className="flex items-center justify-center">
+          <PrimaryButton
+            disabled={loading}
+            onClick={() =>
+              addChart({
+                variables: { chart: defaultChart() },
+                onCompleted: ({ insert_charts_one }) => {
+                  invariant(
+                    insert_charts_one,
+                    "Something went wrong creating the chart."
+                  )
 
-              addDimensions({
-                variables: {
-                  dimensions: defaultDimensions(id),
-                },
-                onCompleted: () => {
-                  navigate(`/admin/${id}`)
+                  const { id } = insert_charts_one
+
+                  addDimensions({
+                    variables: {
+                      dimensions: defaultDimensions(id),
+                    },
+                    onCompleted: () => {
+                      navigate(`/admin/${id}`)
+                    },
+                  })
                 },
               })
-            },
-          })
-        }
-      >
-        {loading ? "Creating your chart..." : "Create new chart"}
-      </PrimaryButton>
-    </div>
+            }
+          >
+            {loading ? "Creating your chart..." : "Create your own chart"}
+          </PrimaryButton>
+        </div>
+      </div>
+    </View>
   )
 }
 
