@@ -1,6 +1,9 @@
 import invariant from "invariant"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { PrimaryButton } from "../../form-controls"
+import { View } from "../../layout"
+import { Colors, RadarChart, Selection } from "../../radar-chart"
 import { useCreateChartMutation, useCreateDimensionsMutation } from "./api"
 
 export const Create = () => {
@@ -13,35 +16,39 @@ export const Create = () => {
   const loading = loadingChart || loadingDimensions
 
   return (
-    <div className="flex h-screen w-full items-center justify-center">
-      <PrimaryButton
-        disabled={loading}
-        onClick={() =>
-          addChart({
-            variables: { chart: defaultChart() },
-            onCompleted: ({ insert_charts_one }) => {
-              invariant(
-                insert_charts_one,
-                "Something went wrong creating the chart."
-              )
+    <View>
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-12">
+        <Demo />
 
-              const { id } = insert_charts_one
+        <PrimaryButton
+          disabled={loading}
+          onClick={() =>
+            addChart({
+              variables: { chart: defaultChart() },
+              onCompleted: ({ insert_charts_one }) => {
+                invariant(
+                  insert_charts_one,
+                  "Something went wrong creating the chart."
+                )
 
-              addDimensions({
-                variables: {
-                  dimensions: defaultDimensions(id),
-                },
-                onCompleted: () => {
-                  navigate(`/admin/${id}`)
-                },
-              })
-            },
-          })
-        }
-      >
-        {loading ? "Creating your chart..." : "Create new chart"}
-      </PrimaryButton>
-    </div>
+                const { id } = insert_charts_one
+
+                addDimensions({
+                  variables: {
+                    dimensions: defaultDimensions(id),
+                  },
+                  onCompleted: () => {
+                    navigate(`/admin/${id}`)
+                  },
+                })
+              },
+            })
+          }
+        >
+          {loading ? "Creating your chart..." : "Create new chart"}
+        </PrimaryButton>
+      </div>
+    </View>
   )
 }
 
@@ -52,3 +59,49 @@ export const defaultDimensions = (chartId: string) => [
 ]
 
 export const defaultChart = () => ({ title: "New chart", min: 1, max: 4 })
+
+const useRandomSelection = () => {
+  const [selection, setSelection] = useState({})
+
+  useEffect(() => {
+    const randomizeSelection = () => {
+      setSelection({
+        acceleration: Math.floor(Math.random() * 5 + 1),
+        displacement: Math.floor(Math.random() * 5 + 1),
+        horsepower: Math.floor(Math.random() * 5 + 1),
+        mpg: Math.floor(Math.random() * 5 + 1),
+        weight: Math.floor(Math.random() * 5 + 1),
+      })
+    }
+
+    randomizeSelection()
+
+    const interval = setInterval(randomizeSelection, 5000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return selection
+}
+
+const Demo = () => {
+  const john = useRandomSelection()
+  const jane = useRandomSelection()
+
+  return (
+    <RadarChart
+      title="Demo"
+      range={[1, 5]}
+      dimensions={[
+        { id: "acceleration", title: "Acceleration" },
+        { id: "displacement", title: "Displacement" },
+        { id: "horsepower", title: "Horsepower" },
+        { id: "mpg", title: "MPG" },
+        { id: "weight", title: "Weight" },
+      ]}
+    >
+      <Selection name="Jane" value={jane} />
+      <Selection name="John" color={Colors.green} value={john} />
+    </RadarChart>
+  )
+}

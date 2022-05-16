@@ -51,7 +51,7 @@ export function Selection({
             aria-checked={value[id] === step}
             x={x}
             y={y}
-            className={`cursor-pointer ${
+            className={`cursor-pointer transition-all ${
               value[id] === step ? circle.selected : "fill-transparent"
             } stroke-transparent ${circle.hover} ${
               active ? "pointer-events-auto" : "pointer-events-none"
@@ -104,7 +104,7 @@ const colors = {
   [Colors.green]: {
     plane: {
       fill: "fill-emerald-200",
-      stroke: "stroke-emerald-700",
+      stroke: "stroke-emerald-600",
     },
     circle: { hover: "hover:fill-emerald-500", selected: "fill-emerald-500" },
   },

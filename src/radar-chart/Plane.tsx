@@ -41,7 +41,8 @@ export function Plane({ selection, label, fill, stroke }: PlaneProps) {
       role="figure"
       aria-label={label}
       d={d}
-      className={`pointer-events-none opacity-50 ${fill} ${stroke}`}
+      strokeWidth={3}
+      className={`pointer-events-none fill-transparent  transition-all ${stroke}`}
     />
   )
 }
