@@ -3,7 +3,7 @@ import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
 import { getStepsFromRange } from "./getStepsFromRange"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
-import { Dimension } from "./types"
+import { DimensionDescriptor } from "./types"
 
 type Slot = {
   x: number
@@ -13,7 +13,7 @@ type Slot = {
 
 type Props = {
   groupRole?: string
-  children: (dimension: Dimension, slot: Slot) => ReactNode
+  children: (dimension: DimensionDescriptor, slot: Slot) => ReactNode
 }
 
 export const Slots = ({ children, groupRole = "figure" }: Props) => {
