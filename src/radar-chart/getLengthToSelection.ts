@@ -1,4 +1,3 @@
-import { getStepsFromRange } from "./getStepsFromRange"
 import { Range } from "./types"
 
 export const getLengthToSelection = (
@@ -6,10 +5,9 @@ export const getLengthToSelection = (
   range: Range,
   value: number
 ): number => {
-  const steps = getStepsFromRange(range)
+  const [, max] = range
+
   const lineLength = diagramWidth / 2
 
-  const sectionWidth = lineLength / steps.length
-
-  return sectionWidth * (steps.indexOf(value) + 1)
+  return lineLength * (value / max)
 }

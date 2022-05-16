@@ -15,4 +15,11 @@ describe("getLengthToSelection", () => {
 
     expect(getLengthToSelection(diagramWidth, range, 2)).toEqual(25)
   })
+
+  it("is possible to get the length for a value in between steps.", () => {
+    const diagramWidth = 200
+    const range: Range = [1, 4]
+
+    expect(getLengthToSelection(diagramWidth, range, 3.5)).toEqual(87.5)
+  })
 })
