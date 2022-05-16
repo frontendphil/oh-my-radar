@@ -1,7 +1,15 @@
 import invariant from "invariant"
 import { useEffect, useId, useState } from "react"
 import { useParams } from "react-router-dom"
-import { Canvas, List, ListItem, SidePanel, View } from "../../layout"
+import { Label } from "../../form-controls"
+import {
+  Canvas,
+  InputLayout,
+  List,
+  ListItem,
+  SidePanel,
+  View,
+} from "../../layout"
 
 import {
   Aggregate,
@@ -16,7 +24,7 @@ import { ParticipantSelect } from "./ParticipantSelect"
 export const Results = () => {
   const { id } = useParams()
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
-  const [showAverage, setShowAverage] = useState(false)
+  const [aggregates, setAggregates] = useState({ average: false })
 
   const { loading, data } = useResultGetChartQuery({ variables: { id } })
 
@@ -62,7 +70,7 @@ export const Results = () => {
               />
             ))}
 
-          {showAverage && (
+          {aggregates.average && (
             <Aggregate
               name="Average"
               value={dimensions.reduce(
@@ -80,19 +88,45 @@ export const Results = () => {
       </Canvas>
 
       <SidePanel>
-        <ParticipantSelect
-          participants={participantsWithColors.map(toParticipant)}
-          value={selectedParticipants}
-          onChange={setSelectedParticipants}
-        />
+        <div className="flex flex-col gap-12">
+          <ParticipantSelect
+            participants={participantsWithColors.map(toParticipant)}
+            value={selectedParticipants}
+            onChange={setSelectedParticipants}
+          />
 
-        <List>
-          <ListItem>
-            <Average checked={showAverage} onChange={setShowAverage} />
-          </ListItem>
-        </List>
+          <Aggregates aggregates={aggregates} onChange={setAggregates} />
+        </div>
       </SidePanel>
     </View>
+  )
+}
+
+type AggregateState = {
+  average: boolean
+}
+
+type AggregateProps = {
+  aggregates: AggregateState
+  onChange: (aggregates: AggregateState) => void
+}
+
+const Aggregates = ({ aggregates, onChange }: AggregateProps) => {
+  const id = useId()
+
+  return (
+    <InputLayout label={<Label htmlFor={id}>Aggregates</Label>}>
+      <List id={id}>
+        <ListItem>
+          <Average
+            checked={aggregates.average}
+            onChange={(checked) =>
+              onChange({ ...aggregates, average: checked })
+            }
+          />
+        </ListItem>
+      </List>
+    </InputLayout>
   )
 }
 
