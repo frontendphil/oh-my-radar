@@ -80,14 +80,17 @@ type ColorProps = HTMLAttributes<HTMLDivElement> & {
 }
 
 export const Color = ({ color, ...rest }: ColorProps) => {
-  const { fill, stroke } = getSelectionColor(color)
-
   return (
     <div {...rest}>
       <VisuallyHidden>{ColorNames[color]}</VisuallyHidden>
 
       <svg width={16} height={16}>
-        <circle cx="50%" cy="50%" r={7} className={`${fill} ${stroke}`} />
+        <circle
+          cx="50%"
+          cy="50%"
+          r={6}
+          className={`fill-transparent stroke-2 ${getSelectionColor(color)}`}
+        />
       </svg>
     </div>
   )

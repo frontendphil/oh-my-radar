@@ -14,7 +14,7 @@ export const Dimension = ({ angle, diagramWidth }: DimensionProps) => {
         x2={diagramWidth}
         y2={diagramWidth / 2}
         markerEnd="url(#dimension-head)"
-        className="stroke-yellow-300"
+        className="stroke-slate-500 dark:stroke-slate-100"
       />
     </g>
   )
@@ -37,7 +37,7 @@ export const DimensionMarker = ({ size }: MarkerProps) => (
       d={`M 0,0 L ${size},${size} L 0,${2 * size}`}
       strokeLinejoin="round"
       strokeLinecap="round"
-      className="fill-transparent stroke-yellow-300"
+      className="fill-transparent stroke-slate-500 dark:stroke-slate-100"
     />
   </marker>
 )

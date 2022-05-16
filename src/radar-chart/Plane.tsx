@@ -7,11 +7,10 @@ import { SelectionState } from "./types"
 type PlaneProps = {
   label: string
   selection: SelectionState
-  fill: string
   stroke: string
 }
 
-export function Plane({ selection, label, fill, stroke }: PlaneProps) {
+export function Plane({ selection, label, stroke }: PlaneProps) {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()
