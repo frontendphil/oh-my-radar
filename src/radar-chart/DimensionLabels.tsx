@@ -15,7 +15,7 @@ export const DimensionLabels = () => {
     <>
       {dimensions.map(({ id, title }, index) => {
         const { x, y } = getPoint({
-          diagramWidth: diagramWidth + 2 * DIMENSION_OVERLAP + 40,
+          diagramWidth: diagramWidth + DIMENSION_OVERLAP,
           range,
           value: max,
           angle: getDimensionAngle(dimensions, index),

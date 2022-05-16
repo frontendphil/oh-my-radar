@@ -33,17 +33,18 @@ export const Text = ({ id, children, x, y }: TextProps) => {
     }
 
     const { width, height } = node.getBoundingClientRect()
-    const padding = 10
+    const paddingX = 10
+    const paddingY = 5
 
     const align = getAlign(x)
     const justify = getJustify(y)
 
     if (align === Align.left) {
-      setLeft(padding)
+      setLeft(paddingX)
     }
 
     if (align === Align.right) {
-      setLeft(-(width + padding))
+      setLeft(-(width + paddingX))
     }
 
     if (align === Align.center) {
@@ -51,11 +52,11 @@ export const Text = ({ id, children, x, y }: TextProps) => {
     }
 
     if (justify === Justify.top) {
-      setTop(padding)
+      setTop(paddingY)
     }
 
     if (justify === Justify.bottom) {
-      setTop(-(height + padding))
+      setTop(-(height + paddingY))
     }
 
     if (justify === Justify.center) {
