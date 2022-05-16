@@ -2,14 +2,21 @@ import invariant from "invariant"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Canvas, SidePanel, View } from "../../layout"
-
-import { Colors, Participant, RadarChart, Selection } from "../../radar-chart"
+import {
+  Aggregate,
+  Colors,
+  Participant,
+  RadarChart,
+  Selection,
+} from "../../radar-chart"
+import { Aggregates } from "./Aggregates"
 import { useResultGetChartQuery } from "./api"
 import { ParticipantSelect } from "./ParticipantSelect"
 
 export const Results = () => {
   const { id } = useParams()
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
+  const [aggregates, setAggregates] = useState({ average: false })
 
   const { loading, data } = useResultGetChartQuery({ variables: { id } })
 
@@ -54,15 +61,34 @@ export const Results = () => {
                 )}
               />
             ))}
+
+          {aggregates.average && (
+            <Aggregate
+              name="Average"
+              value={dimensions.reduce(
+                (result, { id, selections_aggregate }) => {
+                  return {
+                    ...result,
+                    [id]: selections_aggregate.aggregate?.avg?.value,
+                  }
+                },
+                {}
+              )}
+            />
+          )}
         </RadarChart>
       </Canvas>
 
       <SidePanel>
-        <ParticipantSelect
-          participants={participantsWithColors.map(toParticipant)}
-          value={selectedParticipants}
-          onChange={setSelectedParticipants}
-        />
+        <div className="flex flex-col gap-12">
+          <ParticipantSelect
+            participants={participantsWithColors.map(toParticipant)}
+            value={selectedParticipants}
+            onChange={setSelectedParticipants}
+          />
+
+          <Aggregates aggregates={aggregates} onChange={setAggregates} />
+        </div>
       </SidePanel>
     </View>
   )

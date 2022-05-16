@@ -1,17 +1,18 @@
 import invariant from "invariant"
+import { SVGAttributes } from "react"
 import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
 import { AvailableColors } from "./Step"
 import { Colors, SelectionState } from "./types"
 
-type PlaneProps = {
+type PlaneProps = SVGAttributes<SVGPathElement> & {
   label: string
   selection: SelectionState
   color: AvailableColors
 }
 
-export function Plane({ selection, label, color }: PlaneProps) {
+export function Plane({ selection, label, color, ...rest }: PlaneProps) {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()
@@ -38,6 +39,7 @@ export function Plane({ selection, label, color }: PlaneProps) {
 
   return (
     <path
+      {...rest}
       role="figure"
       aria-label={label}
       d={d}
