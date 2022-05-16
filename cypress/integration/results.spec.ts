@@ -4,7 +4,7 @@ describe("Results", () => {
   it("is possible to see the results.", () => {
     cy.visit("/")
 
-    cy.findByRole("button", { name: "Create new chart" }).click()
+    cy.findByRole("button", { name: "Create your own chart" }).click()
 
     cy.waitFor("network")
 

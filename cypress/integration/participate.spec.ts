@@ -4,7 +4,7 @@ describe("Participate", () => {
   it("is possible to participate in a chart.", () => {
     cy.visit("/")
 
-    cy.findByRole("button", { name: "Create new chart" }).click()
+    cy.findByRole("button", { name: "Create your own chart" }).click()
 
     cy.waitFor("network")
 
