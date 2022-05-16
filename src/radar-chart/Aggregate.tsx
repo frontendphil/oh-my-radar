@@ -17,7 +17,12 @@ export const Aggregate = ({ name, value }: Props) => {
 
   return (
     <>
-      <Plane label={name} selection={value} color={Colors.green} />
+      <Plane
+        label={name}
+        selection={value}
+        color={Colors.green}
+        strokeDasharray="4"
+      />
 
       {dimensions.map(({ id }, index) => {
         const angle = getDimensionAngle(dimensions, index)

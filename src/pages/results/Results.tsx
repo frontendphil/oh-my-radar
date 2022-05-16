@@ -1,16 +1,7 @@
 import invariant from "invariant"
-import { useEffect, useId, useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { Label } from "../../form-controls"
-import {
-  Canvas,
-  InputLayout,
-  List,
-  ListItem,
-  SidePanel,
-  View,
-} from "../../layout"
-
+import { Canvas, SidePanel, View } from "../../layout"
 import {
   Aggregate,
   Colors,
@@ -18,6 +9,7 @@ import {
   RadarChart,
   Selection,
 } from "../../radar-chart"
+import { Aggregates } from "./Aggregates"
 import { useResultGetChartQuery } from "./api"
 import { ParticipantSelect } from "./ParticipantSelect"
 
@@ -99,57 +91,6 @@ export const Results = () => {
         </div>
       </SidePanel>
     </View>
-  )
-}
-
-type AggregateState = {
-  average: boolean
-}
-
-type AggregateProps = {
-  aggregates: AggregateState
-  onChange: (aggregates: AggregateState) => void
-}
-
-const Aggregates = ({ aggregates, onChange }: AggregateProps) => {
-  const id = useId()
-
-  return (
-    <InputLayout label={<Label htmlFor={id}>Aggregates</Label>}>
-      <List id={id}>
-        <ListItem>
-          <Average
-            checked={aggregates.average}
-            onChange={(checked) =>
-              onChange({ ...aggregates, average: checked })
-            }
-          />
-        </ListItem>
-      </List>
-    </InputLayout>
-  )
-}
-
-type AverageProps = {
-  checked: boolean
-  onChange: (checked: boolean) => void
-}
-
-const Average = ({ checked, onChange }: AverageProps) => {
-  const id = useId()
-
-  return (
-    <div className="flex items-center">
-      <input
-        type="checkbox"
-        id={id}
-        className="mr-4"
-        checked={checked}
-        onChange={(event) => onChange(event.target.checked)}
-      />
-
-      <label htmlFor={id}>Average</label>
-    </div>
   )
 }
 
