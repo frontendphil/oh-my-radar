@@ -2,13 +2,13 @@ describe("Create", () => {
   it("is possible to create a new chart.", () => {
     cy.visit("/")
 
-    cy.findByRole("button", { name: "Create new chart" }).should("exist")
+    cy.findByRole("button", { name: "Create your own chart" }).should("exist")
   })
 
   it("creates default dimensions and range for a chart.", () => {
     cy.visit("/")
 
-    cy.findByRole("button", { name: "Create new chart" }).click()
+    cy.findByRole("button", { name: "Create your own chart" }).click()
 
     cy.waitFor("network")
 

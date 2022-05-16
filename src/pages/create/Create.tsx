@@ -17,36 +17,40 @@ export const Create = () => {
 
   return (
     <View>
-      <div className="flex h-screen w-full flex-col items-center justify-center gap-12">
-        <Demo />
+      <div className="grid h-screen w-full grid-cols-2 ">
+        <div className="p-24">
+          <Demo />
+        </div>
 
-        <PrimaryButton
-          disabled={loading}
-          onClick={() =>
-            addChart({
-              variables: { chart: defaultChart() },
-              onCompleted: ({ insert_charts_one }) => {
-                invariant(
-                  insert_charts_one,
-                  "Something went wrong creating the chart."
-                )
+        <div className="flex items-center justify-center">
+          <PrimaryButton
+            disabled={loading}
+            onClick={() =>
+              addChart({
+                variables: { chart: defaultChart() },
+                onCompleted: ({ insert_charts_one }) => {
+                  invariant(
+                    insert_charts_one,
+                    "Something went wrong creating the chart."
+                  )
 
-                const { id } = insert_charts_one
+                  const { id } = insert_charts_one
 
-                addDimensions({
-                  variables: {
-                    dimensions: defaultDimensions(id),
-                  },
-                  onCompleted: () => {
-                    navigate(`/admin/${id}`)
-                  },
-                })
-              },
-            })
-          }
-        >
-          {loading ? "Creating your chart..." : "Create new chart"}
-        </PrimaryButton>
+                  addDimensions({
+                    variables: {
+                      dimensions: defaultDimensions(id),
+                    },
+                    onCompleted: () => {
+                      navigate(`/admin/${id}`)
+                    },
+                  })
+                },
+              })
+            }
+          >
+            {loading ? "Creating your chart..." : "Create your own chart"}
+          </PrimaryButton>
+        </div>
       </div>
     </View>
   )
@@ -90,7 +94,7 @@ const Demo = () => {
 
   return (
     <RadarChart
-      title="Demo"
+      title="Comparing Cars Across Dimensions"
       range={[1, 5]}
       dimensions={[
         { id: "acceleration", title: "Acceleration" },

@@ -61,7 +61,7 @@ describe("Create", () => {
     render()
 
     expect(
-      screen.getByRole("button", { name: "Create new chart" })
+      screen.getByRole("button", { name: "Create your own chart" })
     ).toBeInTheDocument()
   })
 
@@ -71,7 +71,7 @@ describe("Create", () => {
     })
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Create new chart" })
+      screen.getByRole("button", { name: "Create your own chart" })
     )
 
     expect(
@@ -90,7 +90,7 @@ describe("Create", () => {
     })
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Create new chart" })
+      screen.getByRole("button", { name: "Create your own chart" })
     )
 
     await finishMutations(chartMock, dimensionsMock)
