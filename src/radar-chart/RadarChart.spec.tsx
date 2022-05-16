@@ -74,21 +74,17 @@ describe("RadarChart", () => {
     })
 
     it("is not possible to change inactive selections.", async () => {
-      const onChange = jest.fn()
-
       render(
         <RadarChart title="Test" dimensions={[defaultDimension]} range={[1, 2]}>
-          <Selection name="test" onChange={onChange} />
+          <Selection name="test" />
         </RadarChart>
       )
 
-      await userEvent.click(
-        screen.getByRole("presentation", {
+      expect(
+        screen.queryByRole("radio", {
           name: `${defaultDimension.title} - 1`,
         })
-      )
-
-      expect(onChange).not.toHaveBeenCalled()
+      ).not.toBeInTheDocument()
     })
   })
 })

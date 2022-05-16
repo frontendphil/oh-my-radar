@@ -1,5 +1,6 @@
 export { RadarChart } from "./RadarChart"
-export { Selection, getSelectionColor } from "./Selection"
+export { Selection } from "./Selection"
+export { getSelectionColor } from "./Step"
 
 export {
   Colors,

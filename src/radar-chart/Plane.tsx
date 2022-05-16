@@ -2,15 +2,16 @@ import invariant from "invariant"
 import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
-import { SelectionState } from "./types"
+import { AvailableColors } from "./Step"
+import { Colors, SelectionState } from "./types"
 
 type PlaneProps = {
   label: string
   selection: SelectionState
-  stroke: string
+  color: AvailableColors
 }
 
-export function Plane({ selection, label, stroke }: PlaneProps) {
+export function Plane({ selection, label, color }: PlaneProps) {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()
@@ -41,7 +42,15 @@ export function Plane({ selection, label, stroke }: PlaneProps) {
       aria-label={label}
       d={d}
       strokeWidth={3}
-      className={`pointer-events-none fill-transparent  transition-all ${stroke}`}
+      className={`pointer-events-none fill-transparent  transition-all ${colors[color]}`}
     />
   )
+}
+
+const colors = {
+  [Colors.pink]: "stroke-pink-400 dark:stroke-pink-600",
+  [Colors.blue]: "stroke-blue-400 dark:stroke-blue-600",
+  [Colors.green]: "stroke-emerald-400 dark:stroke-emerald-600",
+  [Colors.purple]: "stroke-purple-400 dark:stroke-purple-600",
+  [Colors.yellow]: "stroke-yellow-400 dark:stroke-yellow-600",
 }

@@ -61,7 +61,7 @@ export const Admin = () => {
     <View>
       <Canvas>
         <RadarChart title={title} dimensions={dimensions} range={range}>
-          <Selection name="example" />
+          <Selection active name="example" />
         </RadarChart>
       </Canvas>
       <SidePanel>

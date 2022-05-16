@@ -48,6 +48,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
       <InputWithButton
         label="Add dimension"
         value={newDimension}
+        placeholder="Dimension label"
         onChange={setNewDimension}
         onKeyUp={(event) => {
           if (event.key !== "Enter") {
