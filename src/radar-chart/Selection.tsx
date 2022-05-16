@@ -1,10 +1,8 @@
 import { Plane } from "./Plane"
 import { useDimensions } from "./RadarContext"
 import { Slots } from "./Slots"
-import { Step } from "./Step"
+import { Step, AvailableColors } from "./Step"
 import { Colors, SelectionState } from "./types"
-
-type AvailableColors = keyof typeof colors
 
 type Props = {
   name: string
