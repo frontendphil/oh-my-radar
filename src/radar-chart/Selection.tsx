@@ -30,7 +30,7 @@ export function Selection({
   return (
     <>
       {allValuesSelected && (
-        <Plane label={name} selection={value} stroke={colors[color]} />
+        <Plane label={name} selection={value} color={color} />
       )}
 
       <Slots groupRole="radiogroup">
@@ -79,12 +79,4 @@ export function Selection({
       </Slots>
     </>
   )
-}
-
-const colors = {
-  [Colors.pink]: "stroke-pink-400 dark:stroke-pink-600",
-  [Colors.blue]: "stroke-blue-400 dark:stroke-blue-600",
-  [Colors.green]: "stroke-emerald-400 dark:stroke-emerald-600",
-  [Colors.purple]: "stroke-purple-400 dark:stroke-purple-600",
-  [Colors.yellow]: "stroke-yellow-400 dark:stroke-yellow-600",
 }
