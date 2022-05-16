@@ -25,11 +25,21 @@ type Dimension = Omit<ItemType<Chart["dimensions"]>, "__typename">
 export const createDimension = (
   dimension: Partial<Dimension> = {}
 ): ItemType<Chart["dimensions"]> => ({
+  id: uuid(),
   title: "Test dimension",
+  selections_aggregate: {},
 
   ...dimension,
+})
 
-  id: uuid(),
+type SelectionAggregate = Pick<Dimension, "selections_aggregate">
+
+export const createAverage = (value: number): SelectionAggregate => ({
+  selections_aggregate: {
+    aggregate: {
+      avg: { value },
+    },
+  },
 })
 
 type Participant = Omit<ItemType<Chart["participants"]>, "__typename">

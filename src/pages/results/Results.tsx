@@ -3,13 +3,20 @@ import { useEffect, useId, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Canvas, List, ListItem, SidePanel, View } from "../../layout"
 
-import { Colors, Participant, RadarChart, Selection } from "../../radar-chart"
+import {
+  Aggregate,
+  Colors,
+  Participant,
+  RadarChart,
+  Selection,
+} from "../../radar-chart"
 import { useResultGetChartQuery } from "./api"
 import { ParticipantSelect } from "./ParticipantSelect"
 
 export const Results = () => {
   const { id } = useParams()
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
+  const [showAverage, setShowAverage] = useState(false)
 
   const { loading, data } = useResultGetChartQuery({ variables: { id } })
 
@@ -54,6 +61,21 @@ export const Results = () => {
                 )}
               />
             ))}
+
+          {showAverage && (
+            <Aggregate
+              name="Average"
+              value={dimensions.reduce(
+                (result, { id, selections_aggregate }) => {
+                  return {
+                    ...result,
+                    [id]: selections_aggregate.aggregate?.avg?.value,
+                  }
+                },
+                {}
+              )}
+            />
+          )}
         </RadarChart>
       </Canvas>
 
@@ -66,7 +88,7 @@ export const Results = () => {
 
         <List>
           <ListItem>
-            <Average />
+            <Average checked={showAverage} onChange={setShowAverage} />
           </ListItem>
         </List>
       </SidePanel>
@@ -74,12 +96,23 @@ export const Results = () => {
   )
 }
 
-const Average = () => {
+type AverageProps = {
+  checked: boolean
+  onChange: (checked: boolean) => void
+}
+
+const Average = ({ checked, onChange }: AverageProps) => {
   const id = useId()
 
   return (
     <div className="flex items-center">
-      <input type="checkbox" id={id} />
+      <input
+        type="checkbox"
+        id={id}
+        className="mr-4"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+      />
 
       <label htmlFor={id}>Average</label>
     </div>

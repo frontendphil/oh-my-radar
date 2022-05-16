@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 import {
+  createAverage,
   createDimension,
   createParticipant,
   createSelection,
@@ -9,9 +10,21 @@ import {
 } from "./test-utils"
 
 describe("Results", () => {
-  const dimensionOne = createDimension({ title: "One" })
-  const dimensionTwo = createDimension({ title: "Two" })
-  const dimensionThree = createDimension({ title: "Three" })
+  const dimensionOne = createDimension({
+    id: "one",
+    title: "One",
+    ...createAverage(1),
+  })
+  const dimensionTwo = createDimension({
+    id: "two",
+    title: "Two",
+    ...createAverage(1),
+  })
+  const dimensionThree = createDimension({
+    id: "three",
+    title: "Three",
+    ...createAverage(1),
+  })
 
   const dimensions = [dimensionOne, dimensionTwo, dimensionThree]
 
@@ -72,6 +85,15 @@ describe("Results", () => {
         screen.queryByRole("checkbox", { name: "Average" })
       ).not.toBeChecked()
     })
-    it.todo("is possible to view the average of all responses.")
+
+    it("is possible to view the average of all responses.", async () => {
+      await renderChart({ chart: { dimensions, participants } })
+
+      await userEvent.click(screen.getByRole("checkbox", { name: "Average" }))
+
+      expect(
+        screen.getByRole("figure", { name: "Average" })
+      ).toBeInTheDocument()
+    })
   })
 })

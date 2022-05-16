@@ -6,6 +6,13 @@ query ResultGetChart($id: uuid!) {
     dimensions {
       id
       title
+      selections_aggregate {
+        aggregate {
+          avg {
+            value
+          }
+        }
+      }
     }
     participants {
       id
