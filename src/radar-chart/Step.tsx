@@ -23,6 +23,8 @@ export const Step = ({
   ...rest
 }: Props) => (
   <circle
+    role="radio"
+    aria-checked={selected}
     cx={x}
     cy={y}
     r={STEP_RADIUS}

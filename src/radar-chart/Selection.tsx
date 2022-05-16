@@ -41,9 +41,7 @@ export function Selection({
             return (
               <Step
                 key={step}
-                role="radio"
                 aria-label={`${title} - ${step}`}
-                aria-checked={value[id] === step}
                 x={x}
                 y={y}
                 selected={value[id] === step}
@@ -72,9 +70,7 @@ export function Selection({
             <Step
               disabled
               selected
-              aria-checked
               key={step}
-              role="radio"
               aria-label={`${title} - ${step}`}
               x={x}
               y={y}
