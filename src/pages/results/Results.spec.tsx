@@ -63,4 +63,15 @@ describe("Results", () => {
 
     expect(screen.getByText("No submissions yet")).toBeInTheDocument()
   })
+
+  describe("Average", () => {
+    it("is disabled by default.", async () => {
+      await renderChart({ chart: { dimensions, participants } })
+
+      expect(
+        screen.queryByRole("checkbox", { name: "Average" })
+      ).not.toBeChecked()
+    })
+    it.todo("is possible to view the average of all responses.")
+  })
 })

@@ -1,7 +1,7 @@
 import invariant from "invariant"
-import { useEffect, useState } from "react"
+import { useEffect, useId, useState } from "react"
 import { useParams } from "react-router-dom"
-import { Canvas, SidePanel, View } from "../../layout"
+import { Canvas, List, ListItem, SidePanel, View } from "../../layout"
 
 import { Colors, Participant, RadarChart, Selection } from "../../radar-chart"
 import { useResultGetChartQuery } from "./api"
@@ -63,8 +63,26 @@ export const Results = () => {
           value={selectedParticipants}
           onChange={setSelectedParticipants}
         />
+
+        <List>
+          <ListItem>
+            <Average />
+          </ListItem>
+        </List>
       </SidePanel>
     </View>
+  )
+}
+
+const Average = () => {
+  const id = useId()
+
+  return (
+    <div className="flex items-center">
+      <input type="checkbox" id={id} />
+
+      <label htmlFor={id}>Average</label>
+    </div>
   )
 }
 
