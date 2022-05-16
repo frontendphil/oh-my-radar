@@ -49,17 +49,20 @@ const Participant = ({ color, name, checked, onChange }: ParticipantProps) => {
   const id = useId()
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center ">
       <input
         checked={checked}
         onChange={(event) => onChange(event.target.checked)}
         id={id}
+        className="mr-4"
         type="checkbox"
       />
 
       <Color color={color} />
 
-      <label htmlFor={id}>{name}</label>
+      <label className="ml-2" htmlFor={id}>
+        {name}
+      </label>
     </div>
   )
 }

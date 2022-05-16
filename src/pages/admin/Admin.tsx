@@ -159,7 +159,7 @@ export const Admin = () => {
           />
         </Form>
 
-        <hr className="my-12 border-yellow-500" />
+        <hr className="my-12 border-slate-300 dark:border-yellow-500" />
 
         <div className="flex flex-col gap-10">
           <Input

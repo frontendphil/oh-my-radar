@@ -85,7 +85,7 @@ export function RadarChart({
                       key={step}
                       x={x}
                       y={y}
-                      className="fill-yellow-400 stroke-transparent"
+                      className="fill-slate-500 stroke-transparent dark:fill-slate-100"
                     />
                   )}
                 </Slots>
@@ -110,7 +110,7 @@ const Circles = () => {
       {steps.reverse().map((step) => (
         <circle
           key={step}
-          className="fill-transparent stroke-yellow-300"
+          className="fill-transparent stroke-slate-500 dark:stroke-slate-100"
           cx="50%"
           cy="50%"
           r={getLengthToSelection(diagramWidth, range, step)}

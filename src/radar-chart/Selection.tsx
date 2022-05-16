@@ -34,12 +34,7 @@ export function Selection({
   return (
     <>
       {allValuesSelected && (
-        <Plane
-          label={name}
-          selection={value}
-          fill={plane.fill}
-          stroke={plane.stroke}
-        />
+        <Plane label={name} selection={value} stroke={plane} />
       )}
 
       <Slots groupRole="radiogroup">
@@ -51,7 +46,7 @@ export function Selection({
             aria-checked={value[id] === step}
             x={x}
             y={y}
-            className={`cursor-pointer transition-all ${
+            className={`cursor-pointer stroke-2 transition-all ${
               value[id] === step ? circle.selected : "fill-transparent"
             } stroke-transparent ${circle.hover} ${
               active ? "pointer-events-auto" : "pointer-events-none"
@@ -75,51 +70,57 @@ export function Selection({
   )
 }
 
-type ColorConfiguration = {
-  fill: string
-  stroke: string
-}
-
-export const getSelectionColor = (color: Colors): ColorConfiguration =>
-  colors[color].plane
+export const getSelectionColor = (color: Colors): string => colors[color].plane
 
 const colors = {
   [Colors.pink]: {
-    plane: {
-      fill: "fill-pink-200",
-      stroke: "stroke-pink-700",
-    },
+    plane: "stroke-pink-400 dark:stroke-pink-600",
+
     circle: {
-      hover: "hover:fill-pink-500",
-      selected: "fill-pink-500",
+      selected:
+        "stroke-pink-400 fill-pink-100 dark:stroke-pink-600 dark:fill-pink-300",
+      hover:
+        "hover:stroke-pink-400 hover:fill-pink-100 dark:hover:stroke-pink-600 dark:hover:fill-pink-300",
     },
   },
   [Colors.blue]: {
-    plane: {
-      fill: "fill-blue-200",
-      stroke: "stroke-blue-700",
+    plane: "stroke-blue-400 dark:stroke-blue-600",
+
+    circle: {
+      selected:
+        "stroke-blue-400 fill-blue-100 dark:stroke-blue-600 dark:fill-blue-300",
+      hover:
+        "hover:stroke-blue-400 hover:fill-blue-100 dark:hover:stroke-blue-600 dark:hover:fill-blue-300",
     },
-    circle: { hover: "hover:fill-blue-500", selected: "fill-blue-500" },
   },
   [Colors.green]: {
-    plane: {
-      fill: "fill-emerald-200",
-      stroke: "stroke-emerald-600",
+    plane: "stroke-emerald-400 dark:stroke-emerald-600",
+
+    circle: {
+      selected:
+        "stroke-emerald-400 fill-emerald-100 dark:stroke-emerald-600 dark:fill-emerald-300",
+      hover:
+        "hover:stroke-emerald-400 hover:fill-emerald-100 dark:hover:stroke-emerald-600 dark:hover:fill-emerald-300",
     },
-    circle: { hover: "hover:fill-emerald-500", selected: "fill-emerald-500" },
   },
   [Colors.purple]: {
-    plane: {
-      fill: "fill-purple-200",
-      stroke: "stroke-purple-700",
+    plane: "stroke-purple-400 dark:stroke-purple-600",
+
+    circle: {
+      selected:
+        "fill-purple-100 stroke-purple-400 dark:stroke-purple-600 dark:fill-purple-300",
+      hover:
+        "hover:fill-purple-100 hover:stroke-purple-400 dark:hover:stroke-purple-600 dark:hover:fill-purple-300",
     },
-    circle: { hover: "hover:fill-purple-500", selected: "fill-purple-500" },
   },
   [Colors.yellow]: {
-    plane: {
-      fill: "fill-yellow-200",
-      stroke: "stroke-yellow-700",
+    plane: "stroke-yellow-400 dark:stroke-yellow-600",
+
+    circle: {
+      selected:
+        "stroke-yellow-400 fill-yellow-100 dark:fill-yellow-300 dark:stroke-yellow-600",
+      hover:
+        "hover:stroke-yellow-400 hover:fill-yellow-100 dark:hover:stroke-yellow-600 dark:hover:fill-yellow-300",
     },
-    circle: { hover: "hover:fill-yellow-500", selected: "fill-yellow-500" },
   },
 }

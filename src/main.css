@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply h-screen bg-slate-800 text-white;
+  @apply h-screen dark:bg-slate-800 dark:text-white;
 }
 
 #app {
