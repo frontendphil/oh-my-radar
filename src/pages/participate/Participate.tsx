@@ -2,6 +2,7 @@ import invariant from "invariant"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { Button, InputWithButton } from "../../form-controls"
+import { View } from "../../layout"
 import {
   Colors,
   Dimension,
@@ -41,54 +42,58 @@ export const Participate = () => {
   const { title, dimensions, min, max } = data.charts_by_pk
 
   return (
-    <div className="mt-24 flex flex-col items-center justify-center gap-12">
-      <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-        <Selection
-          active
-          name={name}
-          color={Colors.purple}
-          value={selection}
-          onChange={setSelection}
-        />
-      </RadarChart>
+    <View>
+      <div className="flex w-full flex-col items-center justify-center gap-12">
+        <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
+          <Selection
+            active
+            name={name}
+            color={Colors.purple}
+            value={selection}
+            onChange={setSelection}
+          />
+        </RadarChart>
 
-      <InputWithButton label="Name" value={name} onChange={setName}>
-        <Button
-          disabled={
-            name.trim() === "" || !isSelectionCompleted(dimensions, selection)
-          }
-          onClick={() => {
-            insertParticipant({
-              variables: { participant: { chartId, name, color: Colors.blue } },
-              onCompleted: (data) => {
-                invariant(
-                  data.insert_participants_one,
-                  "Could not insert participant"
-                )
+        <InputWithButton label="Name" value={name} onChange={setName}>
+          <Button
+            disabled={
+              name.trim() === "" || !isSelectionCompleted(dimensions, selection)
+            }
+            onClick={() => {
+              insertParticipant({
+                variables: {
+                  participant: { chartId, name, color: Colors.blue },
+                },
+                onCompleted: (data) => {
+                  invariant(
+                    data.insert_participants_one,
+                    "Could not insert participant"
+                  )
 
-                const { id: participantId } = data.insert_participants_one
+                  const { id: participantId } = data.insert_participants_one
 
-                insertSelections({
-                  variables: {
-                    selections: Object.entries(selection).map(
-                      ([dimensionId, value]) => ({
-                        chartId,
-                        dimensionId,
-                        participantId,
-                        value,
-                      })
-                    ),
-                  },
-                  onCompleted: () => setFinished(true),
-                })
-              },
-            })
-          }}
-        >
-          Submit
-        </Button>
-      </InputWithButton>
-    </div>
+                  insertSelections({
+                    variables: {
+                      selections: Object.entries(selection).map(
+                        ([dimensionId, value]) => ({
+                          chartId,
+                          dimensionId,
+                          participantId,
+                          value,
+                        })
+                      ),
+                    },
+                    onCompleted: () => setFinished(true),
+                  })
+                },
+              })
+            }}
+          >
+            Submit
+          </Button>
+        </InputWithButton>
+      </div>
+    </View>
   )
 }
 
