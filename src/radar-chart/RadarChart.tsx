@@ -26,7 +26,7 @@ export function RadarChart({
 }: Props) {
   const padding = STEP_RADIUS + DIMENSION_OVERLAP
 
-  const canvasSize = size - 2 * STEP_RADIUS - 6 * DIMENSION_OVERLAP
+  const canvasSize = size - 2 * STEP_RADIUS - DIMENSION_OVERLAP
 
   return (
     <RadarContext.Provider

@@ -1,4 +1,4 @@
-export const DIMENSION_OVERLAP = 10
+export const DIMENSION_OVERLAP = 70
 
 type DimensionProps = {
   angle: number
