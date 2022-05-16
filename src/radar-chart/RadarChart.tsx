@@ -81,12 +81,7 @@ export function RadarChart({
               <g transform={`translate(${size / 2} ${size / 2})`}>
                 <Slots>
                   {(_, { x, y, step }) => (
-                    <Step
-                      key={step}
-                      x={x}
-                      y={y}
-                      className="fill-slate-500 stroke-transparent dark:fill-slate-100"
-                    />
+                    <Step disabled key={step} x={x} y={y} />
                   )}
                 </Slots>
 
