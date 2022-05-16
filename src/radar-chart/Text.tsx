@@ -20,7 +20,7 @@ type TextProps = {
 }
 
 export const Text = ({ id, children, x, y }: TextProps) => {
-  const ref = useRef<HTMLSpanElement | null>(null)
+  const ref = useRef<HTMLDivElement | null>(null)
 
   const [left, setLeft] = useState(0)
   const [top, setTop] = useState(0)
@@ -64,8 +64,16 @@ export const Text = ({ id, children, x, y }: TextProps) => {
   }, [x, y])
 
   return (
-    <div id={id} style={{ position: "absolute", top: y, left: x }}>
-      <span className="relative" ref={ref} style={{ left, top }}>
+    <div
+      id={id}
+      ref={ref}
+      style={{
+        position: "absolute",
+        top: y,
+        left: x,
+      }}
+    >
+      <span className="relative" style={{ left, top }}>
         {children}
       </span>
     </div>
