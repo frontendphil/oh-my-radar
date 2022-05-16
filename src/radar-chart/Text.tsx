@@ -20,7 +20,7 @@ type TextProps = {
 }
 
 export const Text = ({ id, children, x, y }: TextProps) => {
-  const ref = useRef<HTMLSpanElement | null>(null)
+  const ref = useRef<HTMLDivElement | null>(null)
 
   const [left, setLeft] = useState(0)
   const [top, setTop] = useState(0)
@@ -33,17 +33,18 @@ export const Text = ({ id, children, x, y }: TextProps) => {
     }
 
     const { width, height } = node.getBoundingClientRect()
-    const padding = 10
+    const paddingX = 10
+    const paddingY = 5
 
     const align = getAlign(x)
     const justify = getJustify(y)
 
     if (align === Align.left) {
-      setLeft(padding)
+      setLeft(paddingX)
     }
 
     if (align === Align.right) {
-      setLeft(-(width + padding))
+      setLeft(-(width + paddingX))
     }
 
     if (align === Align.center) {
@@ -51,11 +52,11 @@ export const Text = ({ id, children, x, y }: TextProps) => {
     }
 
     if (justify === Justify.top) {
-      setTop(padding)
+      setTop(paddingY)
     }
 
     if (justify === Justify.bottom) {
-      setTop(-(height + padding))
+      setTop(-(height + paddingY))
     }
 
     if (justify === Justify.center) {
@@ -64,8 +65,16 @@ export const Text = ({ id, children, x, y }: TextProps) => {
   }, [x, y])
 
   return (
-    <div id={id} style={{ position: "absolute", top: y, left: x }}>
-      <span className="relative" ref={ref} style={{ left, top }}>
+    <div
+      id={id}
+      ref={ref}
+      style={{
+        position: "absolute",
+        top: y,
+        left: x,
+      }}
+    >
+      <span className="relative" style={{ left, top }}>
         {children}
       </span>
     </div>

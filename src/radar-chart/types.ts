@@ -18,7 +18,7 @@ export type Participant = {
   color: Colors
 }
 
-export type Dimension = {
+export type DimensionDescriptor = {
   id: string
   title: string
   deleted?: boolean

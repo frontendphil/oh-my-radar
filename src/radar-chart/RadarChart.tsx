@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { Dimension, Range } from "./types"
+import { DimensionDescriptor, Range } from "./types"
 import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
 import { DimensionLabels } from "./DimensionLabels"
@@ -7,10 +7,11 @@ import { getLengthToSelection } from "./getLengthToSelection"
 import { Step, STEP_RADIUS } from "./Step"
 import { getStepsFromRange } from "./getStepsFromRange"
 import { getDimensionAngle } from "./getDimensionAngle"
+import { Dimension, DimensionMarker, DIMENSION_OVERLAP } from "./Dimension"
 
 type Props = {
   title: string
-  dimensions: Dimension[]
+  dimensions: DimensionDescriptor[]
   range: Range
   size?: number
   children?: ReactNode
@@ -23,11 +24,13 @@ export function RadarChart({
   size = 500,
   children,
 }: Props) {
-  const padding = STEP_RADIUS
+  const padding = STEP_RADIUS + DIMENSION_OVERLAP
+
+  const canvasSize = size - 2 * STEP_RADIUS - DIMENSION_OVERLAP
 
   return (
     <RadarContext.Provider
-      value={{ diagramWidth: size - 2 * STEP_RADIUS, dimensions, range }}
+      value={{ diagramWidth: canvasSize, dimensions, range }}
     >
       <div className="relative" style={{ width: size, height: size }}>
         <div
@@ -47,14 +50,11 @@ export function RadarChart({
           width={size}
           height={size}
         >
-          <g
-            x={padding}
-            y={padding}
-            width={size - 2 * STEP_RADIUS}
-            height={size - 2 * STEP_RADIUS}
-          >
-            <Circles />
+          <defs>
+            <DimensionMarker size={5} />
+          </defs>
 
+          <g x={padding} y={padding}>
             {dimensions.map(({ id }, index) => (
               <Dimension
                 key={id}
@@ -62,6 +62,15 @@ export function RadarChart({
                 diagramWidth={size}
               />
             ))}
+          </g>
+
+          <g
+            x={padding}
+            y={padding}
+            width={size - 2 * STEP_RADIUS}
+            height={size - 2 * STEP_RADIUS}
+          >
+            <Circles />
 
             <g transform={`translate(${size / 2} ${size / 2})`}>
               <Slots>
@@ -81,25 +90,6 @@ export function RadarChart({
         </svg>
       </div>
     </RadarContext.Provider>
-  )
-}
-
-type DimensionProps = {
-  angle: number
-  diagramWidth: number
-}
-
-const Dimension = ({ angle, diagramWidth }: DimensionProps) => {
-  return (
-    <g className="origin-center" transform={`rotate(${angle})`}>
-      <line
-        x1={diagramWidth / 2}
-        y1={diagramWidth / 2}
-        x2={diagramWidth}
-        y2={diagramWidth / 2}
-        className="stroke-yellow-300"
-      />
-    </g>
   )
 }
 

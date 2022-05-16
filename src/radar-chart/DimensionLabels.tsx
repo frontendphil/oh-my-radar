@@ -1,3 +1,4 @@
+import { DIMENSION_OVERLAP } from "./Dimension"
 import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
 import { useDiagramWidth, useDimensions, useRange } from "./RadarContext"
@@ -14,7 +15,7 @@ export const DimensionLabels = () => {
     <>
       {dimensions.map(({ id, title }, index) => {
         const { x, y } = getPoint({
-          diagramWidth,
+          diagramWidth: diagramWidth + DIMENSION_OVERLAP,
           range,
           value: max,
           angle: getDimensionAngle(dimensions, index),
