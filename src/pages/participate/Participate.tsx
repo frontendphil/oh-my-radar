@@ -49,7 +49,7 @@ export const Participate = () => {
 
   return (
     <View>
-      <div className="flex w-full flex-col items-center justify-center gap-12">
+      <div className="flex w-full flex-col items-center justify-center gap-12 pt-12 md:pt-0">
         <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
           <Selection
             active
