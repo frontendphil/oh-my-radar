@@ -1,0 +1,21 @@
+{
+  "name": "@radar/jest-preset",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest-preset.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Philipp Giese",
+  "license": "MIT",
+  "dependencies": {
+    "@testing-library/jest-dom": "5.16.4",
+    "@types/jest": "27.5.1",
+    "cross-fetch": "3.1.5",
+    "dotenv": "16.0.1",
+    "identity-obj-proxy": "3.0.0",
+    "jest-environment-jsdom": "28.1.0",
+    "jest-watch-typeahead": "1.1.0",
+    "ts-jest": "28.0.2"
+  }
+}
