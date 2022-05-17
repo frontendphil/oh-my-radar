@@ -5,7 +5,7 @@ type Props = {
 }
 
 export const View = ({ children }: Props) => (
-  <div className="flex h-full max-h-full justify-between overflow-hidden">
+  <div className="flex h-full flex-col justify-between overflow-hidden md:max-h-full md:flex-row">
     {children}
   </div>
 )

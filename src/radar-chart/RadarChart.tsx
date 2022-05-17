@@ -1,4 +1,11 @@
-import { ReactNode, useId } from "react"
+import {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from "react"
 import { DimensionDescriptor, Range } from "./types"
 import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
@@ -21,17 +28,22 @@ export function RadarChart({
   title,
   dimensions,
   range,
-  size = 500,
+  size: maxUserDefinedSize = 500,
   children,
 }: Props) {
   const titleId = useId()
   const padding = STEP_RADIUS + DIMENSION_OVERLAP
 
+  const size = useResponsiveSize(maxUserDefinedSize)
+
   const canvasSize = size - 2 * STEP_RADIUS - DIMENSION_OVERLAP
 
   return (
     <div>
-      <h1 id={titleId} className="mb-10 text-center text-2xl font-semibold">
+      <h1
+        id={titleId}
+        className="mb-5 text-center text-2xl font-semibold md:mb-10"
+      >
         {title}
       </h1>
 
@@ -113,4 +125,26 @@ const Circles = () => {
       ))}
     </>
   )
+}
+
+const useResponsiveSize = (maxUserDefinedSize: number) => {
+  const maxSize = useCallback(
+    () => Math.min(maxUserDefinedSize, window.innerWidth - 100),
+    [maxUserDefinedSize]
+  )
+  const [size, setSize] = useState(maxSize())
+
+  useEffect(() => {
+    const callback = () => {
+      if (size !== maxSize()) {
+        setSize(maxSize())
+      }
+    }
+
+    window.addEventListener("resize", callback)
+
+    return () => window.removeEventListener("resize", callback)
+  }, [maxSize, size])
+
+  return size
 }

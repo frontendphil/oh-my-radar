@@ -16,8 +16,8 @@ export const Create = () => {
 
   return (
     <View>
-      <div className="grid h-screen w-full grid-cols-2 ">
-        <div className="p-24">
+      <div className="grid h-screen w-full grid-rows-2 md:grid-cols-2 ">
+        <div className="p-12 md:p-24">
           <Demo />
         </div>
 
