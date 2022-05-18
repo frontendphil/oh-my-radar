@@ -1,11 +1,4 @@
-import {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useState,
-} from "react"
+import { ReactNode, useCallback, useEffect, useId, useState } from "react"
 import { DimensionDescriptor, Range } from "./types"
 import { RadarContext, useDiagramWidth, useRange } from "./RadarContext"
 import { Slots } from "./Slots"
