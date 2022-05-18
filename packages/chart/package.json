@@ -1,0 +1,19 @@
+{
+  "name": "@radar/chart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/chart.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Philipp Giese",
+  "license": "MIT",
+  "devDependencies": {
+    "@radar/eslint-config": "1.0.0",
+    "@radar/ts-preset": "1.0.0",
+    "@radar/jest-preset": "1.0.0",
+    "eslint": "8.15.0",
+    "jest": "28.1.0",
+    "typescript": "4.6.4"
+  }
+}

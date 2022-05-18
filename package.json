@@ -16,7 +16,8 @@
     "prepare": "is-ci || husky install"
   },
   "workspaces": [
-    "config/*"
+    "config/*",
+    "packages/*"
   ],
   "repository": {
     "type": "git",
