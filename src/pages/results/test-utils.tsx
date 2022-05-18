@@ -1,5 +1,5 @@
 import { MockedResponse } from "@apollo/client/testing"
-import { Colors } from "../../radar-chart"
+import { Colors } from "@radar/chart"
 import { finishQueries, ItemType, render, uuid } from "../test-utils"
 import { ResultGetChartDocument, ResultGetChartQuery } from "./api"
 import { Results } from "./Results"

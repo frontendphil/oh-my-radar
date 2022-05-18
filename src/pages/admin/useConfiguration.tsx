@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react"
-import { Dimension, Participant, Range } from "../../radar-chart"
+import { Dimension, Participant, Range } from "@radar/chart"
 
 type Configuration = {
   title: string

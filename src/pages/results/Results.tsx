@@ -8,7 +8,7 @@ import {
   Participant,
   RadarChart,
   Selection,
-} from "../../radar-chart"
+} from "@radar/chart"
 import { Aggregates } from "./Aggregates"
 import { useResultGetChartQuery } from "./api"
 import { ParticipantSelect } from "./ParticipantSelect"

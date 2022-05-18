@@ -3,9 +3,8 @@
   "include": ["src/**/*.tsx", "src/**/*.ts"],
   "exclude": ["src/**/*.spec.tsx", "src/**/*.spec.ts"],
   "compilerOptions": {
-    "module": "amd",
     "rootDir": "src",
-    "outFile": "dist/chart.js",
+    "outDir": "dist",
     "declaration": true
   }
 }

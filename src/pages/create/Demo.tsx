@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Colors, RadarChart, Selection } from "../../radar-chart"
+import { Colors, RadarChart, Selection } from "@radar/chart"
 
 export const Demo = () => {
   const john = useRandomSelection()
