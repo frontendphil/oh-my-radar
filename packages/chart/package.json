@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/chart.js",
+  "types": "dist/chart.d.ts",
   "scripts": {
+    "clean": "rimraf dist",
     "test": "jest",
-    "build": "tsc -b"
+    "prebuild": "npm run clean",
+    "build": "tsc -p tsconfig.build.json"
   },
   "author": "Philipp Giese",
   "license": "MIT",
@@ -22,6 +25,7 @@
     "@types/invariant": "2.2.35",
     "eslint": "8.15.0",
     "jest": "28.1.0",
+    "rimraf": "3.0.2",
     "typescript": "4.6.4"
   }
 }
