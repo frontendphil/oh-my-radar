@@ -13,7 +13,8 @@
     "cypress:test": "cypress",
     "cypress:open": "cypress open --config baseUrl=http://localhost:8080",
     "graphql-codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
-    "prepare": "is-ci || husky install"
+    "prepare": "is-ci || husky install",
+    "turbo": "turbo"
   },
   "workspaces": [
     "config/*",
@@ -38,6 +39,7 @@
     "@graphql-codegen/typescript-operations": "2.4.0",
     "@graphql-codegen/typescript-react-apollo": "3.2.14",
     "@jsdevtools/coverage-istanbul-loader": "3.0.5",
+    "@radar/chart": "1.0.0",
     "@radar/eslint-config": "1.0.0",
     "@radar/jest-preset": "1.0.0",
     "@radar/ts-preset": "1.0.0",
@@ -65,6 +67,7 @@
     "style-loader": "3.3.1",
     "tailwindcss": "3.0.24",
     "ts-loader": "9.3.0",
+    "turbo": "^1.2.9",
     "webpack": "5.72.1",
     "webpack-cli": "4.9.2",
     "webpack-dev-server": "4.9.0"

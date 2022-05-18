@@ -4,7 +4,8 @@
   "description": "",
   "main": "dist/chart.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc -b"
   },
   "author": "Philipp Giese",
   "license": "MIT",
