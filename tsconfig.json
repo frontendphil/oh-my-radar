@@ -1,7 +1,3 @@
 {
-  "extends": "@radar/ts-preset",
-
-  "compilerOptions": {
-    "types": ["cypress", "@testing-library/cypress"]
-  }
+  "extends": "@radar/ts-preset"
 }
