@@ -7,10 +7,10 @@
     },
     "build": {
       "dependsOn": ["clean", "^build"],
-      "outputs": ["dist/**", "chart.css"]
+      "outputs": ["dist/**", "./**/chart.css"]
     },
     "graphql-codegen": {
-      "outputs": ["api.ts"]
+      "outputs": ["./**/api.ts"]
     },
     "test": {
       "dependsOn": ["build", "graphql-codegen"],
@@ -30,7 +30,7 @@
     },
     "stats": {
       "dependsOn": ["build"],
-      "outputs": ["stats.json"]
+      "outputs": ["./**/stats.json"]
     }
   },
   "globalDependencies": ["$NODE_ENV", "tsconfig.json"]
