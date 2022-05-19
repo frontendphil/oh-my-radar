@@ -16,6 +16,11 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
   },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
+  },
   module: {
     rules: [
       {

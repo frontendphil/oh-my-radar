@@ -19,10 +19,12 @@
     },
     "dist": {
       "dependsOn": ["build", "graphql-codegen"],
+      "inputs": ["webpack.config.js"],
       "outputs": ["dist/**"]
     },
     "start": {
       "dependsOn": ["build", "graphql-codegen"]
     }
-  }
+  },
+  "globalDependencies": ["$NODE_ENV"]
 }
