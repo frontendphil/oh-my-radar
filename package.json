@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "dist": "turbo run dist",
     "test": "turbo run test",
     "test:ci": "turbo run test:ci",
+    "start": "turbo run start",
     "format": "prettier --write .",
     "prepare": "is-ci || husky install"
   },

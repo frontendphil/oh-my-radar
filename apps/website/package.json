@@ -5,11 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "pretest:ci": "npm run graphql-codegen",
     "test:ci": "jest --coverage --runInBand",
-    "prestart": "npm run graphql-codegen",
     "start": "webpack serve",
-    "predist": "npm run graphql-codegen",
     "dist": "webpack",
     "cypress:test": "cypress",
     "cypress:open": "cypress open --config baseUrl=http://localhost:8080",

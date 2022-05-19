@@ -6,13 +6,23 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**", "chart.css"]
     },
+    "graphql-codegen": {
+      "outputs": ["api.ts"]
+    },
     "test": {
-      "dependsOn": ["build"],
+      "dependsOn": ["build", "graphql-codegen"],
       "outputs": ["coverage/**"]
     },
     "test:ci": {
-      "dependsOn": ["build"],
+      "dependsOn": ["build", "graphql-codegen"],
       "outputs": ["coverage/**"]
+    },
+    "dist": {
+      "dependsOn": ["build", "graphql-codegen"],
+      "outputs": ["dist/**"]
+    },
+    "start": {
+      "dependsOn": ["build", "graphql-codegen"]
     }
   }
 }
