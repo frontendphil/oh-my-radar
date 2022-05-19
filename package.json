@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dist": "turbo run dist",
+    "build": "turbo run dist",
     "test": "turbo run test",
     "test:ci": "turbo run test:ci",
     "start": "turbo run start",
