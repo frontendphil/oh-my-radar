@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "turbo run test && jest",
     "prestart": "npm run graphql-codegen",
     "start": "webpack serve",
     "prebuild": "npm run graphql-codegen",
-    "build": "webpack",
+    "build": "turbo run build && webpack",
     "format": "prettier --write .",
     "cypress:test": "cypress",
     "cypress:open": "cypress open --config baseUrl=http://localhost:8080",
