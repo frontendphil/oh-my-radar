@@ -2,6 +2,8 @@
   "extends": "@radar/ts-preset",
 
   "compilerOptions": {
-    "types": ["cypress", "@testing-library/cypress"]
+    "module": "esnext",
+    "types": ["cypress", "@testing-library/cypress"],
+    "moduleResolution": "node"
   }
 }

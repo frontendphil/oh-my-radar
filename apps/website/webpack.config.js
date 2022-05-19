@@ -13,8 +13,17 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },
+  output: {
+    filename: "[name].[chunkhash].js",
+    chunkFilename: "[name].[chunkhash].js",
+  },
   devServer: {
     historyApiFallback: true,
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+    },
   },
   module: {
     rules: [

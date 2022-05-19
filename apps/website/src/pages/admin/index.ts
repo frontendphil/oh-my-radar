@@ -1,1 +1,1 @@
-export { Admin } from "./Admin"
+export { Admin as default } from "./Admin"

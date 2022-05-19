@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
 import invariant from "invariant"
-import { StrictMode } from "react"
+import { StrictMode, Suspense } from "react"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Admin, Create, Participate, Results } from "./pages"
@@ -37,10 +37,38 @@ root.render(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Create />} />
-          <Route path="/admin/:id" element={<Admin />} />
-          <Route path="/participate/:id" element={<Participate />} />
-          <Route path="/results/:id" element={<Results />} />
+          <Route
+            index
+            element={
+              <Suspense>
+                <Create />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/admin/:id"
+            element={
+              <Suspense>
+                <Admin />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/participate/:id"
+            element={
+              <Suspense>
+                <Participate />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/results/:id"
+            element={
+              <Suspense>
+                <Results />
+              </Suspense>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>

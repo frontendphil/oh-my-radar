@@ -2,27 +2,36 @@
   "$schema": "https://turborepo.org/schema.json",
   "baseBranch": "origin/main",
   "pipeline": {
+    "clean": {
+      "dependsOn": []
+    },
     "build": {
-      "dependsOn": ["^build"],
-      "outputs": ["dist/**", "chart.css"]
+      "dependsOn": ["clean", "^build"],
+      "outputs": ["./**/dist/**", "./**/chart.css"]
     },
     "graphql-codegen": {
-      "outputs": ["api.ts"]
+      "outputs": ["./**/api.ts"]
     },
     "test": {
       "dependsOn": ["build", "graphql-codegen"],
-      "outputs": ["coverage/**"]
+      "outputs": ["./**/coverage/**"]
     },
     "test:ci": {
       "dependsOn": ["build", "graphql-codegen"],
-      "outputs": ["coverage/**"]
+      "outputs": ["./**/coverage/**"]
     },
     "dist": {
       "dependsOn": ["build", "graphql-codegen"],
-      "outputs": ["dist/**"]
+      "inputs": ["webpack.config.js"],
+      "outputs": ["./**/dist/**"]
     },
     "start": {
       "dependsOn": ["build", "graphql-codegen"]
+    },
+    "stats": {
+      "dependsOn": ["build"],
+      "outputs": ["./**/stats.json"]
     }
-  }
+  },
+  "globalDependencies": ["$NODE_ENV", "tsconfig.json"]
 }
