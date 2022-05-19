@@ -7,23 +7,23 @@
     },
     "build": {
       "dependsOn": ["clean", "^build"],
-      "outputs": ["dist/**", "./**/chart.css"]
+      "outputs": ["./**/dist/**", "./**/chart.css"]
     },
     "graphql-codegen": {
       "outputs": ["./**/api.ts"]
     },
     "test": {
       "dependsOn": ["build", "graphql-codegen"],
-      "outputs": ["coverage/**"]
+      "outputs": ["./**/coverage/**"]
     },
     "test:ci": {
       "dependsOn": ["build", "graphql-codegen"],
-      "outputs": ["coverage/**"]
+      "outputs": ["./**/coverage/**"]
     },
     "dist": {
       "dependsOn": ["build", "graphql-codegen"],
       "inputs": ["webpack.config.js"],
-      "outputs": ["dist/**"]
+      "outputs": ["./**/dist/**"]
     },
     "start": {
       "dependsOn": ["build", "graphql-codegen"]
