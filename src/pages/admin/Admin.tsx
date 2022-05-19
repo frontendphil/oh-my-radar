@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
 import invariant from "invariant"
-import { RadarChart, Selection } from "../../radar-chart"
+import { RadarChart, Selection } from "@radar/chart"
 import {
   useAdminGetChartQuery,
   useDeleteDimensionMutation,

@@ -1,7 +1,7 @@
 import { useId } from "react"
 import { Color, Label } from "../../form-controls"
 import { Hint, InputLayout, List, ListItem } from "../../layout"
-import { Participant } from "../../radar-chart"
+import { Participant } from "@radar/chart"
 
 type Props = {
   participants: Participant[]

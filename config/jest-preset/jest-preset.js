@@ -1,5 +1,4 @@
 const tsJest = require("ts-jest")
-const path = require("path")
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
@@ -8,7 +7,6 @@ module.exports = {
   testEnvironment: "jsdom",
   testMatch: ["<rootDir>/src/**/*.spec.ts(x)?"],
   collectCoverageFrom: ["src/**/*.ts(x)?"],
-  setupFilesAfterEnv: [path.resolve(__dirname, "setupTests.ts")],
   moduleNameMapper: {
     "\\.css$": "identity-obj-proxy",
   },

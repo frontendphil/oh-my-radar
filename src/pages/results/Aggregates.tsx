@@ -1,7 +1,7 @@
 import { useId } from "react"
 import { Color, Label } from "../../form-controls"
 import { InputLayout, List, ListItem } from "../../layout"
-import { Colors } from "../../radar-chart"
+import { Colors } from "@radar/chart"
 
 type AggregateState = {
   average: boolean

@@ -9,7 +9,7 @@ import {
   RadarChart,
   Selection,
   SelectionState,
-} from "../../radar-chart"
+} from "@radar/chart"
 import {
   useInsertParticipantMutation,
   useInsertSelectionsMutation,

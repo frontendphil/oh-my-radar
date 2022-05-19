@@ -3,7 +3,7 @@ import { TrashIcon } from "@heroicons/react/outline"
 import { Button, IconButton, InputWithButton } from "../../form-controls"
 import { Label } from "../../form-controls/Label"
 import { List, ListItem } from "../../layout"
-import { Dimension } from "../../radar-chart"
+import { Dimension } from "@radar/chart"
 
 export type NewDimension = Omit<Dimension, "id">
 

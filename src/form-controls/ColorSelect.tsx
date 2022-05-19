@@ -8,7 +8,7 @@ import {
 import "@reach/listbox/styles.css"
 import { VisuallyHidden } from "@reach/visually-hidden"
 import { HTMLAttributes, useId } from "react"
-import { Colors, getSelectionColor } from "../radar-chart"
+import { Colors, getSelectionColor } from "@radar/chart"
 
 const ColorNames = {
   [Colors.pink]: "Pink",
