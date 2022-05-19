@@ -4,7 +4,7 @@ const { config } = require("dotenv")
 
 config()
 
-const { NODE_ENV, COVERAGE } = process.env
+const { NODE_ENV } = process.env
 
 module.exports = {
   entry: "./src/index.tsx",
@@ -29,10 +29,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
-          COVERAGE && "@jsdevtools/coverage-istanbul-loader",
-          "ts-loader",
-        ].filter(Boolean),
+        use: ["ts-loader"].filter(Boolean),
       },
       {
         test: /\.css$/i,
