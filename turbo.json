@@ -4,15 +4,15 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**"]
+      "outputs": ["dist/**", "chart.css"]
     },
     "test": {
       "dependsOn": ["build"],
-      "inputs": ["coverage", "runInBand"]
+      "outputs": ["coverage/**"]
     },
     "test:ci": {
       "dependsOn": ["build"],
-      "inputs": []
+      "outputs": ["coverage/**"]
     }
   }
 }
