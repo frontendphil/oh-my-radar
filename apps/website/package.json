@@ -11,7 +11,8 @@
     "dist": "webpack",
     "cypress:test": "cypress",
     "cypress:open": "cypress open --config baseUrl=http://localhost:8080",
-    "graphql-codegen": "graphql-codegen --require dotenv/config --config codegen.yml"
+    "graphql-codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
+    "stats": "webpack --json > stats.json"
   },
   "author": "Philipp Giese",
   "license": "UNLICENSED",

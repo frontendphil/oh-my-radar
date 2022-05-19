@@ -27,6 +27,10 @@
     },
     "start": {
       "dependsOn": ["build", "graphql-codegen"]
+    },
+    "stats": {
+      "dependsOn": ["build"],
+      "outputs": ["stats.json"]
     }
   },
   "globalDependencies": ["$NODE_ENV", "tsconfig.json"]
