@@ -11,7 +11,7 @@
     "prebuild": "npm run clean",
     "build": "npm run compile && npm run tailwind",
     "compile": "tsc -p tsconfig.build.json",
-    "tailwind": "tailwindcss -o chart.css"
+    "tailwind": "tailwindcss -o chart.css -m"
   },
   "author": "Philipp Giese",
   "license": "MIT",
