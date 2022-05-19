@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "clean": "rimraf dist",
     "test": "jest",
     "test:ci": "jest --coverage --runInBand",
     "start": "webpack serve",
@@ -51,6 +52,7 @@
     "postcss-loader": "6.2.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "rimraf": "3.0.2",
     "style-loader": "3.3.1",
     "tailwindcss": "3.0.24",
     "ts-loader": "9.3.0",

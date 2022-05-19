@@ -13,6 +13,10 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js"],
   },
+  output: {
+    filename: "[name].[hash].js",
+    chunkFilename: "[name].[hash].js",
+  },
   devServer: {
     historyApiFallback: true,
   },
