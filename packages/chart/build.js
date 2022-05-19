@@ -8,6 +8,7 @@ try {
     bundle: true,
     external: ["react", "invariant"],
     format: "cjs",
+    inject: ["./react.js"],
   })
 } catch (e) {
   console.error(e)
