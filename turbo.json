@@ -7,7 +7,12 @@
       "outputs": ["dist/**"]
     },
     "test": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["build"],
+      "inputs": ["coverage", "runInBand"]
+    },
+    "test:ci": {
+      "dependsOn": ["build"],
+      "inputs": []
     }
   }
 }

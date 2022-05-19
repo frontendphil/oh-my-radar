@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "turbo run test && jest",
+    "test:ci": "turbo run test:ci && jest",
     "prestart": "npm run graphql-codegen",
     "start": "webpack serve",
     "prebuild": "npm run graphql-codegen",
