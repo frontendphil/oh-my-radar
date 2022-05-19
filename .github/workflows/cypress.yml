@@ -18,7 +18,3 @@ jobs:
           project: ./apps/website
         env:
           CYPRESS_BASE_URL: ${{ github.event.deployment_status.target_url }}
-      - uses: codecov/codecov-action@v3.1.0
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: e2e
