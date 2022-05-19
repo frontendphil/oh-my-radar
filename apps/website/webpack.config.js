@@ -14,8 +14,8 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js"],
   },
   output: {
-    filename: "[name].[hash].js",
-    chunkFilename: "[name].[hash].js",
+    filename: "[name].[chunkhash].js",
+    chunkFilename: "[name].[chunkhash].js",
   },
   devServer: {
     historyApiFallback: true,
