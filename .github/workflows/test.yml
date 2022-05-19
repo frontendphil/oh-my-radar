@@ -9,14 +9,13 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - uses: actions/checkout@v3
       - run: npm ci
-      - run: npm run graphql-codegen
-        env:
-          HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
-          GRAPHQL_ENDPOINT: ${{ secrets.GRAPHQL_ENDPOINT }}
-      - run: npm run test:ci -- --coverage --runInBand
+      - run: npm run test:ci
         env:
           HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
           GRAPHQL_ENDPOINT: ${{ secrets.GRAPHQL_ENDPOINT }}

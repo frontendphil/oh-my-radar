@@ -4,6 +4,4 @@ coverage
 .turbo
 
 .env
-schema.graphql
 api.ts
-.nyc_output
