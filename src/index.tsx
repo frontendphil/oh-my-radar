@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Admin, Create, Participate, Results } from "./pages"
 
+import "@radar/chart/chart.css"
 import "./main.css"
 
 const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET
