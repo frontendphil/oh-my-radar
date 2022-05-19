@@ -26,5 +26,5 @@
       "dependsOn": ["build", "graphql-codegen"]
     }
   },
-  "globalDependencies": ["$NODE_ENV"]
+  "globalDependencies": ["$NODE_ENV", "tsconfig.json"]
 }

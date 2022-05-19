@@ -1,1 +1,1 @@
-export { Participate } from "./Participate"
+export { Participate as default } from "./Participate"
