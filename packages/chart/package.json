@@ -8,6 +8,7 @@
     "clean": "rimraf dist",
     "test": "jest",
     "test:ci": "jest --coverage --runInBand",
+    "test:watch": "jest --watch",
     "build": "npm run compile && npm run tailwind",
     "compile": "node build.js && tsc -p tsconfig.build.json",
     "tailwind": "tailwindcss -o chart.css -m"

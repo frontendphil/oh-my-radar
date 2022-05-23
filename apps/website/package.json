@@ -6,10 +6,12 @@
   "scripts": {
     "clean": "rimraf dist",
     "test": "jest",
-    "test:ci": "jest --coverage --runInBand",
+    "test:ci": "npm run test -- --coverage --runInBand",
+    "test:watch": "npm run test -- --watch",
     "start": "webpack serve",
     "dist": "webpack",
-    "graphql-codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
+    "codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
+    "codegen:watch": "npm run codegen -- --watch",
     "stats": "webpack --json > stats.json"
   },
   "author": "Philipp Giese",
