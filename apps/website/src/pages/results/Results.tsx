@@ -11,7 +11,7 @@ import {
 } from "@radar/chart"
 import { Aggregates } from "./Aggregates"
 import { useResultGetChartQuery } from "./api"
-import { ParticipantSelect } from "./ParticipantSelect"
+import { Participants } from "./Participants"
 
 export const Results = () => {
   const { id } = useParams()
@@ -81,7 +81,7 @@ export const Results = () => {
 
       <SidePanel>
         <div className="flex flex-col gap-12">
-          <ParticipantSelect
+          <Participants
             participants={participantsWithColors.map(toParticipant)}
             value={selectedParticipants}
             onChange={setSelectedParticipants}

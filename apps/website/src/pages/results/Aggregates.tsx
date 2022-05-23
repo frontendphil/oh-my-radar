@@ -1,7 +1,8 @@
 import { useId } from "react"
-import { Color, Label } from "../../form-controls"
+import { Label } from "../../form-controls"
 import { InputLayout, List, ListItem } from "../../layout"
 import { Colors } from "@radar/chart"
+import { Color } from "./Color"
 
 type AggregateState = {
   average: boolean
@@ -49,7 +50,7 @@ const Average = ({ checked, onChange }: AverageProps) => {
         onChange={(event) => onChange(event.target.checked)}
       />
 
-      <Color color={Colors.green} />
+      <Color dashed color={Colors.green} />
 
       <label className="ml-2" htmlFor={id}>
         Average

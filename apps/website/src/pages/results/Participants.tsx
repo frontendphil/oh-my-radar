@@ -1,7 +1,8 @@
 import { useId } from "react"
-import { Color, Label } from "../../form-controls"
+import { Label } from "../../form-controls"
 import { Hint, InputLayout, List, ListItem } from "../../layout"
 import { Participant } from "@radar/chart"
+import { Color } from "./Color"
 
 type Props = {
   participants: Participant[]
@@ -9,7 +10,7 @@ type Props = {
   onChange: (value: string[]) => void
 }
 
-export const ParticipantSelect = ({ participants, value, onChange }: Props) => {
+export const Participants = ({ participants, value, onChange }: Props) => {
   const id = useId()
 
   if (participants.length === 0) {
