@@ -13,7 +13,6 @@
       "outputs": ["./**/api.ts"]
     },
     "test": {
-      "dependsOn": ["build", "graphql-codegen"],
       "outputs": ["./**/coverage/**"]
     },
     "test:ci": {
@@ -29,7 +28,7 @@
       "dependsOn": ["build", "graphql-codegen"]
     },
     "stats": {
-      "dependsOn": ["build"],
+      "dependsOn": ["build", "graphql-codegen"],
       "outputs": ["./**/stats.json"]
     }
   },
