@@ -2,17 +2,27 @@ import invariant from "invariant"
 import { useNavigate } from "react-router-dom"
 import { PrimaryButton } from "../../form-controls"
 import { View } from "../../layout"
-import { useCreateChartMutation, useCreateDimensionsMutation } from "./api"
+import {
+  useCreateChartMutation,
+  useCreateDimensionsMutation,
+  useStatsQuery,
+} from "./api"
 import { Demo } from "./Demo"
 
 export const Create = () => {
   const navigate = useNavigate()
 
-  const [addChart, { loading: loadingChart }] = useCreateChartMutation()
-  const [addDimensions, { loading: loadingDimensions }] =
+  const { data, loading } = useStatsQuery()
+
+  const [addChart, { loading: creatingChart }] = useCreateChartMutation()
+  const [addDimensions, { loading: creatingDimensions }] =
     useCreateDimensionsMutation()
 
-  const loading = loadingChart || loadingDimensions
+  if (loading) {
+    return null
+  }
+
+  const creating = creatingChart || creatingDimensions
 
   return (
     <View>
@@ -23,7 +33,7 @@ export const Create = () => {
 
         <div className="flex items-center justify-center">
           <PrimaryButton
-            disabled={loading}
+            disabled={creating}
             onClick={() =>
               addChart({
                 variables: { chart: defaultChart() },
@@ -47,8 +57,10 @@ export const Create = () => {
               })
             }
           >
-            {loading ? "Creating your chart..." : "Create your own chart"}
+            {creating ? "Creating your chart..." : "Create your own chart"}
           </PrimaryButton>
+
+          {`${data?.participants_aggregate.aggregate?.count} people have participated in ${data?.charts_aggregate.aggregate?.count} charts.`}
         </div>
       </div>
     </View>
