@@ -1,11 +1,11 @@
 import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { MockedResponse } from "@apollo/client/testing"
-import { Create, defaultChart, defaultDimensions } from "./Create"
-import { Route, Routes } from "react-router-dom"
+import { defaultChart, defaultDimensions } from "./Create"
+import { Route } from "react-router-dom"
 import { CreateChartDocument, CreateDimensionsDocument } from "./api"
-import { ReactNode } from "react"
-import { finishMutations, render as baseRender } from "../test-utils"
+
+import { finishMutations } from "../test-utils"
+import { render } from "./test-utils"
 
 describe("Create", () => {
   const chartMock = {
@@ -44,21 +44,8 @@ describe("Create", () => {
     },
   }
 
-  const render = ({
-    mocks,
-    routes,
-  }: { mocks?: MockedResponse[]; routes?: ReactNode } = {}) => {
-    baseRender(
-      <Routes>
-        <Route path="/" element={<Create />} />
-        {routes}
-      </Routes>,
-      { mocks }
-    )
-  }
-
-  it("renders a button to create a new chart.", () => {
-    render()
+  it("renders a button to create a new chart.", async () => {
+    await render()
 
     expect(
       screen.getByRole("button", { name: "Create your own chart" })
@@ -66,7 +53,7 @@ describe("Create", () => {
   })
 
   it("shows a loading state on the button while creating a new chart.", async () => {
-    render({
+    await render({
       mocks: [chartMock, dimensionsMock],
     })
 
@@ -84,7 +71,7 @@ describe("Create", () => {
   it("redirects to the chart admin when a chart has been created.", async () => {
     const Needle = () => <div data-testid="created" />
 
-    render({
+    await render({
       mocks: [chartMock, dimensionsMock],
       routes: <Route path="/admin/:id" element={<Needle />} />,
     })
@@ -96,5 +83,22 @@ describe("Create", () => {
     await finishMutations(chartMock, dimensionsMock)
 
     expect(screen.getByTestId("created")).toBeInTheDocument()
+  })
+
+  it("shows how many charts have been created.", async () => {
+    await render({
+      chartStats: {
+        aggregate: {
+          count: 42,
+        },
+      },
+      participantStats: {
+        aggregate: {
+          count: 12,
+        },
+      },
+    })
+
+    expect(screen.getByText("12 people have participated in 42 charts."))
   })
 })

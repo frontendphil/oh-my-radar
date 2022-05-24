@@ -10,7 +10,7 @@
     "test:watch": "npm run test -- --watch",
     "start": "webpack serve",
     "dist": "webpack",
-    "codegen": "graphql-codegen --require dotenv/config --config codegen.yml",
+    "codegen": "DOTENV_CONFIG_PATH=../../.env graphql-codegen --require dotenv/config --config codegen.yml",
     "codegen:watch": "npm run codegen -- --watch",
     "stats": "webpack --json > stats.json"
   },

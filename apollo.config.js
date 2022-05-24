@@ -8,6 +8,7 @@ module.exports = {
   client: {
     name: "oh-my-radar",
     tagName: "gql",
+    includes: ["apps/website/**"],
     excludes: ["**/api.ts"],
     service: {
       name: "oh-my-radar",

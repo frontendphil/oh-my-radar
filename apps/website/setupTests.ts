@@ -3,4 +3,4 @@ import "cross-fetch/polyfill"
 
 import { config } from "dotenv"
 
-config()
+config({ path: "../../.env" })

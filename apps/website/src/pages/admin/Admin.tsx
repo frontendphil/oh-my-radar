@@ -13,7 +13,7 @@ import { useEffect } from "react"
 import { Form, FormGroup, Input, NumberInput } from "../../form-controls"
 import { useConfiguration } from "./useConfiguration"
 import { Dimensions } from "./Dimensions"
-import { Canvas, SidePanel, View } from "../../layout"
+import { Canvas, Divider, SidePanel, View } from "../../layout"
 
 export const Admin = () => {
   const { id } = useParams()
@@ -159,7 +159,7 @@ export const Admin = () => {
           />
         </Form>
 
-        <hr className="my-12 border-slate-300 dark:border-yellow-500" />
+        <Divider />
 
         <div className="flex flex-col gap-10">
           <Input

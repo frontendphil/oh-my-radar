@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { EnvironmentPlugin } = require("webpack")
 const { config } = require("dotenv")
 
-config()
+config({ path: "../../.env" })
 
 const { NODE_ENV } = process.env
 

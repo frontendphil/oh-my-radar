@@ -110,7 +110,7 @@ const Circles = () => {
       {steps.reverse().map((step) => (
         <circle
           key={step}
-          className="fill-transparent stroke-slate-500 dark:stroke-slate-100"
+          className="fill-transparent stroke-zinc-500 dark:stroke-zinc-100"
           cx="50%"
           cy="50%"
           r={getLengthToSelection(diagramWidth, range, step)}

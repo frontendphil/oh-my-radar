@@ -3,6 +3,7 @@ import crypto from "crypto"
 import { render as baseRender } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { MockedProvider, MockedResponse } from "@apollo/client/testing"
+import { ReactNode } from "react"
 
 const zeroTimeout = () =>
   new Promise<void>((resolve) => setTimeout(resolve, 10))
@@ -28,24 +29,23 @@ type Options = Parameters<typeof baseRender>[1] & {
   mocks?: MockedResponse[]
   path?: string
   route?: string
+  routes?: ReactNode
 }
 
 export const render = (
   component: Component,
-  { mocks, path, route, ...options }: Options = {}
+  { mocks, path = "/", route = "/", routes, ...options }: Options = {}
 ): ReturnType<typeof baseRender> => {
   return baseRender(
-    <MemoryRouter initialEntries={route ? [{ pathname: route }] : undefined}>
-      <MockedProvider mocks={mocks} addTypename={false}>
-        {path ? (
-          <Routes>
-            <Route path={path} element={component} />
-          </Routes>
-        ) : (
-          component
-        )}
-      </MockedProvider>
-    </MemoryRouter>,
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <MemoryRouter initialEntries={[{ pathname: route }]}>
+        <Routes>
+          <Route path={path} element={component} />
+
+          {routes}
+        </Routes>
+      </MemoryRouter>
+    </MockedProvider>,
     options
   )
 }

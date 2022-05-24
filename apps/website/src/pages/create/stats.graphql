@@ -1,0 +1,13 @@
+query Stats {
+  charts_aggregate {
+    aggregate {
+      count
+    }
+  }
+
+  participants_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
