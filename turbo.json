@@ -10,27 +10,33 @@
       "outputs": ["./**/dist/**", "./**/chart.css"]
     },
     "codegen": {
-      "outputs": ["./**/api.ts"]
+      "inputs": ["apollo.config.js"],
+      "outputs": ["./apps/website/**/api.ts"]
     },
     "codegen:watch": {
-      "outputs": ["./**/api.ts"]
+      "inputs": ["apollo.config.js"],
+      "outputs": ["./apps/website/**/api.ts"]
     },
     "test": {
+      "inputs": ["./**/jest.config.js", "setupTests.ts"],
       "outputs": ["./**/coverage/**"]
     },
     "test:watch": {
+      "inputs": ["./**/jest.config.js", "setupTests.ts"],
       "outputs": ["./**/coverage/**"]
     },
     "test:ci": {
       "dependsOn": ["build", "codegen"],
+      "inputs": ["./**/jest.config.js", "setupTests.ts"],
       "outputs": ["./**/coverage/**"]
     },
     "dist": {
       "dependsOn": ["build", "codegen"],
-      "inputs": ["webpack.config.js"],
+      "inputs": ["./apps/website/webpack.config.js"],
       "outputs": ["./**/dist/**"]
     },
     "start": {
+      "inputs": ["./apps/website/webpack.config.js"],
       "dependsOn": ["build", "codegen"]
     },
     "stats": {
