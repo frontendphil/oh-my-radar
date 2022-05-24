@@ -27,7 +27,7 @@ export const Create = () => {
   return (
     <View>
       <div className="grid h-screen w-full grid-rows-2 md:grid-cols-2 md:grid-rows-1 ">
-        <div className="flex items-center p-12 md:p-24">
+        <div className="flex items-center justify-center p-12 md:p-24">
           <Demo />
         </div>
 
