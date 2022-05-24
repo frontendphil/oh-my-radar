@@ -40,14 +40,14 @@ export const Step = ({
 
 const resolveColor = (selected?: boolean, color?: AvailableColors) => {
   if (!color) {
-    return "fill-slate-100 stroke-slate-400 dark:fill-slate-300 dark:stroke-slate-600"
+    return "fill-zinc-100 stroke-zinc-400 dark:fill-zinc-300 dark:stroke-zinc-600"
   }
 
   if (selected) {
     return colors[color].selected
   }
 
-  return `fill-slate-100 stroke-slate-400 dark:fill-slate-300 dark:stroke-slate-600 ${colors[color].hover}`
+  return `fill-zinc-100 stroke-zinc-400 dark:fill-zinc-300 dark:stroke-zinc-600 ${colors[color].hover}`
 }
 
 export const getSelectionColor = (color: Colors): string =>

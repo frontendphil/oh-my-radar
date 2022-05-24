@@ -7,6 +7,6 @@ type Props = HTMLAttributes<HTMLLabelElement> & {
 export const Label = (props: Props) => (
   <label
     {...props}
-    className="flex text-xs  font-bold uppercase text-slate-500 dark:text-yellow-400"
+    className="flex text-xs  font-bold uppercase text-zinc-500 dark:text-zinc-400"
   />
 )
