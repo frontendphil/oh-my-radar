@@ -9,7 +9,7 @@ module.exports = {
     name: "oh-my-radar",
     tagName: "gql",
     includes: ["apps/website/**"],
-    excludes: ["**/api.ts"],
+    excludes: ["**/api.ts", "**/dist/*"],
     service: {
       name: "oh-my-radar",
       url: GRAPHQL_ENDPOINT,
