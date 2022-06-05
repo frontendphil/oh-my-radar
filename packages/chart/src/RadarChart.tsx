@@ -121,10 +121,13 @@ const Circles = () => {
 }
 
 const useResponsiveSize = (maxUserDefinedSize: number) => {
-  const maxSize = useCallback(
-    () => Math.min(maxUserDefinedSize, window.innerWidth - 100),
-    [maxUserDefinedSize]
-  )
+  const maxSize = useCallback(() => {
+    if (typeof window === "undefined") {
+      return maxUserDefinedSize
+    }
+
+    return Math.min(maxUserDefinedSize, window.innerWidth - 100)
+  }, [maxUserDefinedSize])
   const [size, setSize] = useState(maxSize())
 
   useEffect(() => {

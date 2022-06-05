@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/node"
+import type { LinksFunction, MetaFunction } from "@remix-run/node"
 import {
   Links,
   LiveReload,
@@ -8,11 +8,21 @@ import {
   ScrollRestoration,
 } from "@remix-run/react"
 
+import radarStyles from "@radar/chart/chart.css"
+import styles from "./styles/app.css"
+
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "New Remix App",
   viewport: "width=device-width,initial-scale=1",
 })
+
+export const links: LinksFunction = () => {
+  return [
+    { rel: "stylesheet", href: styles },
+    { rel: "stylesheet", href: radarStyles },
+  ]
+}
 
 export default function App() {
   return (

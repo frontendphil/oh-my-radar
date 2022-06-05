@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 const enum Align {
   left = "left",
@@ -25,7 +25,7 @@ export const Text = ({ id, children, x, y }: TextProps) => {
   const [left, setLeft] = useState(0)
   const [top, setTop] = useState(0)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const node = ref.current
 
     if (!node) {

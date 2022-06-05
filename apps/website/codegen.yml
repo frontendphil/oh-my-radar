@@ -17,7 +17,6 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-apollo
     config:
       withHooks: true
   src/pages/participate/api.ts:
@@ -25,7 +24,6 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-apollo
     config:
       withHooks: true
   src/pages/results/api.ts:
@@ -33,6 +31,5 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-apollo
     config:
       withHooks: true
