@@ -4,6 +4,7 @@
   "description": "",
   "main": "dist/chart.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "clean": "rimraf dist",
     "test": "jest",
