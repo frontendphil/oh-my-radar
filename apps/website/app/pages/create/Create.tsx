@@ -2,7 +2,7 @@ import { PrimaryButton } from "../../form-controls"
 import { View } from "../../layout"
 import { StatsQuery } from "../../api/create"
 import { Demo } from "./Demo"
-import { useTransition } from "@remix-run/react"
+import { Form, useTransition } from "@remix-run/react"
 
 type Props = {
   stats: StatsQuery
@@ -21,9 +21,11 @@ export const Create = ({ stats }: Props) => {
         </div>
 
         <div className="flex h-full flex-col items-center justify-center gap-24">
-          <PrimaryButton disabled={creating} type="submit">
-            {creating ? "Creating your chart..." : "Create your own chart"}
-          </PrimaryButton>
+          <Form method="post">
+            <PrimaryButton disabled={creating} type="submit">
+              {creating ? "Creating your chart..." : "Create your own chart"}
+            </PrimaryButton>
+          </Form>
 
           <div className="text-xs uppercase">
             {`${stats?.participants_aggregate.aggregate?.count} people have participated in ${stats?.charts_aggregate.aggregate?.count} charts.`}
