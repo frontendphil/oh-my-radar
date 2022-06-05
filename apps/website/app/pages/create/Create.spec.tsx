@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { defaultChart, defaultDimensions } from "./Create"
 import { Route } from "react-router-dom"
-import { CreateChartDocument, CreateDimensionsDocument } from "./api"
+import { CreateChartDocument, CreateDimensionsDocument } from "../../api/create"
 
 import { finishMutations } from "../test-utils"
 import { render } from "./test-utils"

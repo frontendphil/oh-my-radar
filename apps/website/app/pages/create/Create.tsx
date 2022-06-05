@@ -6,7 +6,7 @@ import {
   useCreateChartMutation,
   useCreateDimensionsMutation,
   useStatsQuery,
-} from "./api"
+} from "../../api/create"
 import { Demo } from "./Demo"
 
 export const Create = () => {

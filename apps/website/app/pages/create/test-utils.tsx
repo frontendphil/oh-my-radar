@@ -1,7 +1,7 @@
 import { MockedResponse } from "@apollo/client/testing"
 import { finishQueries, render as baseRender } from "../test-utils"
 import { Create } from "./Create"
-import { StatsDocument, StatsQuery } from "./api"
+import { StatsDocument, StatsQuery } from "../../api/create"
 
 type ChartStats = Omit<
   NonNullable<StatsQuery["charts_aggregate"]>,

@@ -4,8 +4,8 @@ schema:
       headers:
         x-hasura-admin-secret: ${HASURA_ADMIN_SECRET}
 generates:
-  src/pages/create/api.ts:
-    documents: src/pages/create/**/*.{ts,graphql}
+  app/api/create.ts:
+    documents: app/pages/create/**/*.{ts,graphql}
     plugins:
       - typescript
       - typescript-operations
