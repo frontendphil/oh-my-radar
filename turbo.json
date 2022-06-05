@@ -10,11 +10,19 @@
       "outputs": ["./**/dist/**", "./**/chart.css"]
     },
     "codegen": {
-      "inputs": ["apollo.config.js", "**/*.graphql"],
+      "inputs": [
+        "apollo.config.js",
+        "./apps/website/codegen.yml",
+        "**/*.graphql"
+      ],
       "outputs": ["**/api.ts"]
     },
     "codegen:watch": {
-      "inputs": ["apollo.config.js", "**/*.graphql"],
+      "inputs": [
+        "apollo.config.js",
+        "./apps/website/codegen.yml",
+        "**/*.graphql"
+      ],
       "outputs": ["**/api.ts"]
     },
     "test": {

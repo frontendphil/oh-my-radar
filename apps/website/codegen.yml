@@ -9,7 +9,7 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-react-apollo
+      - typed-document-node
     config:
       withHooks: true
   src/pages/admin/api.ts:
