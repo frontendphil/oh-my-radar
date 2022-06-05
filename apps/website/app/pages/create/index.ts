@@ -1,1 +1,1 @@
-export { Create } from "./Create"
+export { Create, defaultChart, defaultDimensions } from "./Create"

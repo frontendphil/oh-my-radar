@@ -1,6 +1,6 @@
-import { HTMLAttributes } from "react"
+import { ButtonHTMLAttributes, HTMLAttributes } from "react"
 
-type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   disabled?: boolean
 }
 

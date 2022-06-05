@@ -1,28 +1,17 @@
-import invariant from "invariant"
-import { useNavigate } from "react-router-dom"
 import { PrimaryButton } from "../../form-controls"
 import { View } from "../../layout"
-import {
-  useCreateChartMutation,
-  useCreateDimensionsMutation,
-  useStatsQuery,
-} from "../../api/create"
+import { StatsQuery } from "../../api/create"
 import { Demo } from "./Demo"
+import { useTransition } from "@remix-run/react"
 
-export const Create = () => {
-  const navigate = useNavigate()
+type Props = {
+  stats: StatsQuery
+}
 
-  const { data, loading } = useStatsQuery()
+export const Create = ({ stats }: Props) => {
+  const transition = useTransition()
 
-  const [addChart, { loading: creatingChart }] = useCreateChartMutation()
-  const [addDimensions, { loading: creatingDimensions }] =
-    useCreateDimensionsMutation()
-
-  if (loading) {
-    return null
-  }
-
-  const creating = creatingChart || creatingDimensions
+  const creating = transition.state === "submitting"
 
   return (
     <View>
@@ -32,36 +21,12 @@ export const Create = () => {
         </div>
 
         <div className="flex h-full flex-col items-center justify-center gap-24">
-          <PrimaryButton
-            disabled={creating}
-            onClick={() =>
-              addChart({
-                variables: { chart: defaultChart() },
-                onCompleted: ({ insert_charts_one }) => {
-                  invariant(
-                    insert_charts_one,
-                    "Something went wrong creating the chart."
-                  )
-
-                  const { id } = insert_charts_one
-
-                  addDimensions({
-                    variables: {
-                      dimensions: defaultDimensions(id),
-                    },
-                    onCompleted: () => {
-                      navigate(`/admin/${id}`)
-                    },
-                  })
-                },
-              })
-            }
-          >
+          <PrimaryButton disabled={creating} type="submit">
             {creating ? "Creating your chart..." : "Create your own chart"}
           </PrimaryButton>
 
           <div className="text-xs uppercase">
-            {`${data?.participants_aggregate.aggregate?.count} people have participated in ${data?.charts_aggregate.aggregate?.count} charts.`}
+            {`${stats?.participants_aggregate.aggregate?.count} people have participated in ${stats?.charts_aggregate.aggregate?.count} charts.`}
           </div>
         </div>
       </div>
