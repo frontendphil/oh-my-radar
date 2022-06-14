@@ -17,7 +17,7 @@
   "license": "MIT",
   "peerDependencies": {
     "invariant": "2.2.4",
-    "react": "18.1.0"
+    "react": "18.2.0"
   },
   "devDependencies": {
     "@radar/eslint-config": "1.0.0",
