@@ -5,8 +5,8 @@ module.exports = {
   ...tsJest.createJestPreset(),
 
   testEnvironment: "jsdom",
-  testMatch: ["<rootDir>/src/**/*.spec.ts(x)?"],
-  collectCoverageFrom: ["src/**/*.ts(x)?"],
+  testMatch: ["<rootDir>/{src,app}/**/*.spec.ts(x)?"],
+  collectCoverageFrom: ["{src,app}/**/*.ts(x)?"],
   moduleNameMapper: {
     "\\.css$": "identity-obj-proxy",
   },
