@@ -20,11 +20,12 @@ generates:
       - typed-document-node
     config:
       withHooks: true
-  src/pages/participate/api.ts:
-    documents: src/pages/participate/**/*.{ts,graphql}
+  app/api/participate.ts:
+    documents: app/pages/participate/**/*.{ts,graphql}
     plugins:
       - typescript
       - typescript-operations
+      - typed-document-node
     config:
       withHooks: true
   src/pages/results/api.ts:
