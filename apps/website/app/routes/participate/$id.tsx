@@ -58,16 +58,18 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   const selection: SelectionState = JSON.parse(getText(body.get("selection")))
 
+  const selections = Object.entries(selection).map(([dimensionId, value]) => ({
+    chartId: params.id,
+    dimensionId,
+    participantId,
+    value,
+  }))
+
   await client.mutation<
     InsertSelectionsMutation,
     InsertSelectionsMutationVariables
   >(InsertParticipantDocument, {
-    selections: Object.entries(selection).map(([dimensionId, value]) => ({
-      chartId: params.id,
-      dimensionId,
-      participantId,
-      value,
-    })),
+    selections,
   })
 
   return redirect(`/participate/thank-you`)

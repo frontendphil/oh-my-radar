@@ -10,28 +10,21 @@ generates:
       - typescript
       - typescript-operations
       - typed-document-node
-    config:
-      withHooks: true
   app/api/admin.ts:
     documents: app/pages/admin/**/*.{ts,graphql}
     plugins:
       - typescript
       - typescript-operations
       - typed-document-node
-    config:
-      withHooks: true
   app/api/participate.ts:
     documents: app/pages/participate/**/*.{ts,graphql}
     plugins:
       - typescript
       - typescript-operations
       - typed-document-node
-    config:
-      withHooks: true
-  src/pages/results/api.ts:
-    documents: src/pages/results/**/*.{ts,graphql}
+  app/api/results.ts:
+    documents: app/pages/results/**/*.{ts,graphql}
     plugins:
       - typescript
       - typescript-operations
-    config:
-      withHooks: true
+      - typed-document-node

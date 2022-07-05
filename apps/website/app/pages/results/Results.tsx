@@ -10,15 +10,17 @@ import {
   Selection,
 } from "@radar/chart"
 import { Aggregates } from "./Aggregates"
-import { useResultGetChartQuery } from "./api"
 import { Participants } from "./Participants"
+import { ResultGetChartQuery } from "../../api/results"
 
-export const Results = () => {
+type Props = {
+  data: ResultGetChartQuery
+}
+
+export const Results = ({ data }: Props) => {
   const { id } = useParams()
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
   const [aggregates, setAggregates] = useState({ average: false })
-
-  const { loading, data } = useResultGetChartQuery({ variables: { id } })
 
   useEffect(() => {
     if (data?.charts_by_pk?.participants) {
@@ -27,10 +29,6 @@ export const Results = () => {
       )
     }
   }, [data?.charts_by_pk?.participants])
-
-  if (loading) {
-    return null
-  }
 
   invariant(data?.charts_by_pk, "Could not load chart.")
 
