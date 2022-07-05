@@ -1,10 +1,10 @@
 import invariant from "invariant"
-import { HTMLAttributes, ReactNode, useId } from "react"
+import { HTMLAttributes, InputHTMLAttributes, ReactNode, useId } from "react"
 import { InputLayout } from "../layout"
 import { CoreInput } from "./CoreInput"
 import { Label } from "./Label"
 
-type Props = Omit<HTMLAttributes<HTMLInputElement>, "onChange"> & {
+type Props = Omit<InputHTMLAttributes<HTMLInputElement>, "onChange"> & {
   label: string
   children: ReactNode
   value?: string

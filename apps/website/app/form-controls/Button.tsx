@@ -1,12 +1,11 @@
-import { HTMLAttributes } from "react"
+import { ButtonHTMLAttributes } from "react"
+import { CoreButton } from "./CoreButton"
 
-type ButtonProps = HTMLAttributes<HTMLButtonElement> & {
-  disabled?: boolean
-}
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>
 
-export const Button = (props: ButtonProps) => (
-  <button
-    {...props}
+export const Button = ({ disabled, ...rest }: ButtonProps) => (
+  <CoreButton
+    {...rest}
     className="rounded bg-gradient-to-r from-purple-600 to-purple-500 py-2 px-3 text-white transition-all disabled:cursor-not-allowed disabled:from-gray-600 disabled:to-gray-500 disabled:opacity-75"
   />
 )

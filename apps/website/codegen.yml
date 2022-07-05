@@ -12,11 +12,12 @@ generates:
       - typed-document-node
     config:
       withHooks: true
-  src/pages/admin/api.ts:
-    documents: src/pages/admin/**/*.{ts,graphql}
+  app/api/admin.ts:
+    documents: app/pages/admin/**/*.{ts,graphql}
     plugins:
       - typescript
       - typescript-operations
+      - typed-document-node
     config:
       withHooks: true
   src/pages/participate/api.ts:

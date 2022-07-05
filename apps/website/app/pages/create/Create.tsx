@@ -22,7 +22,7 @@ export const Create = ({ stats }: Props) => {
 
         <div className="flex h-full flex-col items-center justify-center gap-24">
           <Form method="post">
-            <PrimaryButton disabled={creating} type="submit">
+            <PrimaryButton type="submit">
               {creating ? "Creating your chart..." : "Create your own chart"}
             </PrimaryButton>
           </Form>
