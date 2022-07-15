@@ -48,6 +48,7 @@
     "$NODE_ENV",
     "$GRAPHQL_ENDPOINT",
     "$HASURA_ADMIN_SECRET",
-    "tsconfig.json"
+    "tsconfig.json",
+    "package.json"
   ]
 }
