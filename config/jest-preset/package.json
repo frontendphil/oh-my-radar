@@ -6,7 +6,7 @@
   "author": "Philipp Giese",
   "license": "MIT",
   "dependencies": {
-    "@testing-library/jest-dom": "5.16.4",
+    "@testing-library/jest-dom": "5.16.5",
     "cross-fetch": "3.1.5",
     "dotenv": "16.0.1",
     "identity-obj-proxy": "3.0.0",
