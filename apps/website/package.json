@@ -39,7 +39,7 @@
     "@types/invariant": "2.2.35",
     "autoprefixer": "10.4.8",
     "css-loader": "6.7.1",
-    "dotenv": "16.0.1",
+    "dotenv": "16.0.2",
     "eslint": "8.23.0",
     "html-webpack-plugin": "5.5.0",
     "jest": "28.1.3",
