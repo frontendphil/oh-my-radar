@@ -33,7 +33,7 @@
     "is-ci": "3.0.1",
     "prettier": "2.7.1",
     "prettier-plugin-tailwindcss": "0.1.13",
-    "turbo": "1.4.4"
+    "turbo": "1.4.5"
   },
   "prettier": {
     "semi": false
