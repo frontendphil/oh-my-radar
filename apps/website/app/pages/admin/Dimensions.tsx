@@ -16,6 +16,10 @@ export const Dimensions = ({ dimensions }: Props) => {
   const [newDimension, setNewDimension] = useState("")
   const listId = useId()
 
+  const disableInsert =
+    newDimension.trim() === "" ||
+    dimensions.some(({ title }) => title === newDimension)
+
   return (
     <div className="flex flex-col gap-4">
       <Label htmlFor={listId}>Dimensions</Label>
@@ -47,39 +51,19 @@ export const Dimensions = ({ dimensions }: Props) => {
         </List>
       )}
 
-      <Form method="post">
+      <Form method="post" onSubmit={() => setNewDimension("")}>
         <InputWithButton
           label="Add dimension"
           name="title"
           value={newDimension}
           placeholder="Dimension label"
           onChange={setNewDimension}
-          onKeyUp={(event) => {
-            if (event.key !== "Enter") {
-              return
-            }
-
-            if (newDimension.trim() === "") {
-              return
-            }
-
-            const isDuplicate = dimensions.some(
-              ({ title }) => title === newDimension
-            )
-
-            if (isDuplicate) {
-              return
-            }
-          }}
         >
           <Button
             name="action"
             value="add-dimension"
             type="submit"
-            disabled={
-              newDimension.trim() === "" ||
-              dimensions.some(({ title }) => title === newDimension)
-            }
+            disabled={disableInsert}
             aria-label={`Add dimension "${newDimension}"`}
           >
             Add
