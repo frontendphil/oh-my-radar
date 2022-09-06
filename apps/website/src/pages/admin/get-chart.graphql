@@ -1,5 +1,6 @@
 query AdminGetChart($id: uuid!) {
   charts_by_pk(id: $id) {
+    id
     title
     min
     max

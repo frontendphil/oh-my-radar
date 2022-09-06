@@ -8,6 +8,7 @@ type Chart = Omit<NonNullable<AdminGetChartQuery["charts_by_pk"]>, "__typename">
 export const createChart = (
   chart: Partial<Chart> = {}
 ): NonNullable<AdminGetChartQuery["charts_by_pk"]> => ({
+  id: uuid(),
   title: "Test chart",
   min: 1,
   max: 4,
