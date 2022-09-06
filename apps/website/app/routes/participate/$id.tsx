@@ -4,6 +4,7 @@ import {
   InsertParticipantDocument,
   InsertParticipantMutation,
   InsertParticipantMutationVariables,
+  InsertSelectionsDocument,
   InsertSelectionsMutation,
   InsertSelectionsMutationVariables,
   ParticipantGetChartDocument,
@@ -65,12 +66,14 @@ export const action: ActionFunction = async ({ request, params }) => {
     value,
   }))
 
-  await client.mutation<
-    InsertSelectionsMutation,
-    InsertSelectionsMutationVariables
-  >(InsertParticipantDocument, {
-    selections,
-  })
+  await client
+    .mutation<InsertSelectionsMutation, InsertSelectionsMutationVariables>(
+      InsertSelectionsDocument,
+      {
+        selections,
+      }
+    )
+    .toPromise()
 
   return redirect(`/participate/thank-you`)
 }

@@ -1,6 +1,5 @@
 import invariant from "invariant"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
 import { Canvas, SidePanel, View } from "../../layout"
 import {
   Aggregate,
@@ -18,7 +17,6 @@ type Props = {
 }
 
 export const Results = ({ data }: Props) => {
-  const { id } = useParams()
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
   const [aggregates, setAggregates] = useState({ average: false })
 
