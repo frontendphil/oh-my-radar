@@ -43,7 +43,7 @@ export const Configuration = ({ chart }: Props) => {
   }
 
   return (
-    <div className="py-6 px-6 md:py-12">
+    <>
       <Form>
         <Input
           label="Title"
@@ -152,7 +152,7 @@ export const Configuration = ({ chart }: Props) => {
           value={resourceURL("results", chart.id)}
         />
       </div>
-    </div>
+    </>
   )
 }
 

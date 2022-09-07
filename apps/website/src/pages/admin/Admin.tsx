@@ -46,9 +46,23 @@ export const Admin = () => {
         </Tabs>
 
         {tab === "configuration" && (
-          <div id={configurationPanelId} role="tabpanel" aria-expanded="true">
+          <div
+            id={configurationPanelId}
+            role="tabpanel"
+            aria-expanded="true"
+            className="py-6 px-6 md:py-12"
+          >
             <Configuration chart={data.charts_by_pk} />
           </div>
+        )}
+
+        {tab === "participants" && (
+          <div
+            id={configurationPanelId}
+            role="tabpanel"
+            aria-expanded="true"
+            className="py-6 px-6 md:py-12"
+          ></div>
         )}
       </SidePanel>
     </View>
