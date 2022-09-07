@@ -1,9 +1,6 @@
-import { HTMLAttributes } from "react"
+import { AllHTMLAttributes } from "react"
 
-type Props = HTMLAttributes<HTMLInputElement> & {
-  type?: string
-  value?: string
-}
+type Props = AllHTMLAttributes<HTMLInputElement>
 
 export const CoreInput = ({ className, ...rest }: Props) => (
   <input

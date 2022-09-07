@@ -1,5 +1,12 @@
 import { Dimensions } from "./Dimensions"
-import { Form, FormGroup, Input, NumberInput } from "../../form-controls"
+import {
+  Form,
+  FormGroup,
+  IconButton,
+  Input,
+  InputWithButton,
+  NumberInput,
+} from "../../form-controls"
 import {
   AdminGetChartQuery,
   useDeleteDimensionMutation,
@@ -10,6 +17,7 @@ import { useEffect } from "react"
 import { useConfiguration } from "./useConfiguration"
 import invariant from "invariant"
 import { Divider } from "../../layout"
+import { ExternalLinkIcon } from "@heroicons/react/outline"
 
 type Props = {
   chart: NonNullable<AdminGetChartQuery["charts_by_pk"]>
@@ -138,19 +146,29 @@ export const Configuration = ({ chart }: Props) => {
       <Divider />
 
       <div className="flex flex-col gap-10">
-        <Input
+        <InputWithButton
           disabled
           label="Participant view"
           hint="Give this link to the people who should fill out this chart."
           value={resourceURL("participate", chart.id)}
-        />
+        >
+          <IconButton
+            icon={ExternalLinkIcon}
+            onClick={() => window.open(resourceURL("participate", chart.id))}
+          />
+        </InputWithButton>
 
-        <Input
+        <InputWithButton
           disabled
           label="Results view"
           hint="Use this link to see all answers that have been submitted. Everyone with this link can see the results."
           value={resourceURL("results", chart.id)}
-        />
+        >
+          <IconButton
+            icon={ExternalLinkIcon}
+            onClick={() => window.open(resourceURL("results", chart.id))}
+          />
+        </InputWithButton>
       </div>
     </>
   )

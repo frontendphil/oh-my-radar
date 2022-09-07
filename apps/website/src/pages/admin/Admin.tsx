@@ -18,7 +18,7 @@ export const Admin = () => {
 
   const { loading, data } = useAdminGetChartQuery({ variables: { id } })
 
-  const [tab] = useState("configuration")
+  const [tab, setTab] = useState("configuration")
 
   if (loading) {
     return null
@@ -37,10 +37,18 @@ export const Admin = () => {
       </Canvas>
       <SidePanel>
         <Tabs>
-          <Tab active={tab === "configuration"} controls={configurationPanelId}>
+          <Tab
+            active={tab === "configuration"}
+            controls={configurationPanelId}
+            onClick={() => setTab("configuration")}
+          >
             Configuration
           </Tab>
-          <Tab active={tab === "participants"} controls={participantsId}>
+          <Tab
+            active={tab === "participants"}
+            controls={participantsId}
+            onClick={() => setTab("participants")}
+          >
             Participants
           </Tab>
         </Tabs>
