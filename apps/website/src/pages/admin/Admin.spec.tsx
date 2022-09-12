@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react"
+import { screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { finishMutations, uuid } from "../test-utils"
 import { createChart, createDimension, renderChart } from "./test-utils"
@@ -359,9 +359,10 @@ describe("Admin", () => {
 
       await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
 
-      expect(
+      const { getByText } = within(
         screen.getByRole("tabpanel", { name: "Participants" })
-      ).toHaveAccessibleDescription("No participants, yet.")
+      )
+      expect(getByText("No participants, yet.")).toBeInTheDocument()
     })
   })
 })

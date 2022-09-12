@@ -7,6 +7,7 @@ import { useState } from "react"
 
 import { Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
 import { Configuration } from "./Configuration"
+import { Participants } from "./Participants"
 
 export const Admin = () => {
   const { id } = useParams()
@@ -40,7 +41,9 @@ export const Admin = () => {
             </div>
           </Tab>
           <Tab label="Participants">
-            <div className="py-6 px-6 md:py-12"></div>
+            <div className="py-6 px-6 md:py-12">
+              <Participants />
+            </div>
           </Tab>
         </Tabs>
       </SidePanel>
