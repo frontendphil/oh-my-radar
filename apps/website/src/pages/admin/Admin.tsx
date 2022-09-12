@@ -3,7 +3,7 @@ import invariant from "invariant"
 import { RadarChart, Selection } from "@radar/chart"
 import { useAdminGetChartQuery } from "./api"
 
-import { useId, useState } from "react"
+import { useState } from "react"
 
 import { Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
 import { Configuration } from "./Configuration"
@@ -11,14 +11,11 @@ import { Configuration } from "./Configuration"
 export const Admin = () => {
   const { id } = useParams()
 
-  const configurationPanelId = useId()
-  const participantsId = useId()
-
   invariant(id, "Cannot show a chart without an id.")
 
   const { loading, data } = useAdminGetChartQuery({ variables: { id } })
 
-  const [tab, setTab] = useState("configuration")
+  const [tab, setTab] = useState<string | null>(null)
 
   if (loading) {
     return null
@@ -36,42 +33,16 @@ export const Admin = () => {
         </RadarChart>
       </Canvas>
       <SidePanel>
-        <Tabs>
-          <Tab
-            active={tab === "configuration"}
-            controls={configurationPanelId}
-            onClick={() => setTab("configuration")}
-          >
-            Configuration
+        <Tabs activeTab={tab} onChange={setTab}>
+          <Tab label="Configuration">
+            <div className="py-6 px-6 md:py-12">
+              <Configuration chart={data.charts_by_pk} />
+            </div>
           </Tab>
-          <Tab
-            active={tab === "participants"}
-            controls={participantsId}
-            onClick={() => setTab("participants")}
-          >
-            Participants
+          <Tab label="Participants">
+            <div className="py-6 px-6 md:py-12"></div>
           </Tab>
         </Tabs>
-
-        {tab === "configuration" && (
-          <div
-            id={configurationPanelId}
-            role="tabpanel"
-            aria-expanded="true"
-            className="py-6 px-6 md:py-12"
-          >
-            <Configuration chart={data.charts_by_pk} />
-          </div>
-        )}
-
-        {tab === "participants" && (
-          <div
-            id={configurationPanelId}
-            role="tabpanel"
-            aria-expanded="true"
-            className="py-6 px-6 md:py-12"
-          ></div>
-        )}
       </SidePanel>
     </View>
   )

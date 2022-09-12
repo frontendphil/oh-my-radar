@@ -1,28 +1,32 @@
-import { PropsWithChildren, useId } from "react"
+import { PropsWithChildren } from "react"
+import { createPortal } from "react-dom"
+import { useRegisteredTab } from "./Tabs"
 
 type Props = PropsWithChildren<{
-  active: boolean
-  controls: string
-  onClick: () => void
+  label: string
 }>
 
-export const Tab = ({ children, active, controls, onClick }: Props) => {
-  const id = useId()
+export const Tab = ({ children, label }: Props) => {
+  const { id, isActive, tabPanel, tabPanelId, activate } = useRegisteredTab()
 
   return (
-    <button
-      id={id}
-      aria-selected={active ? "true" : "false"}
-      aria-controls={controls}
-      className={`transition-color w-full border-b px-2 py-4 text-center ${
-        active
-          ? "dark:border-yellow-500 dark:bg-gray-700"
-          : "dark:border-gray-600 dark:bg-gray-800 dark:hover:border-yellow-700"
-      }`}
-      role="tab"
-      onClick={onClick}
-    >
-      {children}
-    </button>
+    <>
+      <button
+        id={id}
+        aria-selected={isActive ? "true" : "false"}
+        aria-controls={tabPanelId}
+        className={`transition-color w-full border-b px-2 py-4 text-center ${
+          isActive
+            ? "dark:border-yellow-500 dark:bg-gray-700"
+            : "dark:border-gray-600 dark:bg-gray-800 dark:hover:border-yellow-700"
+        }`}
+        role="tab"
+        onClick={activate}
+      >
+        {label}
+      </button>
+
+      {tabPanel && createPortal(children, tabPanel)}
+    </>
   )
 }
