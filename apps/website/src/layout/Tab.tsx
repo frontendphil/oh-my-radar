@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react"
 import { createPortal } from "react-dom"
-import { useRegisteredTab } from "./Tabs"
+import { useRegisteredTab } from "./TabsContext"
 
 type Props = PropsWithChildren<{
   label: string

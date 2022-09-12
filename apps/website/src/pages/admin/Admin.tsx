@@ -36,14 +36,10 @@ export const Admin = () => {
       <SidePanel>
         <Tabs activeTab={tab} onChange={setTab}>
           <Tab label="Configuration">
-            <div className="py-6 px-6 md:py-12">
-              <Configuration chart={data.charts_by_pk} />
-            </div>
+            <Configuration chart={data.charts_by_pk} />
           </Tab>
           <Tab label="Participants">
-            <div className="py-6 px-6 md:py-12">
-              <Participants />
-            </div>
+            <Participants />
           </Tab>
         </Tabs>
       </SidePanel>
