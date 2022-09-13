@@ -1,0 +1,5 @@
+mutation DeleteParticipant($id: uuid!) {
+  delete_participants_by_pk(id: $id) {
+    id
+  }
+}

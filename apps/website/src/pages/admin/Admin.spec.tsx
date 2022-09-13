@@ -10,6 +10,7 @@ import {
 import {
   Charts_Set_Input,
   DeleteDimensionDocument,
+  DeleteParticipantDocument,
   Dimensions_Insert_Input,
   InsertDimensionDocument,
   UpdateChartDocument,
@@ -28,7 +29,7 @@ describe("Admin", () => {
     },
     result: {
       data: {
-        update_charts_by_pk: { id, ...payload },
+        update_charts_by_pk: { __typename: "charts", id, ...payload },
       },
     },
   })
@@ -36,21 +37,20 @@ describe("Admin", () => {
   describe("Configuration", () => {
     describe("Title", () => {
       it("is possible to change the title of the cart.", async () => {
-        const chart = createChart({ title: "Initial title" })
-        const updateMock = mutateChartMock(chartId, {
+        const chart = createChart({ id: chartId, title: "Initial title" })
+        const updateMock = mutateChartMock(chart.id, {
           title: "Changed title",
           min: chart.min,
           max: chart.max,
         })
 
-        await renderChart({ chartId, mocks: [updateMock], chart })
+        await renderChart({ mocks: [updateMock], chart })
 
         await userEvent.clear(screen.getByRole("textbox", { name: "Title" }))
 
         await userEvent.type(
           screen.getByRole("textbox", { name: "Title" }),
-          "Changed title",
-          {}
+          "Changed title"
         )
 
         await userEvent.tab()
@@ -104,7 +104,7 @@ describe("Admin", () => {
             title: "New dimension",
           })
 
-          await renderChart({ chartId, mocks: [insertMock] })
+          await renderChart({ mocks: [insertMock], chart: { id: chartId } })
 
           await userEvent.type(
             screen.getByRole("textbox", { name: "Add dimension" }),
@@ -127,7 +127,7 @@ describe("Admin", () => {
             title: "New dimension",
           })
 
-          await renderChart({ chartId, mocks: [insertMock] })
+          await renderChart({ mocks: [insertMock], chart: { id: chartId } })
 
           await userEvent.type(
             screen.getByRole("textbox", { name: "Add dimension" }),
@@ -201,15 +201,15 @@ describe("Admin", () => {
       }
 
       it("is possible to change the upper bound of the selection range.", async () => {
-        const chart = createChart({ dimensions })
+        const chart = createChart({ id: chartId, dimensions })
 
-        const updateMock = mutateChartMock(chartId, {
+        const updateMock = mutateChartMock(chart.id, {
           title: chart.title,
           min: chart.min,
           max: 10,
         })
 
-        await renderChart({ chartId, chart, mocks: [updateMock] })
+        await renderChart({ chart, mocks: [updateMock] })
 
         await userEvent.clear(
           screen.getByRole("spinbutton", { name: "Max value" })
@@ -228,15 +228,15 @@ describe("Admin", () => {
       })
 
       it("is possible to change the lower bound of the selection range", async () => {
-        const chart = createChart({ dimensions })
+        const chart = createChart({ id: chartId, dimensions })
 
-        const updateMock = mutateChartMock(chartId, {
+        const updateMock = mutateChartMock(chart.id, {
           title: chart.title,
           max: chart.max,
           min: 0,
         })
 
-        await renderChart({ chartId, chart, mocks: [updateMock] })
+        await renderChart({ chart, mocks: [updateMock] })
 
         await userEvent.clear(
           screen.getByRole("spinbutton", { name: "Min value" })
@@ -255,15 +255,15 @@ describe("Admin", () => {
       })
 
       it("is not possible to enter an upper bound that is below the lower bound.", async () => {
-        const chart = createChart({ min: 4, max: 4 })
+        const chart = createChart({ id: chartId, min: 4, max: 4 })
 
-        const updateMock = mutateChartMock(chartId, {
+        const updateMock = mutateChartMock(chart.id, {
           title: chart.title,
           min: chart.min,
           max: chart.max,
         })
 
-        await renderChart({ chartId, chart, mocks: [updateMock] })
+        await renderChart({ chart, mocks: [updateMock] })
 
         await setMax(3)
 
@@ -277,15 +277,15 @@ describe("Admin", () => {
       })
 
       it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
-        const chart = createChart({ min: 3, max: 5 })
+        const chart = createChart({ id: chartId, min: 3, max: 5 })
 
-        const updateMock = mutateChartMock(chartId, {
+        const updateMock = mutateChartMock(chart.id, {
           title: chart.title,
           max: chart.max,
           min: chart.min,
         })
 
-        await renderChart({ chartId, chart, mocks: [updateMock] })
+        await renderChart({ chart, mocks: [updateMock] })
 
         await setMin(6)
 
@@ -302,7 +302,7 @@ describe("Admin", () => {
     describe("Links", () => {
       describe("Participants", () => {
         it("shows a link to the view for participants.", async () => {
-          await renderChart()
+          await renderChart({ chart: { id: "chart-id" } })
 
           expect(
             screen.getByRole("textbox", { name: "Participant view" })
@@ -330,7 +330,7 @@ describe("Admin", () => {
 
       describe("Results", () => {
         it("shows a link to the results view.", async () => {
-          await renderChart()
+          await renderChart({ chart: { id: "chart-id" } })
 
           expect(
             screen.getByRole("textbox", { name: "Results view" })
@@ -359,15 +359,32 @@ describe("Admin", () => {
   })
 
   describe("Participants", () => {
+    const deleteParticipantMock = (id: string) => ({
+      request: {
+        query: DeleteParticipantDocument,
+        variables: {
+          id,
+        },
+      },
+      result: {
+        data: {
+          delete_participants_by_pk: { id },
+        },
+      },
+    })
+
     it("shows when no one has participated, yet.", async () => {
       await renderChart()
 
       await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
 
-      const { getByText } = within(
+      const { getByRole } = within(
         screen.getByRole("tabpanel", { name: "Participants" })
       )
-      expect(getByText("No participants, yet.")).toBeInTheDocument()
+
+      expect(
+        getByRole("list", { name: "Participants" })
+      ).toHaveAccessibleDescription("No participants, yet.")
     })
 
     it("lists all participants.", async () => {
@@ -416,6 +433,33 @@ describe("Admin", () => {
       ).toHaveAccessibleDescription(
         `Submitted on ${formatter.format(createdAt)}`
       )
+    })
+
+    it("is possible to remove a participant.", async () => {
+      const participant = createParticipant({ name: "John" })
+
+      const removeMutation = deleteParticipantMock(participant.id)
+
+      await renderChart({
+        chart: {
+          participants: [participant],
+        },
+        mocks: [removeMutation],
+      })
+
+      await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
+
+      const { getByRole } = within(
+        screen.getByRole("listitem", { name: "John" })
+      )
+
+      await userEvent.click(getByRole("button", { name: "Remove" }))
+
+      await finishMutations(removeMutation)
+
+      expect(
+        screen.getByRole("list", { name: "Participants" })
+      ).toHaveAccessibleDescription("No participants, yet.")
     })
   })
 })

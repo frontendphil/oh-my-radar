@@ -1,31 +1,98 @@
+import { gql, Reference } from "@apollo/client"
+import { TrashIcon } from "@heroicons/react/24/outline"
+import invariant from "invariant"
 import { useId } from "react"
+import { IconButton } from "../../form-controls"
 import { Hint } from "../../layout"
 import { ItemType } from "../test-utils"
-import { AdminGetChartQuery } from "./api"
+import { AdminGetChartQuery, useDeleteParticipantMutation } from "./api"
+
+type ApiChart = NonNullable<AdminGetChartQuery["charts_by_pk"]>
+
+type ApiParticipant = ItemType<ApiChart["participants"]>
 
 type Props = {
-  participants: NonNullable<AdminGetChartQuery["charts_by_pk"]>["participants"]
+  participants: ApiParticipant[]
 }
 
 export const Participants = ({ participants }: Props) => {
-  if (participants.length === 0) {
-    return <Hint>No participants, yet.</Hint>
-  }
+  const descriptionId = useId()
+
+  const [deleteParticipant] = useDeleteParticipantMutation({
+    update: (cache, { data }) => {
+      if (!data || !data.delete_participants_by_pk) {
+        return
+      }
+
+      const { id } = data.delete_participants_by_pk
+
+      cache.modify({
+        fields: {
+          charts_by_pk(chartRef: Reference, { readField, DELETE }) {
+            const participantRefs = readField("participants", chartRef)
+
+            invariant(
+              Array.isArray(participantRefs),
+              `Chart with id "${readField(
+                "id",
+                chartRef
+              )}" does not specify "participants".`
+            )
+
+            const update = cache.writeFragment({
+              id: chartRef.__ref,
+              fragment: gql`
+                fragment participants on charts {
+                  participants {
+                    id
+                  }
+                }
+              `,
+              data: {
+                participants: participantRefs.filter(
+                  (participantRef: Reference) =>
+                    readField("id", participantRef) !== id
+                ),
+              },
+            })
+
+            return update
+          },
+        },
+      })
+    },
+  })
 
   return (
-    <ul aria-label="Participants">
-      {participants.map((participant) => (
-        <Participant key={participant.id} participant={participant} />
-      ))}
-    </ul>
+    <>
+      <ul
+        aria-label="Participants"
+        aria-describedby={participants.length === 0 ? descriptionId : undefined}
+      >
+        {participants.map((participant) => (
+          <Participant
+            key={participant.id}
+            participant={participant}
+            onRemove={() =>
+              deleteParticipant({ variables: { id: participant.id } })
+            }
+          />
+        ))}
+      </ul>
+
+      {participants.length === 0 && (
+        <Hint id={descriptionId}>No participants, yet.</Hint>
+      )}
+    </>
   )
 }
 
 type ParticipantProps = {
-  participant: ItemType<Props["participants"]>
+  participant: ApiParticipant
+  onRemove: () => void
 }
 
-const Participant = ({ participant }: ParticipantProps) => {
+const Participant = ({ participant, onRemove }: ParticipantProps) => {
   const descriptionId = useId()
 
   return (
@@ -34,6 +101,8 @@ const Participant = ({ participant }: ParticipantProps) => {
       <span id={descriptionId} aria-hidden>
         Submitted on {formatter.format(new Date(participant.createdAt))}
       </span>
+
+      <IconButton icon={TrashIcon} aria-label="Remove" onClick={onRemove} />
     </li>
   )
 }
