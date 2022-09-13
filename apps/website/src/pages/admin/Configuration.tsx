@@ -26,9 +26,11 @@ type Props = {
 export const Configuration = ({ chart }: Props) => {
   const [configuration, updateConfiguration] = useConfiguration()
 
-  const [updateChart] = useUpdateChartMutation()
-  const [insertDimension] = useInsertDimensionMutation()
-  const [deleteDimension] = useDeleteDimensionMutation()
+  const [updateChart, { loading: updating }] = useUpdateChartMutation()
+  const [insertDimension, { loading: inserting }] = useInsertDimensionMutation()
+  const [deleteDimension, { loading: deleting }] = useDeleteDimensionMutation()
+
+  const loading = updating || inserting || deleting
 
   useEffect(() => {
     const { title, min, max, dimensions } = chart
@@ -56,6 +58,7 @@ export const Configuration = ({ chart }: Props) => {
         <Input
           label="Title"
           value={title}
+          disabled={loading}
           onChange={(title) => updateConfiguration({ title })}
           onBlur={saveChart}
         />
@@ -64,6 +67,7 @@ export const Configuration = ({ chart }: Props) => {
           <NumberInput
             label="Min value"
             value={min}
+            disabled={loading}
             isValid={(value) =>
               value < max
                 ? [true]
@@ -80,6 +84,7 @@ export const Configuration = ({ chart }: Props) => {
           <NumberInput
             label="Max value"
             value={max}
+            disabled={loading}
             isValid={(value) =>
               value > min
                 ? [true]
@@ -96,6 +101,7 @@ export const Configuration = ({ chart }: Props) => {
 
         <Dimensions
           dimensions={dimensions}
+          disabled={loading}
           onAdd={(dimension) => {
             updateConfiguration({
               dimensions: [

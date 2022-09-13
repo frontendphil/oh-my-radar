@@ -9,12 +9,17 @@ export type NewDimension = Omit<Dimension, "id">
 
 type Props = {
   dimensions: Dimension[]
-
+  disabled?: boolean
   onAdd: (dimension: NewDimension) => void
   onRemove: (dimensionId: string) => void
 }
 
-export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
+export const Dimensions = ({
+  dimensions,
+  disabled,
+  onAdd,
+  onRemove,
+}: Props) => {
   const [newDimension, setNewDimension] = useState("")
   const listId = useId()
 
@@ -32,7 +37,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
               deleted={deleted}
               action={
                 <IconButton
-                  disabled={id === "new" || deleted}
+                  disabled={id === "new" || disabled}
                   aria-label={`Remove dimension "${title}"`}
                   onClick={() => onRemove(id)}
                   icon={TrashIcon}
@@ -49,6 +54,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
         label="Add dimension"
         value={newDimension}
         placeholder="Dimension label"
+        disabled={disabled}
         onChange={setNewDimension}
         onKeyUp={(event) => {
           if (event.key !== "Enter") {
@@ -73,6 +79,7 @@ export const Dimensions = ({ dimensions, onAdd, onRemove }: Props) => {
       >
         <Button
           disabled={
+            disabled ||
             newDimension.trim() === "" ||
             dimensions.some(({ title }) => title === newDimension)
           }
