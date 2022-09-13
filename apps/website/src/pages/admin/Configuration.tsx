@@ -17,7 +17,7 @@ import { useEffect } from "react"
 import { useConfiguration } from "./useConfiguration"
 import invariant from "invariant"
 import { Divider } from "../../layout"
-import { ExternalLinkIcon } from "@heroicons/react/outline"
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
 
 type Props = {
   chart: NonNullable<AdminGetChartQuery["charts_by_pk"]>
@@ -153,7 +153,7 @@ export const Configuration = ({ chart }: Props) => {
           value={resourceURL("participate", chart.id)}
         >
           <IconButton
-            icon={ExternalLinkIcon}
+            icon={ArrowTopRightOnSquareIcon}
             onClick={() => window.open(resourceURL("participate", chart.id))}
           />
         </InputWithButton>
@@ -165,7 +165,7 @@ export const Configuration = ({ chart }: Props) => {
           value={resourceURL("results", chart.id)}
         >
           <IconButton
-            icon={ExternalLinkIcon}
+            icon={ArrowTopRightOnSquareIcon}
             onClick={() => window.open(resourceURL("results", chart.id))}
           />
         </InputWithButton>
