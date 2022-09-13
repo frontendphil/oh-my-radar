@@ -459,5 +459,35 @@ describe("Admin", () => {
         screen.getByRole("list", { name: "Participants" })
       ).toHaveAccessibleDescription("No participants, yet.")
     })
+
+    it("disables the other participants when on is being deleted.", async () => {
+      const john = createParticipant({ name: "John" })
+      const jane = createParticipant({ name: "Jane" })
+
+      const removeMutation = deleteParticipantMock(john.id)
+
+      await renderChart({
+        chart: {
+          participants: [john, jane],
+        },
+        mocks: [removeMutation],
+      })
+
+      await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
+
+      await userEvent.click(
+        within(screen.getByRole("listitem", { name: "John" })).getByRole(
+          "button",
+          { name: "Remove" }
+        )
+      )
+
+      expect(
+        within(screen.getByRole("listitem", { name: "Jane" })).getByRole(
+          "button",
+          { name: "Remove" }
+        )
+      ).toBeDisabled()
+    })
   })
 })

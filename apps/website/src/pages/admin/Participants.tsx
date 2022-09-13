@@ -18,7 +18,7 @@ type Props = {
 export const Participants = ({ participants }: Props) => {
   const descriptionId = useId()
 
-  const [deleteParticipant] = useDeleteParticipantMutation({
+  const [deleteParticipant, { loading }] = useDeleteParticipantMutation({
     update: (cache, { data }) => {
       if (!data || !data.delete_participants_by_pk) {
         return
@@ -74,6 +74,7 @@ export const Participants = ({ participants }: Props) => {
           <Participant
             key={participant.id}
             participant={participant}
+            disabled={loading}
             onRemove={() =>
               deleteParticipant({ variables: { id: participant.id } })
             }
@@ -90,10 +91,11 @@ export const Participants = ({ participants }: Props) => {
 
 type ParticipantProps = {
   participant: ApiParticipant
+  disabled: boolean
   onRemove: () => void
 }
 
-const Participant = ({ participant, onRemove }: ParticipantProps) => {
+const Participant = ({ participant, disabled, onRemove }: ParticipantProps) => {
   const descriptionId = useId()
 
   return (
@@ -107,13 +109,18 @@ const Participant = ({ participant, onRemove }: ParticipantProps) => {
         <span
           aria-hidden
           id={descriptionId}
-          className="text-xs uppercase dark:text-gray-400"
+          className="text-xs uppercase text-gray-600 dark:text-gray-400"
         >
           {formatter.format(new Date(participant.createdAt))}
         </span>
       </div>
 
-      <IconButton icon={TrashIcon} aria-label="Remove" onClick={onRemove} />
+      <IconButton
+        disabled={disabled}
+        icon={TrashIcon}
+        aria-label="Remove"
+        onClick={onRemove}
+      />
     </li>
   )
 }
