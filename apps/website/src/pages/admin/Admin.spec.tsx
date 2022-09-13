@@ -430,9 +430,7 @@ describe("Admin", () => {
 
       expect(
         getByRole("listitem", { name: "John" })
-      ).toHaveAccessibleDescription(
-        `Submitted on ${formatter.format(createdAt)}`
-      )
+      ).toHaveAccessibleDescription(formatter.format(createdAt))
     })
 
     it("is possible to remove a participant.", async () => {

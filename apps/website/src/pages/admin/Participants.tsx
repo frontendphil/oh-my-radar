@@ -68,6 +68,7 @@ export const Participants = ({ participants }: Props) => {
       <ul
         aria-label="Participants"
         aria-describedby={participants.length === 0 ? descriptionId : undefined}
+        className="flex flex-col gap-4"
       >
         {participants.map((participant) => (
           <Participant
@@ -96,11 +97,21 @@ const Participant = ({ participant, onRemove }: ParticipantProps) => {
   const descriptionId = useId()
 
   return (
-    <li aria-label={participant.name} aria-describedby={descriptionId}>
-      {participant.name}
-      <span id={descriptionId} aria-hidden>
-        Submitted on {formatter.format(new Date(participant.createdAt))}
-      </span>
+    <li
+      aria-label={participant.name}
+      aria-describedby={descriptionId}
+      className="flex items-center justify-between"
+    >
+      <div className="flex flex-col ">
+        {participant.name}
+        <span
+          aria-hidden
+          id={descriptionId}
+          className="text-xs uppercase dark:text-gray-400"
+        >
+          {formatter.format(new Date(participant.createdAt))}
+        </span>
+      </div>
 
       <IconButton icon={TrashIcon} aria-label="Remove" onClick={onRemove} />
     </li>
