@@ -8,5 +8,9 @@ query AdminGetChart($id: uuid!) {
       id
       title
     }
+    participants {
+      id
+      name
+    }
   }
 }

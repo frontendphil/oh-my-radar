@@ -1,7 +1,12 @@
 import { screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { finishMutations, uuid } from "../test-utils"
-import { createChart, createDimension, renderChart } from "./test-utils"
+import {
+  createChart,
+  createDimension,
+  createParticipant,
+  renderChart,
+} from "./test-utils"
 import {
   Charts_Set_Input,
   DeleteDimensionDocument,
@@ -363,6 +368,22 @@ describe("Admin", () => {
         screen.getByRole("tabpanel", { name: "Participants" })
       )
       expect(getByText("No participants, yet.")).toBeInTheDocument()
+    })
+
+    it("lists all participants.", async () => {
+      await renderChart({
+        chart: {
+          participants: [createParticipant({ name: "John" })],
+        },
+      })
+
+      await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
+
+      const { getByRole } = within(
+        screen.getByRole("list", { name: "Participants" })
+      )
+
+      expect(getByRole("listitem", { name: "John" })).toBeInTheDocument()
     })
   })
 })

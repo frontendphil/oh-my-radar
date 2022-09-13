@@ -24,7 +24,7 @@ export const Admin = () => {
 
   invariant(data?.charts_by_pk, "Could not load chart.")
 
-  const { title, dimensions, min, max } = data.charts_by_pk
+  const { title, dimensions, min, max, participants } = data.charts_by_pk
 
   return (
     <View>
@@ -39,7 +39,7 @@ export const Admin = () => {
             <Configuration chart={data.charts_by_pk} />
           </Tab>
           <Tab label="Participants">
-            <Participants />
+            <Participants participants={participants} />
           </Tab>
         </Tabs>
       </SidePanel>

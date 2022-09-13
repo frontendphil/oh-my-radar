@@ -13,6 +13,7 @@ export const createChart = (
   min: 1,
   max: 4,
   dimensions: [],
+  participants: [],
   ...chart,
 })
 
@@ -24,6 +25,18 @@ export const createDimension = (
   title: "Test dimension",
 
   ...dimension,
+
+  id: uuid(),
+})
+
+type Participant = Omit<ItemType<Chart["participants"]>, "__typename">
+
+export const createParticipant = (
+  participant: Partial<Participant> = {}
+): ItemType<Chart["participants"]> => ({
+  name: "Test participant",
+
+  ...participant,
 
   id: uuid(),
 })
