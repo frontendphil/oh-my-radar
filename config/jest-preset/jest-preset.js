@@ -1,8 +1,8 @@
-const tsJest = require("ts-jest")
+const tsJest = require("ts-jest/presets")
 
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  ...tsJest.createJestPreset(),
+  ...tsJest.defaults,
 
   testEnvironment: "jsdom",
   testMatch: ["<rootDir>/src/**/*.spec.ts(x)?"],
