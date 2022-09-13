@@ -1,4 +1,6 @@
+import { useId } from "react"
 import { Hint } from "../../layout"
+import { ItemType } from "../test-utils"
 import { AdminGetChartQuery } from "./api"
 
 type Props = {
@@ -12,11 +14,31 @@ export const Participants = ({ participants }: Props) => {
 
   return (
     <ul aria-label="Participants">
-      {participants.map(({ id, name }) => (
-        <li key={id} aria-label={name}>
-          {name}
-        </li>
+      {participants.map((participant) => (
+        <Participant key={participant.id} participant={participant} />
       ))}
     </ul>
   )
 }
+
+type ParticipantProps = {
+  participant: ItemType<Props["participants"]>
+}
+
+const Participant = ({ participant }: ParticipantProps) => {
+  const descriptionId = useId()
+
+  return (
+    <li aria-label={participant.name} aria-describedby={descriptionId}>
+      {participant.name}
+      <span id={descriptionId} aria-hidden>
+        Submitted on {formatter.format(new Date(participant.createdAt))}
+      </span>
+    </li>
+  )
+}
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long",
+  timeStyle: "short",
+})

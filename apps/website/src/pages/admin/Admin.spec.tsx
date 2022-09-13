@@ -385,5 +385,37 @@ describe("Admin", () => {
 
       expect(getByRole("listitem", { name: "John" })).toBeInTheDocument()
     })
+
+    it("shows when a participant has voted.", async () => {
+      const createdAt = new Date(2022, 8, 13, 20, 6)
+
+      await renderChart({
+        chart: {
+          participants: [
+            createParticipant({
+              name: "John",
+              createdAt: createdAt.toISOString(),
+            }),
+          ],
+        },
+      })
+
+      await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
+
+      const { getByRole } = within(
+        screen.getByRole("list", { name: "Participants" })
+      )
+
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        dateStyle: "long",
+        timeStyle: "short",
+      })
+
+      expect(
+        getByRole("listitem", { name: "John" })
+      ).toHaveAccessibleDescription(
+        `Submitted on ${formatter.format(createdAt)}`
+      )
+    })
   })
 })

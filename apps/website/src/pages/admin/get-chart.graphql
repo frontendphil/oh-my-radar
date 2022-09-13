@@ -11,6 +11,7 @@ query AdminGetChart($id: uuid!) {
     participants {
       id
       name
+      createdAt
     }
   }
 }

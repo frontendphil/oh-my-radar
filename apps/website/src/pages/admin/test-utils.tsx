@@ -35,6 +35,7 @@ export const createParticipant = (
   participant: Partial<Participant> = {}
 ): ItemType<Chart["participants"]> => ({
   name: "Test participant",
+  createdAt: new Date().toISOString(),
 
   ...participant,
 
