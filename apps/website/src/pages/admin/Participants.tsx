@@ -49,10 +49,11 @@ export const Participants = ({ participants }: Props) => {
                 }
               `,
               data: {
-                participants: participantRefs.filter(
-                  (participantRef: Reference) =>
-                    readField("id", participantRef) !== id
-                ),
+                participants: participantRefs
+                  .map((participantRef) => ({
+                    id: readField("id", participantRef),
+                  }))
+                  .filter((participant) => participant.id !== id),
               },
             })
 

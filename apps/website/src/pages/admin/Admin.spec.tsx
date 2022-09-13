@@ -368,7 +368,7 @@ describe("Admin", () => {
       },
       result: {
         data: {
-          delete_participants_by_pk: { id },
+          delete_participants_by_pk: { id, __typename: "participants" },
         },
       },
     })
