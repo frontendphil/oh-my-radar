@@ -1,5 +1,5 @@
 import { useId, useState } from "react"
-import { TrashIcon } from "@heroicons/react/outline"
+import { TrashIcon } from "@heroicons/react/24/outline"
 import { Button, IconButton, InputWithButton } from "../../form-controls"
 import { Label } from "../../form-controls/Label"
 import { List, ListItem } from "../../layout"
