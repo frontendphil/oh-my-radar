@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client"
+import { ApolloClient, ApolloProvider } from "@apollo/client"
 import invariant from "invariant"
 import { StrictMode, Suspense } from "react"
 import { createRoot } from "react-dom/client"
@@ -7,6 +7,7 @@ import { Admin, Create, Participate, Results } from "./pages"
 
 import "@radar/chart/chart.css"
 import "./main.css"
+import { createCache } from "./cache"
 
 const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET
 
@@ -21,7 +22,7 @@ invariant(GRAPHQL_ENDPOINT, "GRAPHQL_ENDPOINT environment variable missing")
 
 const client = new ApolloClient({
   uri: GRAPHQL_ENDPOINT,
-  cache: new InMemoryCache(),
+  cache: createCache(),
   headers: {
     "x-hasura-admin-secret": HASURA_ADMIN_SECRET,
   },

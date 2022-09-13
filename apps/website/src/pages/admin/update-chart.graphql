@@ -6,5 +6,6 @@ mutation UpdateChart(
     id
     min
     max
+    title
   }
 }

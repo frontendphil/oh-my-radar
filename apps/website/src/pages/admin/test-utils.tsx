@@ -3,19 +3,23 @@ import { finishQueries, ItemType, render, uuid } from "../test-utils"
 import { Admin } from "./Admin"
 import { AdminGetChartDocument, AdminGetChartQuery } from "./api"
 
-type Chart = Omit<NonNullable<AdminGetChartQuery["charts_by_pk"]>, "__typename">
+type Chart = NonNullable<AdminGetChartQuery["charts_by_pk"]>
 
 export const createChart = (
   chart: Partial<Chart> = {}
 ): NonNullable<AdminGetChartQuery["charts_by_pk"]> => ({
+  id: uuid(),
   title: "Test chart",
   min: 1,
   max: 4,
   dimensions: [],
+  participants: [],
   ...chart,
+
+  __typename: "charts",
 })
 
-type Dimension = Omit<ItemType<Chart["dimensions"]>, "__typename">
+type Dimension = ItemType<Chart["dimensions"]>
 
 export const createDimension = (
   dimension: Partial<Dimension> = {}
@@ -24,16 +28,30 @@ export const createDimension = (
 
   ...dimension,
 
+  __typename: "dimensions",
+  id: uuid(),
+})
+
+type Participant = ItemType<Chart["participants"]>
+
+export const createParticipant = (
+  participant: Partial<Participant> = {}
+): ItemType<Chart["participants"]> => ({
+  name: "Test participant",
+  createdAt: new Date().toISOString(),
+
+  ...participant,
+
+  __typename: "participants",
   id: uuid(),
 })
 
 const getChartMock = (
-  id: string,
-  charts_by_pk: AdminGetChartQuery["charts_by_pk"]
+  charts_by_pk: NonNullable<AdminGetChartQuery["charts_by_pk"]>
 ) => ({
   request: {
     query: AdminGetChartDocument,
-    variables: { id },
+    variables: { id: charts_by_pk.id },
   },
   result: {
     data: {
@@ -43,22 +61,21 @@ const getChartMock = (
 })
 
 type RenderOptions = {
-  chartId?: string
   chart?: Partial<Chart>
   mocks?: MockedResponse[]
 }
 
 export const renderChart = async ({
-  chartId = "chart-id",
   mocks = [],
   chart,
 }: RenderOptions = {}): Promise<ReturnType<typeof render>> => {
-  const chartMock = getChartMock(chartId, createChart(chart))
+  const realChart = createChart(chart)
+  const chartMock = getChartMock(realChart)
 
   const renderResult = render(<Admin />, {
     mocks: [chartMock, ...mocks],
     path: "/admin/:id",
-    route: `/admin/${chartId}`,
+    route: `/admin/${realChart.id}`,
   })
 
   await finishQueries(chartMock)

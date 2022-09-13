@@ -4,6 +4,7 @@ import { render as baseRender } from "@testing-library/react"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { MockedProvider, MockedResponse } from "@apollo/client/testing"
 import { ReactNode } from "react"
+import { createCache } from "../cache"
 
 const zeroTimeout = () =>
   new Promise<void>((resolve) => setTimeout(resolve, 10))
@@ -37,7 +38,7 @@ export const render = (
   { mocks, path = "/", route = "/", routes, ...options }: Options = {}
 ): ReturnType<typeof baseRender> => {
   return baseRender(
-    <MockedProvider mocks={mocks} addTypename={false}>
+    <MockedProvider mocks={mocks} cache={createCache()}>
       <MemoryRouter initialEntries={[{ pathname: route }]}>
         <Routes>
           <Route path={path} element={component} />
