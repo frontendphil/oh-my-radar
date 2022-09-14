@@ -12,11 +12,12 @@ type Slot = {
 }
 
 type Props = {
+  name?: string
   groupRole?: string
   children: (dimension: DimensionDescriptor, slot: Slot) => ReactNode
 }
 
-export const Slots = ({ children, groupRole = "figure" }: Props) => {
+export const Slots = ({ children, groupRole = "figure", name }: Props) => {
   const diagramWidth = useDiagramWidth()
   const range = useRange()
   const dimensions = useDimensions()
@@ -29,7 +30,11 @@ export const Slots = ({ children, groupRole = "figure" }: Props) => {
         const angle = getDimensionAngle(dimensions, index)
 
         return (
-          <g key={dimension.id} role={groupRole} aria-labelledby={dimension.id}>
+          <g
+            key={dimension.id}
+            role={groupRole}
+            aria-label={name ? `${name}: ${dimension.title}` : dimension.title}
+          >
             {steps.map((step) => {
               const point = getPoint({
                 diagramWidth,

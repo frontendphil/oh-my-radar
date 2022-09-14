@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { RadarChart } from "./RadarChart"
 import { Selection } from "./Selection"
@@ -28,7 +28,9 @@ describe("RadarChart", () => {
       )
 
       expect(
-        screen.getByRole("radiogroup", { name: defaultDimension.title })
+        screen.getByRole("radiogroup", {
+          name: `test: ${defaultDimension.title}`,
+        })
       ).toBeInTheDocument()
     })
   })
@@ -43,16 +45,19 @@ describe("RadarChart", () => {
         </RadarChart>
       )
 
-      await userEvent.click(
-        screen.getByRole("radio", { name: `${defaultDimension.title} - 1` })
+      const { getByRole } = within(
+        screen.getByRole("radiogroup", {
+          name: `test: ${defaultDimension.title}`,
+        })
       )
+
+      await userEvent.click(getByRole("radio", { name: `1` }))
 
       expect(onChange).toHaveBeenCalledWith({ [defaultDimension.id]: 1 })
     })
 
     it("is only possible to interact with active selections.", async () => {
       const onChangeThatShouldBeCalled = jest.fn()
-      const onChangeThatShouldNotBeCalled = jest.fn()
 
       render(
         <RadarChart title="Test" dimensions={[defaultDimension]} range={[1, 2]}>
@@ -61,16 +66,17 @@ describe("RadarChart", () => {
             name="active"
             onChange={onChangeThatShouldBeCalled}
           />
-          <Selection name="inactive" onChange={onChangeThatShouldNotBeCalled} />
+          <Selection name="inactive" />
         </RadarChart>
       )
 
-      await userEvent.click(
-        screen.getByRole("radio", { name: `${defaultDimension.title} - 1` })
+      const { queryByRole } = within(
+        screen.getByRole("radiogroup", {
+          name: `inactive: ${defaultDimension.title}`,
+        })
       )
 
-      expect(onChangeThatShouldNotBeCalled).not.toHaveBeenCalled()
-      expect(onChangeThatShouldBeCalled).toHaveBeenCalled()
+      expect(queryByRole("radio", { name: "1" })).not.toBeInTheDocument()
     })
 
     it("is not possible to change inactive selections.", async () => {

@@ -222,9 +222,11 @@ describe("Admin", () => {
 
         await finishMutations(updateMock)
 
-        expect(
-          screen.getByRole("radio", { name: "One - 10" })
-        ).toBeInTheDocument()
+        const { getByRole } = within(
+          screen.getByRole("figure", { name: "One" })
+        )
+
+        expect(getByRole("radio", { name: "10" })).toBeInTheDocument()
       })
 
       it("is possible to change the lower bound of the selection range", async () => {
@@ -249,9 +251,11 @@ describe("Admin", () => {
 
         await finishMutations(updateMock)
 
-        expect(
-          screen.getByRole("radio", { name: "One - 0" })
-        ).toBeInTheDocument()
+        const { getByRole } = within(
+          screen.getByRole("figure", { name: "One" })
+        )
+
+        expect(getByRole("radio", { name: "0" })).toBeInTheDocument()
       })
 
       it("is not possible to enter an upper bound that is below the lower bound.", async () => {
@@ -488,6 +492,61 @@ describe("Admin", () => {
           { name: "Remove" }
         )
       ).toBeDisabled()
+    })
+
+    it("shows the selection of a participant on hover.", async () => {
+      const dimensionA = createDimension()
+      const dimensionB = createDimension()
+
+      const john = createParticipant({
+        name: "John",
+        selections: [
+          { dimensionId: dimensionA.id, value: 1 },
+          { dimensionId: dimensionB.id, value: 2 },
+        ],
+      })
+
+      await renderChart({
+        chart: {
+          dimensions: [dimensionA, dimensionB],
+          participants: [john],
+        },
+      })
+
+      await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
+
+      await userEvent.hover(screen.getByRole("listitem", { name: "John" }))
+
+      expect(screen.getByRole("figure", { name: "John" })).toBeInTheDocument()
+    })
+
+    it("hides the selection of a participant when the user leaves it.", async () => {
+      const dimensionA = createDimension()
+      const dimensionB = createDimension()
+
+      const john = createParticipant({
+        name: "John",
+        selections: [
+          { dimensionId: dimensionA.id, value: 1 },
+          { dimensionId: dimensionB.id, value: 2 },
+        ],
+      })
+
+      await renderChart({
+        chart: {
+          dimensions: [dimensionA, dimensionB],
+          participants: [john],
+        },
+      })
+
+      await userEvent.click(screen.getByRole("tab", { name: "Participants" }))
+
+      await userEvent.hover(screen.getByRole("listitem", { name: "John" }))
+      await userEvent.unhover(screen.getByRole("listitem", { name: "John" }))
+
+      expect(
+        screen.queryByRole("figure", { name: "John" })
+      ).not.toBeInTheDocument()
     })
   })
 })

@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react"
+import { screen, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { Colors } from "@radar/chart"
 import { finishMutations, uuid } from "../test-utils"
@@ -49,9 +49,24 @@ describe("Participate", () => {
     const dimensions = [dimensionOne, dimensionTwo, dimensionThree]
 
     const selectValues = async () => {
-      await userEvent.click(screen.getByRole("radio", { name: "One - 1" }))
-      await userEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
-      await userEvent.click(screen.getByRole("radio", { name: "Three - 1" }))
+      await userEvent.click(
+        within(screen.getByRole("radiogroup", { name: "One" })).getByRole(
+          "radio",
+          { name: "1" }
+        )
+      )
+      await userEvent.click(
+        within(screen.getByRole("radiogroup", { name: "Two" })).getByRole(
+          "radio",
+          { name: "1" }
+        )
+      )
+      await userEvent.click(
+        within(screen.getByRole("radiogroup", { name: "Three" })).getByRole(
+          "radio",
+          { name: "1" }
+        )
+      )
     }
 
     it("is possible to make a selection.", async () => {
@@ -62,13 +77,22 @@ describe("Participate", () => {
       await finishMutations()
 
       expect(
-        screen.getByRole("radio", { name: "One - 1", checked: true })
+        within(screen.getByRole("radiogroup", { name: "One" })).getByRole(
+          "radio",
+          { name: "1", checked: true }
+        )
       ).toBeInTheDocument()
       expect(
-        screen.getByRole("radio", { name: "Two - 1", checked: true })
+        within(screen.getByRole("radiogroup", { name: "Two" })).getByRole(
+          "radio",
+          { name: "1", checked: true }
+        )
       ).toBeInTheDocument()
       expect(
-        screen.getByRole("radio", { name: "Three - 1", checked: true })
+        within(screen.getByRole("radiogroup", { name: "Three" })).getByRole(
+          "radio",
+          { name: "1", checked: true }
+        )
       ).toBeInTheDocument()
     })
 
@@ -145,8 +169,16 @@ describe("Participate", () => {
       "John Doe"
     )
 
-    await userEvent.click(screen.getByRole("radio", { name: "One - 1" }))
-    await userEvent.click(screen.getByRole("radio", { name: "Two - 1" }))
+    await userEvent.click(
+      within(
+        screen.getByRole("radiogroup", { name: "John Doe: One" })
+      ).getByRole("radio", { name: "1" })
+    )
+    await userEvent.click(
+      within(
+        screen.getByRole("radiogroup", { name: "John Doe: Two" })
+      ).getByRole("radio", { name: "1" })
+    )
 
     expect(screen.getByRole("button", { name: "Submit" })).toBeDisabled()
   })

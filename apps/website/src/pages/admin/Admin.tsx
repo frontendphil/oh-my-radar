@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom"
 import invariant from "invariant"
-import { RadarChart, Selection } from "@radar/chart"
+import { RadarChart, Selection, SelectionState } from "@radar/chart"
 import { useAdminGetChartQuery } from "./api"
 
 import { useState } from "react"
 
 import { Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
 import { Configuration } from "./Configuration"
-import { Participants } from "./Participants"
+import { ActiveSelection, Participants } from "./Participants"
 
 export const Admin = () => {
   const { id } = useParams()
@@ -17,6 +17,8 @@ export const Admin = () => {
   const { loading, data } = useAdminGetChartQuery({ variables: { id } })
 
   const [tab, setTab] = useState<string | null>(null)
+  const [activeSelection, setActiveSelection] =
+    useState<ActiveSelection | null>(null)
 
   if (loading) {
     return null
@@ -30,7 +32,12 @@ export const Admin = () => {
     <View>
       <Canvas>
         <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-          <Selection active name="example" />
+          {activeSelection && (
+            <Selection
+              name={activeSelection.name}
+              value={activeSelection.value}
+            />
+          )}
         </RadarChart>
       </Canvas>
       <SidePanel>
@@ -39,7 +46,10 @@ export const Admin = () => {
             <Configuration chart={data.charts_by_pk} />
           </Tab>
           <Tab label="Participants">
-            <Participants participants={participants} />
+            <Participants
+              participants={participants}
+              onSelect={setActiveSelection}
+            />
           </Tab>
         </Tabs>
       </SidePanel>
