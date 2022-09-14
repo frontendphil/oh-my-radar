@@ -5,9 +5,9 @@ import { useAdminGetChartQuery } from "./api"
 
 import { useState } from "react"
 
-import { Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
+import { Badge, Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
 import { Configuration } from "./Configuration"
-import { Participants } from "./Participants"
+import { ActiveSelection, Participants } from "./Participants"
 
 export const Admin = () => {
   const { id } = useParams()
@@ -17,6 +17,8 @@ export const Admin = () => {
   const { loading, data } = useAdminGetChartQuery({ variables: { id } })
 
   const [tab, setTab] = useState<string | null>(null)
+  const [activeSelection, setActiveSelection] =
+    useState<ActiveSelection | null>(null)
 
   if (loading) {
     return null
@@ -30,7 +32,12 @@ export const Admin = () => {
     <View>
       <Canvas>
         <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-          <Selection active name="example" />
+          {activeSelection && (
+            <Selection
+              name={activeSelection.name}
+              value={activeSelection.value}
+            />
+          )}
         </RadarChart>
       </Canvas>
       <SidePanel>
@@ -38,8 +45,18 @@ export const Admin = () => {
           <Tab label="Configuration">
             <Configuration chart={data.charts_by_pk} />
           </Tab>
-          <Tab label="Participants">
-            <Participants participants={participants} />
+          <Tab
+            label={
+              <span className="flex items-center justify-center gap-2">
+                Participants
+                <Badge>{participants.length}</Badge>
+              </span>
+            }
+          >
+            <Participants
+              participants={participants}
+              onSelect={setActiveSelection}
+            />
           </Tab>
         </Tabs>
       </SidePanel>

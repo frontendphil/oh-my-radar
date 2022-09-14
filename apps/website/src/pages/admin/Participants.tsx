@@ -1,5 +1,6 @@
 import { gql, Reference } from "@apollo/client"
 import { TrashIcon } from "@heroicons/react/24/outline"
+import { SelectionState } from "@radar/chart"
 import invariant from "invariant"
 import { useId } from "react"
 import { IconButton } from "../../form-controls"
@@ -11,11 +12,17 @@ type ApiChart = NonNullable<AdminGetChartQuery["charts_by_pk"]>
 
 type ApiParticipant = ItemType<ApiChart["participants"]>
 
-type Props = {
-  participants: ApiParticipant[]
+export type ActiveSelection = {
+  name: string
+  value: SelectionState
 }
 
-export const Participants = ({ participants }: Props) => {
+type Props = {
+  participants: ApiParticipant[]
+  onSelect: (activeSelection: ActiveSelection | null) => void
+}
+
+export const Participants = ({ participants, onSelect }: Props) => {
   const descriptionId = useId()
 
   const [deleteParticipant, { loading }] = useDeleteParticipantMutation({
@@ -69,7 +76,7 @@ export const Participants = ({ participants }: Props) => {
       <ul
         aria-label="Participants"
         aria-describedby={participants.length === 0 ? descriptionId : undefined}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 py-6 px-2 md:px-4"
       >
         {participants.map((participant) => (
           <Participant
@@ -78,6 +85,11 @@ export const Participants = ({ participants }: Props) => {
             disabled={loading}
             onRemove={() =>
               deleteParticipant({ variables: { id: participant.id } })
+            }
+            onSelect={(selection) =>
+              selection
+                ? onSelect({ name: participant.name, value: selection })
+                : onSelect(null)
             }
           />
         ))}
@@ -94,16 +106,34 @@ type ParticipantProps = {
   participant: ApiParticipant
   disabled: boolean
   onRemove: () => void
+  onSelect: (selection: SelectionState | null) => void
 }
 
-const Participant = ({ participant, disabled, onRemove }: ParticipantProps) => {
+const Participant = ({
+  participant,
+  disabled,
+  onRemove,
+  onSelect,
+}: ParticipantProps) => {
   const descriptionId = useId()
 
   return (
     <li
       aria-label={participant.name}
       aria-describedby={descriptionId}
-      className="flex items-center justify-between"
+      className="flex cursor-default items-center justify-between rounded border-2 border-transparent py-2 px-2 hover:border-gray-300 hover:bg-gray-200 dark:hover:border-gray-700 dark:hover:bg-gray-800"
+      onMouseEnter={() =>
+        onSelect(
+          participant.selections.reduce(
+            (result, { dimensionId, value }) => ({
+              ...result,
+              [dimensionId]: value,
+            }),
+            {}
+          )
+        )
+      }
+      onMouseLeave={() => onSelect(null)}
     >
       <div className="flex flex-col ">
         {participant.name}

@@ -46,9 +46,7 @@ const TabPanel = ({ tabId, active }: TabPanelProps) => {
       aria-expanded={active ? "true" : "false"}
       aria-labelledby={tabId}
       ref={tabPanel}
-      className={`${
-        active ? "block" : "hidden"
-      } flex-1 overflow-y-auto py-6 px-2 md:px-6`}
+      className={`${active ? "block" : "hidden"} flex-1 overflow-y-auto`}
     />
   )
 }

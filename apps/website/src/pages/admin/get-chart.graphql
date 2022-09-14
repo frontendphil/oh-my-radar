@@ -12,6 +12,10 @@ query AdminGetChart($id: uuid!) {
       id
       name
       createdAt
+      selections {
+        dimensionId
+        value
+      }
     }
   }
 }

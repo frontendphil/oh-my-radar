@@ -39,6 +39,7 @@ export const createParticipant = (
 ): ItemType<Chart["participants"]> => ({
   name: "Test participant",
   createdAt: new Date().toISOString(),
+  selections: [],
 
   ...participant,
 
