@@ -12,7 +12,7 @@ export const Tabs = ({ children, activeTab, onChange }: Props) => {
   return (
     <TabsContextProvider activeTab={activeTab} onChange={onChange}>
       {(tabs) => (
-        <>
+        <div className="flex h-full flex-col">
           <div id={id} className="flex" role="tablist">
             {Children.map(children, (child) => (
               <div className="flex-1">{child}</div>
@@ -22,7 +22,7 @@ export const Tabs = ({ children, activeTab, onChange }: Props) => {
           {tabs.map((tabId) => (
             <TabPanel key={tabId} tabId={tabId} active={activeTab === tabId} />
           ))}
-        </>
+        </div>
       )}
     </TabsContextProvider>
   )
@@ -46,7 +46,9 @@ const TabPanel = ({ tabId, active }: TabPanelProps) => {
       aria-expanded={active ? "true" : "false"}
       aria-labelledby={tabId}
       ref={tabPanel}
-      className={`${active ? "block" : "hidden"} py-6 px-6 md:py-12`}
+      className={`${
+        active ? "block" : "hidden"
+      } flex-1 overflow-y-auto py-6 px-2 md:px-6`}
     />
   )
 }

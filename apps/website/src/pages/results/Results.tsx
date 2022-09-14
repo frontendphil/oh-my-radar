@@ -80,14 +80,16 @@ export const Results = () => {
       </Canvas>
 
       <SidePanel>
-        <div className="flex flex-col gap-12">
+        <div className="flex flex-col gap-12 py-6 px-6 md:py-12">
           <Participants
             participants={participantsWithColors.map(toParticipant)}
             value={selectedParticipants}
             onChange={setSelectedParticipants}
           />
 
-          <Aggregates aggregates={aggregates} onChange={setAggregates} />
+          {participantsWithColors.length > 0 && (
+            <Aggregates aggregates={aggregates} onChange={setAggregates} />
+          )}
         </div>
       </SidePanel>
     </View>
