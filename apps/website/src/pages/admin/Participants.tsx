@@ -76,7 +76,7 @@ export const Participants = ({ participants, onSelect }: Props) => {
       <ul
         aria-label="Participants"
         aria-describedby={participants.length === 0 ? descriptionId : undefined}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 py-6 px-2 md:px-4"
       >
         {participants.map((participant) => (
           <Participant
@@ -121,7 +121,7 @@ const Participant = ({
     <li
       aria-label={participant.name}
       aria-describedby={descriptionId}
-      className="flex items-center justify-between"
+      className="flex cursor-default items-center justify-between rounded border-2 border-transparent py-2 px-2 hover:border-gray-300 hover:bg-gray-200 dark:hover:border-gray-700 dark:hover:bg-gray-800"
       onMouseEnter={() =>
         onSelect(
           participant.selections.reduce(

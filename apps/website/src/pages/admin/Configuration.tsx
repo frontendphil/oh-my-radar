@@ -53,7 +53,7 @@ export const Configuration = ({ chart }: Props) => {
   }
 
   return (
-    <>
+    <div className="py-6 px-2 md:px-6">
       <Form>
         <Input
           label="Title"
@@ -176,7 +176,7 @@ export const Configuration = ({ chart }: Props) => {
           />
         </InputWithButton>
       </div>
-    </>
+    </div>
   )
 }
 
