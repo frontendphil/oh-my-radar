@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom"
 import invariant from "invariant"
-import { RadarChart, Selection, SelectionState } from "@radar/chart"
+import { RadarChart, Selection } from "@radar/chart"
 import { useAdminGetChartQuery } from "./api"
 
 import { useState } from "react"
 
-import { Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
+import { Badge, Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
 import { Configuration } from "./Configuration"
 import { ActiveSelection, Participants } from "./Participants"
 
@@ -45,7 +45,14 @@ export const Admin = () => {
           <Tab label="Configuration">
             <Configuration chart={data.charts_by_pk} />
           </Tab>
-          <Tab label="Participants">
+          <Tab
+            label={
+              <span className="flex items-center justify-center gap-2">
+                Participants
+                <Badge>{participants.length}</Badge>
+              </span>
+            }
+          >
             <Participants
               participants={participants}
               onSelect={setActiveSelection}
