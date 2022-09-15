@@ -1,0 +1,9 @@
+mutation UpdateDimension(
+  $pk: dimensions_pk_columns_input!
+  $payload: dimensions_set_input!
+) {
+  update_dimensions_by_pk(pk_columns: $pk, _set: $payload) {
+    id
+    title
+  }
+}

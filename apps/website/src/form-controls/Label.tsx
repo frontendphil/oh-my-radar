@@ -1,8 +1,6 @@
-import { HTMLAttributes } from "react"
+import { AllHTMLAttributes } from "react"
 
-type Props = HTMLAttributes<HTMLLabelElement> & {
-  htmlFor: string
-}
+type Props = AllHTMLAttributes<HTMLLabelElement>
 
 export const Label = (props: Props) => (
   <label

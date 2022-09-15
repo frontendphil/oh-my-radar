@@ -14,7 +14,14 @@ describe("Dimensions", () => {
     it('is possible to add dimensions with "Enter".', async () => {
       const onAdd = jest.fn()
 
-      render(<Dimensions dimensions={[]} onAdd={onAdd} onRemove={jest.fn()} />)
+      render(
+        <Dimensions
+          dimensions={[]}
+          onAdd={onAdd}
+          onRemove={jest.fn()}
+          onChange={jest.fn()}
+        />
+      )
 
       await addDimension("New dimension")
 
@@ -31,6 +38,7 @@ describe("Dimensions", () => {
           dimensions={[dimension]}
           onAdd={onAdd}
           onRemove={jest.fn()}
+          onChange={jest.fn()}
         />
       )
 
@@ -42,7 +50,14 @@ describe("Dimensions", () => {
     it("is not possible to add dimensions with an empty name.", async () => {
       const onAdd = jest.fn()
 
-      render(<Dimensions dimensions={[]} onAdd={onAdd} onRemove={jest.fn()} />)
+      render(
+        <Dimensions
+          dimensions={[]}
+          onAdd={onAdd}
+          onRemove={jest.fn()}
+          onChange={jest.fn()}
+        />
+      )
 
       await addDimension(" ")
 
@@ -51,7 +66,12 @@ describe("Dimensions", () => {
 
     it("clears the add input when a new dimension has been added.", async () => {
       render(
-        <Dimensions dimensions={[]} onAdd={jest.fn()} onRemove={jest.fn()} />
+        <Dimensions
+          dimensions={[]}
+          onAdd={jest.fn()}
+          onRemove={jest.fn()}
+          onChange={jest.fn()}
+        />
       )
 
       await addDimension("New dimension")
@@ -77,7 +97,14 @@ describe("Dimensions", () => {
     it('is possible to add new dimensions with the "Add" button.', async () => {
       const onAdd = jest.fn()
 
-      render(<Dimensions dimensions={[]} onAdd={onAdd} onRemove={jest.fn()} />)
+      render(
+        <Dimensions
+          dimensions={[]}
+          onAdd={onAdd}
+          onRemove={jest.fn()}
+          onChange={jest.fn()}
+        />
+      )
 
       await addDimension("New dimension")
 
@@ -92,6 +119,7 @@ describe("Dimensions", () => {
           dimensions={[{ id: "dimension", title: "Dimension" }]}
           onAdd={onAdd}
           onRemove={jest.fn()}
+          onChange={jest.fn()}
         />
       )
 
@@ -103,7 +131,14 @@ describe("Dimensions", () => {
     it("is not possible to add dimensions with an empty name.", async () => {
       const onAdd = jest.fn()
 
-      render(<Dimensions dimensions={[]} onAdd={onAdd} onRemove={jest.fn()} />)
+      render(
+        <Dimensions
+          dimensions={[]}
+          onAdd={onAdd}
+          onRemove={jest.fn()}
+          onChange={jest.fn()}
+        />
+      )
 
       await addDimension(" ")
 
@@ -112,7 +147,12 @@ describe("Dimensions", () => {
 
     it("clears the add input when a new dimension has been added.", async () => {
       render(
-        <Dimensions dimensions={[]} onAdd={jest.fn()} onRemove={jest.fn()} />
+        <Dimensions
+          dimensions={[]}
+          onAdd={jest.fn()}
+          onRemove={jest.fn()}
+          onChange={jest.fn()}
+        />
       )
 
       await addDimension("Test")
@@ -131,6 +171,7 @@ describe("Dimensions", () => {
             dimensions={[{ id: "dimension-id", title: "Dimension" }]}
             onAdd={jest.fn()}
             onRemove={onRemove}
+            onChange={jest.fn()}
           />
         )
 

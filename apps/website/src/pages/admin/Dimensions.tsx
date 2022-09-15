@@ -1,17 +1,18 @@
-import { useId, useState } from "react"
-import { TrashIcon } from "@heroicons/react/24/outline"
+import { useEffect, useId, useState } from "react"
+import { CheckIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { Button, IconButton, InputWithButton } from "../../form-controls"
 import { Label } from "../../form-controls/Label"
 import { List, ListItem } from "../../layout"
-import { Dimension } from "@radar/chart"
+import { Dimension as ChartDimension } from "@radar/chart"
 
-export type NewDimension = Omit<Dimension, "id">
+export type NewDimension = Omit<ChartDimension, "id">
 
 type Props = {
-  dimensions: Dimension[]
+  dimensions: ChartDimension[]
   disabled?: boolean
   onAdd: (dimension: NewDimension) => void
   onRemove: (dimensionId: string) => void
+  onChange: (dimension: ChartDimension) => void
 }
 
 export const Dimensions = ({
@@ -19,33 +20,25 @@ export const Dimensions = ({
   disabled,
   onAdd,
   onRemove,
+  onChange,
 }: Props) => {
   const [newDimension, setNewDimension] = useState("")
   const listId = useId()
 
   return (
     <div className="flex flex-col gap-4">
-      <Label htmlFor={listId}>Dimensions</Label>
+      <Label id={listId}>Dimensions</Label>
 
       {dimensions.length > 0 && (
-        <List id={listId} className="flex flex-col gap-1">
-          {dimensions.map(({ id, title, deleted }) => (
-            <ListItem
-              key={id}
-              aria-label={title}
-              dirty={id === "new"}
-              deleted={deleted}
-              action={
-                <IconButton
-                  disabled={id === "new" || disabled}
-                  aria-label={`Remove dimension "${title}"`}
-                  onClick={() => onRemove(id)}
-                  icon={TrashIcon}
-                />
-              }
-            >
-              {title}
-            </ListItem>
+        <List aria-labelledby={listId} className="flex flex-col gap-1">
+          {dimensions.map((dimension) => (
+            <Dimension
+              key={dimension.id}
+              disabled={disabled}
+              dimension={dimension}
+              onRemove={() => onRemove(dimension.id)}
+              onChange={(title) => onChange({ ...dimension, title })}
+            />
           ))}
         </List>
       )}
@@ -93,5 +86,72 @@ export const Dimensions = ({
         </Button>
       </InputWithButton>
     </div>
+  )
+}
+
+type DimensionProps = {
+  dimension: ChartDimension
+  disabled?: boolean
+  onRemove: () => void
+  onChange: (title: string) => void
+}
+
+const Dimension = ({
+  dimension,
+  disabled,
+  onRemove,
+  onChange,
+}: DimensionProps) => {
+  const { title, id, deleted } = dimension
+
+  const [editing, setEditing] = useState(false)
+  const [value, setValue] = useState(title)
+
+  useEffect(() => setValue(title), [title])
+
+  if (editing) {
+    return (
+      <InputWithButton
+        label="Dimension label"
+        value={value}
+        onChange={setValue}
+      >
+        <IconButton
+          icon={CheckIcon}
+          aria-label="Accept"
+          onClick={() => {
+            setEditing(false)
+            onChange(value)
+          }}
+        />
+      </InputWithButton>
+    )
+  }
+
+  return (
+    <ListItem
+      aria-label={title}
+      dirty={id === "new"}
+      deleted={deleted}
+      action={
+        <div className="flex gap-2">
+          <IconButton
+            disabled={disabled}
+            aria-label="Edit"
+            onClick={() => setEditing(!editing)}
+            icon={PencilIcon}
+          />
+
+          <IconButton
+            disabled={id === "new" || disabled}
+            aria-label={`Remove dimension "${title}"`}
+            onClick={() => onRemove()}
+            icon={TrashIcon}
+          />
+        </div>
+      }
+    >
+      {title}
+    </ListItem>
   )
 }

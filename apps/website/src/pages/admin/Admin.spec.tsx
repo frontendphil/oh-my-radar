@@ -12,8 +12,10 @@ import {
   DeleteDimensionDocument,
   DeleteParticipantDocument,
   Dimensions_Insert_Input,
+  Dimensions_Set_Input,
   InsertDimensionDocument,
   UpdateChartDocument,
+  UpdateDimensionDocument,
 } from "./api"
 
 describe("Admin", () => {
@@ -97,6 +99,27 @@ describe("Admin", () => {
         },
       })
 
+      const renameDimensionMock = (
+        id: string,
+        payload: Dimensions_Set_Input
+      ) => ({
+        request: {
+          query: UpdateDimensionDocument,
+          variables: {
+            pk: { id },
+            payload,
+          },
+        },
+        result: {
+          data: {
+            update_dimensions_by_pk: {
+              id,
+              ...payload,
+            },
+          },
+        },
+      })
+
       describe("Adding a new dimension.", () => {
         it("immediately shows the new dimension but disables it.", async () => {
           const insertMock = insertDimensionMock({
@@ -168,6 +191,41 @@ describe("Admin", () => {
         expect(
           screen.queryByRole("listitem", { name: "Dimension" })
         ).not.toBeInTheDocument()
+      })
+
+      it("is possible to rename a dimension.", async () => {
+        const dimension = createDimension({ title: "Initial title" })
+
+        const chart = createChart({ dimensions: [dimension] })
+
+        const updateMock = renameDimensionMock(dimension.id, {
+          chartId: chart.id,
+          id: dimension.id,
+          title: "Changed title",
+        })
+
+        await renderChart({
+          chart,
+          mocks: [updateMock],
+        })
+
+        const { getByRole } = within(
+          screen.getByRole("list", { name: "Dimensions" })
+        )
+
+        await userEvent.click(getByRole("button", { name: "Edit" }))
+        await userEvent.clear(getByRole("textbox", { name: "Dimension label" }))
+        await userEvent.type(
+          getByRole("textbox", { name: "Dimension label" }),
+          "Changed title"
+        )
+        await userEvent.click(getByRole("button", { name: "Accept" }))
+
+        await finishMutations(updateMock)
+
+        expect(
+          screen.getByRole("figure", { name: "Changed title" })
+        ).toBeInTheDocument()
       })
     })
 
