@@ -12,6 +12,7 @@ import {
   useDeleteDimensionMutation,
   useInsertDimensionMutation,
   useUpdateChartMutation,
+  useUpdateDimensionMutation,
 } from "./api"
 import { useEffect } from "react"
 import { useConfiguration } from "./useConfiguration"
@@ -26,11 +27,13 @@ type Props = {
 export const Configuration = ({ chart }: Props) => {
   const [configuration, updateConfiguration] = useConfiguration()
 
-  const [updateChart, { loading: updating }] = useUpdateChartMutation()
+  const [updateChart, { loading: updatingChart }] = useUpdateChartMutation()
   const [insertDimension, { loading: inserting }] = useInsertDimensionMutation()
   const [deleteDimension, { loading: deleting }] = useDeleteDimensionMutation()
+  const [updateDimension, { loading: updatingDimension }] =
+    useUpdateDimensionMutation()
 
-  const loading = updating || inserting || deleting
+  const loading = updatingChart || inserting || deleting || updatingDimension
 
   useEffect(() => {
     const { title, min, max, dimensions } = chart
@@ -143,6 +146,28 @@ export const Configuration = ({ chart }: Props) => {
                 updateConfiguration({
                   dimensions: dimensions.filter(({ id }) => id !== dimensionId),
                 })
+              },
+            })
+          }}
+          onChange={(dimension) => {
+            const index = dimensions.findIndex(({ id }) => id === dimension.id)
+
+            updateConfiguration({
+              dimensions: [
+                ...dimensions.slice(0, index),
+                dimension,
+                ...dimensions.slice(index + 1),
+              ],
+            })
+
+            updateDimension({
+              variables: {
+                pk: { id: dimension.id },
+                payload: {
+                  chartId: chart.id,
+                  id: dimension.id,
+                  title: dimension.title,
+                },
               },
             })
           }}

@@ -9,7 +9,7 @@ import { createCache } from "../cache"
 const zeroTimeout = () =>
   new Promise<void>((resolve) => setTimeout(resolve, 10))
 
-export const finishMutations = async (...mutations: unknown[]) => {
+export const finishMutations = async (...mutations: MockedResponse[]) => {
   await act(async () => {
     for (const _ of mutations) {
       await zeroTimeout()
@@ -17,7 +17,7 @@ export const finishMutations = async (...mutations: unknown[]) => {
   })
 }
 
-export const finishQueries = async (...queries: unknown[]) => {
+export const finishQueries = async (...queries: MockedResponse[]) => {
   await act(async () => {
     for (const _ of queries) {
       await zeroTimeout()
