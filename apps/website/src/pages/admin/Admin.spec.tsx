@@ -1,4 +1,4 @@
-import { screen, within } from "@testing-library/react"
+import { screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { finishMutations, uuid } from "../test-utils"
 import {
@@ -113,6 +113,7 @@ describe("Admin", () => {
         result: {
           data: {
             update_dimensions_by_pk: {
+              __typename: "dimensions",
               id,
               ...payload,
             },
