@@ -419,6 +419,14 @@ describe("Admin", () => {
         })
       })
     })
+
+    describe("Danger zone", () => {
+      it("is possible to remove a chart.", async () => {
+        await renderChart()
+
+        await screen.getByRole("button", { name: "Delete chart" })
+      })
+    })
   })
 
   describe("Participants", () => {
