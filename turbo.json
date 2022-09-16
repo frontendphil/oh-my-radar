@@ -17,6 +17,9 @@
       "inputs": ["apollo.config.js", "**/*.graphql"],
       "outputs": ["**/api.ts"]
     },
+    "lint": {
+      "inputs": ["**/*"]
+    },
     "test": {
       "inputs": ["./**/jest.config.js", "setupTests.ts"],
       "outputs": ["./**/coverage/**"]

@@ -7,6 +7,7 @@
     "test": "turbo run test",
     "test:ci": "turbo run test:ci",
     "test:watch": "turbo run test:watch",
+    "lint": "turbo run lint",
     "codegen": "turbo run codegen:watch",
     "start": "turbo run start",
     "stats": "NODE_ENV=production turbo run stats",
