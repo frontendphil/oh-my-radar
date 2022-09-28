@@ -11,6 +11,12 @@ query ResultGetChart($id: uuid!) {
           avg {
             value
           }
+          min {
+            value
+          }
+          max {
+            value
+          }
         }
       }
     }

@@ -6,23 +6,19 @@ import { Step } from "./Step"
 import { Colors, SelectionState } from "./types"
 
 type Props = {
+  color: Colors
   name: string
   value: SelectionState
 }
 
-export const Aggregate = ({ name, value }: Props) => {
+export const Aggregate = ({ name, value, color }: Props) => {
   const dimensions = useDimensions()
   const diagramWidth = useDiagramWidth()
   const range = useRange()
 
   return (
     <>
-      <Plane
-        label={name}
-        selection={value}
-        color={Colors.green}
-        strokeDasharray="4"
-      />
+      <Plane label={name} selection={value} color={color} strokeDasharray="4" />
 
       {dimensions.map(({ id }, index) => {
         const angle = getDimensionAngle(dimensions, index)
@@ -38,7 +34,7 @@ export const Aggregate = ({ name, value }: Props) => {
           <Step
             disabled
             selected
-            color={Colors.green}
+            color={color}
             key={id}
             x={point.x}
             y={point.y}
