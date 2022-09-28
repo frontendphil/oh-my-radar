@@ -47,11 +47,6 @@
       "outputs": ["./**/stats.json"]
     }
   },
-  "globalDependencies": [
-    "$NODE_ENV",
-    "$GRAPHQL_ENDPOINT",
-    "$HASURA_ADMIN_SECRET",
-    "tsconfig.json",
-    "package.json"
-  ]
+  "globalDependencies": ["tsconfig.json", "package.json"],
+  "globalEnv": ["NODE_ENV", "GRAPHQL_ENDPOINT", "HASURA_ADMIN_SECRET"]
 }
