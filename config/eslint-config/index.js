@@ -10,6 +10,7 @@ module.exports = {
     "plugin:import/recommended",
     "plugin:import/typescript",
   ],
+
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
@@ -29,4 +30,6 @@ module.exports = {
       version: "detect",
     },
   },
+
+  overrides: [{ files: ["*.ts", "*.tsx", "*.js"] }],
 }

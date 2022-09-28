@@ -9,7 +9,7 @@
     "test": "jest",
     "test:ci": "jest --coverage --runInBand",
     "test:watch": "jest --watch",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "build": "npm run compile && npm run tailwind",
     "compile": "node build.js && tsc -p tsconfig.build.json",
     "tailwind": "tailwindcss -o chart.css -m"
