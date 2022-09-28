@@ -3,7 +3,14 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ["plugin:react/recommended", "plugin:react-hooks/recommended"],
+  extends: [
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+  ],
+
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaFeatures: {
@@ -17,4 +24,12 @@ module.exports = {
   rules: {
     "react/react-in-jsx-scope": "off",
   },
+
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
+
+  overrides: [{ files: ["*.ts", "*.tsx", "*.js"] }],
 }
