@@ -34,10 +34,12 @@ export const createDimension = (
 
 type SelectionAggregate = Pick<Dimension, "selections_aggregate">
 
-export const createAverage = (value: number): SelectionAggregate => ({
+export const createAggregates = (value: number): SelectionAggregate => ({
   selections_aggregate: {
     aggregate: {
       avg: { value },
+      min: { value },
+      max: { value },
     },
   },
 })

@@ -16,7 +16,11 @@ import { Participants } from "./Participants"
 export const Results = () => {
   const { id } = useParams()
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>([])
-  const [aggregates, setAggregates] = useState({ average: false })
+  const [aggregates, setAggregates] = useState({
+    average: false,
+    min: false,
+    max: false,
+  })
 
   const { loading, data } = useResultGetChartQuery({ variables: { id } })
 
@@ -65,13 +69,38 @@ export const Results = () => {
           {aggregates.average && (
             <Aggregate
               name="Average"
+              color={Colors.green}
               value={dimensions.reduce(
-                (result, { id, selections_aggregate }) => {
-                  return {
-                    ...result,
-                    [id]: selections_aggregate.aggregate?.avg?.value,
-                  }
-                },
+                (result, { id, selections_aggregate }) => ({
+                  ...result,
+                  [id]: selections_aggregate.aggregate?.avg?.value,
+                }),
+                {}
+              )}
+            />
+          )}
+          {aggregates.min && (
+            <Aggregate
+              name="Min"
+              color={Colors.blue}
+              value={dimensions.reduce(
+                (result, { id, selections_aggregate }) => ({
+                  ...result,
+                  [id]: selections_aggregate.aggregate?.min?.value,
+                }),
+                {}
+              )}
+            />
+          )}
+          {aggregates.max && (
+            <Aggregate
+              name="Max"
+              color={Colors.yellow}
+              value={dimensions.reduce(
+                (result, { id, selections_aggregate }) => ({
+                  ...result,
+                  [id]: selections_aggregate.aggregate?.max?.value,
+                }),
                 {}
               )}
             />

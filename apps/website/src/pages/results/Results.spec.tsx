@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 
 import {
-  createAverage,
+  createAggregates,
   createDimension,
   createParticipant,
   createSelection,
@@ -13,17 +13,17 @@ describe("Results", () => {
   const dimensionOne = createDimension({
     id: "one",
     title: "One",
-    ...createAverage(1),
+    ...createAggregates(1),
   })
   const dimensionTwo = createDimension({
     id: "two",
     title: "Two",
-    ...createAverage(1),
+    ...createAggregates(1),
   })
   const dimensionThree = createDimension({
     id: "three",
     title: "Three",
-    ...createAverage(1),
+    ...createAggregates(1),
   })
 
   const dimensions = [dimensionOne, dimensionTwo, dimensionThree]
@@ -94,6 +94,38 @@ describe("Results", () => {
       expect(
         screen.getByRole("figure", { name: "Average" })
       ).toBeInTheDocument()
+    })
+  })
+
+  describe("Min", () => {
+    it("is disabled by default.", async () => {
+      await renderChart({ chart: { dimensions, participants } })
+
+      expect(screen.queryByRole("checkbox", { name: "Min" })).not.toBeChecked()
+    })
+
+    it("is possible to view the min of all responses.", async () => {
+      await renderChart({ chart: { dimensions, participants } })
+
+      await userEvent.click(screen.getByRole("checkbox", { name: "Min" }))
+
+      expect(screen.getByRole("figure", { name: "Min" })).toBeInTheDocument()
+    })
+  })
+
+  describe("Max", () => {
+    it("is disabled by default.", async () => {
+      await renderChart({ chart: { dimensions, participants } })
+
+      expect(screen.queryByRole("checkbox", { name: "Max" })).not.toBeChecked()
+    })
+
+    it("is possible to view the max of all responses.", async () => {
+      await renderChart({ chart: { dimensions, participants } })
+
+      await userEvent.click(screen.getByRole("checkbox", { name: "Max" }))
+
+      expect(screen.getByRole("figure", { name: "Max" })).toBeInTheDocument()
     })
   })
 })
