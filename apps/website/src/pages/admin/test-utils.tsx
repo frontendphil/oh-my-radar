@@ -63,12 +63,12 @@ const getChartMock = (
 
 type RenderOptions = {
   chart?: Partial<Chart>
-  mocks?: MockedResponse[]
-}
+} & Parameters<typeof render>[1]
 
 export const renderChart = async ({
   mocks = [],
   chart,
+  ...rest
 }: RenderOptions = {}): Promise<ReturnType<typeof render>> => {
   const realChart = createChart(chart)
   const chartMock = getChartMock(realChart)
@@ -77,6 +77,7 @@ export const renderChart = async ({
     mocks: [chartMock, ...mocks],
     path: "/admin/:id",
     route: `/admin/${realChart.id}`,
+    ...rest,
   })
 
   await finishQueries(chartMock)

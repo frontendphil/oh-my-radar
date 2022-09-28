@@ -9,6 +9,7 @@ import {
 } from "./test-utils"
 import {
   Charts_Set_Input,
+  DeleteChartDocument,
   DeleteDimensionDocument,
   DeleteParticipantDocument,
   Dimensions_Insert_Input,
@@ -17,6 +18,7 @@ import {
   UpdateChartDocument,
   UpdateDimensionDocument,
 } from "./api"
+import { Route } from "react-router-dom"
 
 describe("Admin", () => {
   const chartId = "chart-id"
@@ -417,6 +419,41 @@ describe("Admin", () => {
             "Use this link to see all answers that have been submitted. Everyone with this link can see the results."
           )
         })
+      })
+    })
+
+    describe("Danger zone", () => {
+      const removeChartMock = (id: string) => ({
+        request: {
+          query: DeleteChartDocument,
+          variables: {
+            id,
+          },
+        },
+        result: {
+          data: {
+            delete_charts_by_pk: { __typename: "charts", id },
+          },
+        },
+      })
+      it("is possible to remove a chart.", async () => {
+        const chart = createChart()
+        const removeChart = removeChartMock(chart.id)
+
+        const Needle = () => <div data-testid="deleted" />
+        await renderChart({
+          chart,
+          mocks: [removeChart],
+          routes: <Route path="/" element={<Needle />} />,
+        })
+
+        await userEvent.click(
+          screen.getByRole("button", { name: "Delete chart" })
+        )
+
+        await finishMutations(removeChart)
+
+        expect(screen.getByTestId("deleted")).toBeInTheDocument()
       })
     })
   })
