@@ -1,0 +1,5 @@
+mutation DeleteChart($id: uuid!) {
+  delete_charts_by_pk(id: $id) {
+    id
+  }
+}
