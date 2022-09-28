@@ -41,8 +41,8 @@
   },
   "lint-staged": {
     "*.{ts,tsx,json,js}": [
-      "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "prettier --write"
     ]
   },
   "overrides": {

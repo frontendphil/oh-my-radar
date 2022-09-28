@@ -2,7 +2,7 @@ import invariant from "invariant"
 import { SVGAttributes } from "react"
 import { getDimensionAngle } from "./getDimensionAngle"
 import { getPoint } from "./getPoint"
-import { useDimensions, useRange , useDiagramWidth } from "./RadarContext"
+import { useDimensions, useRange, useDiagramWidth } from "./RadarContext"
 import { AvailableColors } from "./Step"
 import { Colors, SelectionState } from "./types"
 
