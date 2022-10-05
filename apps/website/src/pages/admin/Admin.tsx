@@ -43,10 +43,7 @@ export const Admin = () => {
               </span>
             }
           >
-            <Participants
-              participants={participants}
-              onSelect={setActiveSelection}
-            />
+            <Participants onSelect={setActiveSelection} />
           </Tab>
         </Tabs>
       </SidePanel>
