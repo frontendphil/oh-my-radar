@@ -47,7 +47,7 @@ export const Results = () => {
 
   return (
     <View>
-      <Canvas>
+      <Canvas title={title}>
         <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
           {participantsWithColors
             .filter(({ id }) => selectedParticipants.includes(id))

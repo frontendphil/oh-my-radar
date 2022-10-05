@@ -20,16 +20,18 @@ export const Admin = () => {
 
   return (
     <View>
-      <Canvas>
-        <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
-          {activeSelection && (
-            <Selection
-              name={activeSelection.name}
-              value={activeSelection.value}
-            />
-          )}
-        </RadarChart>
-      </Canvas>
+      <div className="h-2/3 md:h-full md:flex-1">
+        <Canvas title={title}>
+          <RadarChart title={title} dimensions={dimensions} range={[min, max]}>
+            {activeSelection && (
+              <Selection
+                name={activeSelection.name}
+                value={activeSelection.value}
+              />
+            )}
+          </RadarChart>
+        </Canvas>
+      </div>
       <SidePanel>
         <Tabs activeTab={tab} onChange={setTab}>
           <Tab label="Configuration">
