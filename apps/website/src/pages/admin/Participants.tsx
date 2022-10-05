@@ -6,6 +6,7 @@ import { Hint } from "../../layout"
 import { ItemType } from "../test-utils"
 import { AdminGetChartQuery, useDeleteParticipantMutation } from "./api"
 import { removeParticipantsFromCache } from "./participantsCache"
+import { useChart } from "./useChart"
 
 type ApiChart = NonNullable<AdminGetChartQuery["charts_by_pk"]>
 
@@ -17,12 +18,13 @@ export type ActiveSelection = {
 }
 
 type Props = {
-  participants: ApiParticipant[]
   onSelect: (activeSelection: ActiveSelection | null) => void
 }
 
-export const Participants = ({ participants, onSelect }: Props) => {
+export const Participants = ({ onSelect }: Props) => {
   const descriptionId = useId()
+
+  const { participants } = useChart()
 
   const [deleteParticipant, { loading }] = useDeleteParticipantMutation({
     update: removeParticipantsFromCache,

@@ -3,10 +3,10 @@ import { useState } from "react"
 import { Badge, Canvas, SidePanel, Tab, Tabs, View } from "../../layout"
 import { Configuration } from "./Configuration"
 import { ActiveSelection, Participants } from "./Participants"
-import { useChart } from "./useChart"
+import { useChartQuery } from "./useChart"
 
 export const Admin = () => {
-  const chart = useChart()
+  const chart = useChartQuery()
 
   const [tab, setTab] = useState<string | null>(null)
   const [activeSelection, setActiveSelection] =
@@ -43,10 +43,7 @@ export const Admin = () => {
               </span>
             }
           >
-            <Participants
-              participants={participants}
-              onSelect={setActiveSelection}
-            />
+            <Participants onSelect={setActiveSelection} />
           </Tab>
         </Tabs>
       </SidePanel>

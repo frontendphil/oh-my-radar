@@ -28,7 +28,7 @@ import {
 export const Configuration = () => {
   const navigate = useNavigate()
 
-  const chart = useChart()
+  const { title, dimensions, min, max, id } = useChart()
 
   const [updateChart, { loading: updatingChart }] = useUpdateChartMutation()
   const [deleteChart, { loading: deletingChart }] = useDeleteChartMutation({
@@ -45,10 +45,6 @@ export const Configuration = () => {
   const [updateDimension, { loading: updatingDimension }] =
     useUpdateDimensionMutation()
 
-  if (!chart) {
-    return null
-  }
-
   const loading =
     updatingChart ||
     deletingChart ||
@@ -56,11 +52,9 @@ export const Configuration = () => {
     deletingDimension ||
     updatingDimension
 
-  const { title, dimensions, min, max } = chart
-
   const saveChart = (payload: Charts_Set_Input) => {
     updateChart({
-      variables: { pk: { id: chart.id }, payload },
+      variables: { pk: { id }, payload },
     })
   }
 
@@ -111,7 +105,7 @@ export const Configuration = () => {
               disabled={loading}
               onAdd={(dimension) =>
                 insertDimension({
-                  variables: { dimension: { chartId: chart.id, ...dimension } },
+                  variables: { dimension: { chartId: id, ...dimension } },
                 })
               }
               onRemove={(dimensionId) =>
@@ -124,7 +118,7 @@ export const Configuration = () => {
                   variables: {
                     pk: { id: dimension.id },
                     payload: {
-                      chartId: chart.id,
+                      chartId: id,
                       id: dimension.id,
                       title: dimension.title,
                     },
@@ -141,13 +135,11 @@ export const Configuration = () => {
               disabled
               label="Participant view"
               hint="Give this link to the people who should fill out this chart."
-              value={resourceURL("participate", chart.id)}
+              value={resourceURL("participate", id)}
             >
               <IconButton
                 icon={ArrowTopRightOnSquareIcon}
-                onClick={() =>
-                  window.open(resourceURL("participate", chart.id))
-                }
+                onClick={() => window.open(resourceURL("participate", id))}
               />
             </InputWithButton>
 
@@ -155,11 +147,11 @@ export const Configuration = () => {
               disabled
               label="Results view"
               hint="Use this link to see all answers that have been submitted. Everyone with this link can see the results."
-              value={resourceURL("results", chart.id)}
+              value={resourceURL("results", id)}
             >
               <IconButton
                 icon={ArrowTopRightOnSquareIcon}
-                onClick={() => window.open(resourceURL("results", chart.id))}
+                onClick={() => window.open(resourceURL("results", id))}
               />
             </InputWithButton>
           </div>
@@ -170,7 +162,7 @@ export const Configuration = () => {
 
           <DangerButton
             disabled={loading}
-            onClick={() => deleteChart({ variables: { id: chart.id } })}
+            onClick={() => deleteChart({ variables: { id } })}
           >
             Delete chart
           </DangerButton>
