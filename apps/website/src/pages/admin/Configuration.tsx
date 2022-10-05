@@ -65,7 +65,7 @@ export const Configuration = () => {
   }
 
   return (
-    <div className="h-full py-6 px-2 md:px-6">
+    <div className="py-6 px-2 md:px-6">
       <div className="flex h-full flex-col justify-between">
         <div>
           <Form>
