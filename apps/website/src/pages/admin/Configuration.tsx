@@ -16,13 +16,14 @@ import {
   useUpdateChartMutation,
   useUpdateDimensionMutation,
 } from "./api"
-
 import { Divider } from "../../layout"
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
 import { useNavigate } from "react-router-dom"
 import { useChart } from "./useChart"
-import { gql, Reference } from "@apollo/client"
-import invariant from "invariant"
+import {
+  insertDimensionIntoCache,
+  removeDimensionFromCache,
+} from "./dimensionsCache"
 
 export const Configuration = () => {
   const navigate = useNavigate()
@@ -35,94 +36,11 @@ export const Configuration = () => {
   })
   const [insertDimension, { loading: insertingDimension }] =
     useInsertDimensionMutation({
-      update: (cache, { data }) => {
-        if (!data || !data.insert_dimensions_one) {
-          return
-        }
-
-        cache.modify({
-          fields: {
-            charts_by_pk(chartRef: Reference, { readField }) {
-              const dimensionsRef = readField("dimensions", chartRef)
-
-              invariant(
-                Array.isArray(dimensionsRef),
-                `Chart with id "${readField(
-                  "id",
-                  chartRef
-                )} does not specify "dimensions".`
-              )
-
-              const update = cache.writeFragment({
-                id: chartRef.__ref,
-                fragment: gql`
-                  fragment dimensions on charts {
-                    dimensions {
-                      id
-                    }
-                  }
-                `,
-                data: {
-                  dimensions: [
-                    ...dimensionsRef.map((dimensionRef) => ({
-                      id: readField("id", dimensionRef),
-                    })),
-                    data.insert_dimensions_one,
-                  ],
-                },
-              })
-
-              return update
-            },
-          },
-        })
-      },
+      update: insertDimensionIntoCache,
     })
   const [deleteDimension, { loading: deletingDimension }] =
     useDeleteDimensionMutation({
-      update: (cache, { data }) => {
-        if (!data || !data.delete_dimensions_by_pk) {
-          return
-        }
-
-        const { id } = data.delete_dimensions_by_pk
-
-        cache.modify({
-          fields: {
-            charts_by_pk(chartRef: Reference, { readField }) {
-              const dimensionsRef = readField("dimensions", chartRef)
-
-              invariant(
-                Array.isArray(dimensionsRef),
-                `Chart with id "${readField(
-                  "id",
-                  chartRef
-                )} does not specify "dimensions".`
-              )
-
-              const update = cache.writeFragment({
-                id: chartRef.__ref,
-                fragment: gql`
-                  fragment dimensions on charts {
-                    dimensions {
-                      id
-                    }
-                  }
-                `,
-                data: {
-                  dimensions: dimensionsRef
-                    .map((dimensionRef) => ({
-                      id: readField("id", dimensionRef),
-                    }))
-                    .filter((dimension) => dimension.id !== id),
-                },
-              })
-
-              return update
-            },
-          },
-        })
-      },
+      update: removeDimensionFromCache,
     })
   const [updateDimension, { loading: updatingDimension }] =
     useUpdateDimensionMutation()

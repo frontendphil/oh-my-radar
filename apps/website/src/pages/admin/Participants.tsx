@@ -1,12 +1,11 @@
-import { gql, Reference } from "@apollo/client"
 import { TrashIcon } from "@heroicons/react/24/outline"
 import { SelectionState } from "@radar/chart"
-import invariant from "invariant"
 import { useId } from "react"
 import { IconButton } from "../../form-controls"
 import { Hint } from "../../layout"
 import { ItemType } from "../test-utils"
 import { AdminGetChartQuery, useDeleteParticipantMutation } from "./api"
+import { removeParticipantsFromCache } from "./participantsCache"
 
 type ApiChart = NonNullable<AdminGetChartQuery["charts_by_pk"]>
 
@@ -26,49 +25,7 @@ export const Participants = ({ participants, onSelect }: Props) => {
   const descriptionId = useId()
 
   const [deleteParticipant, { loading }] = useDeleteParticipantMutation({
-    update: (cache, { data }) => {
-      if (!data || !data.delete_participants_by_pk) {
-        return
-      }
-
-      const { id } = data.delete_participants_by_pk
-
-      cache.modify({
-        fields: {
-          charts_by_pk(chartRef: Reference, { readField }) {
-            const participantRefs = readField("participants", chartRef)
-
-            invariant(
-              Array.isArray(participantRefs),
-              `Chart with id "${readField(
-                "id",
-                chartRef
-              )}" does not specify "participants".`
-            )
-
-            const update = cache.writeFragment({
-              id: chartRef.__ref,
-              fragment: gql`
-                fragment participants on charts {
-                  participants {
-                    id
-                  }
-                }
-              `,
-              data: {
-                participants: participantRefs
-                  .map((participantRef) => ({
-                    id: readField("id", participantRef),
-                  }))
-                  .filter((participant) => participant.id !== id),
-              },
-            })
-
-            return update
-          },
-        },
-      })
-    },
+    update: removeParticipantsFromCache,
   })
 
   return (
