@@ -35,7 +35,7 @@ export const Participants = ({ participants, onSelect }: Props) => {
 
       cache.modify({
         fields: {
-          charts_by_pk(chartRef: Reference, { readField, DELETE }) {
+          charts_by_pk(chartRef: Reference, { readField }) {
             const participantRefs = readField("participants", chartRef)
 
             invariant(

@@ -1,13 +1,10 @@
-import { MockedResponse } from "@apollo/client/testing"
 import { finishQueries, ItemType, render, uuid } from "../test-utils"
 import { Admin } from "./Admin"
 import { AdminGetChartDocument, AdminGetChartQuery } from "./api"
 
-type Chart = NonNullable<AdminGetChartQuery["charts_by_pk"]>
+export type Chart = NonNullable<AdminGetChartQuery["charts_by_pk"]>
 
-export const createChart = (
-  chart: Partial<Chart> = {}
-): NonNullable<AdminGetChartQuery["charts_by_pk"]> => ({
+export const createChart = (chart: Partial<Chart> = {}): Chart => ({
   id: uuid(),
   title: "Test chart",
   min: 1,
@@ -23,7 +20,7 @@ type Dimension = ItemType<Chart["dimensions"]>
 
 export const createDimension = (
   dimension: Partial<Dimension> = {}
-): ItemType<Chart["dimensions"]> => ({
+): Dimension => ({
   title: "Test dimension",
 
   ...dimension,
@@ -36,7 +33,7 @@ type Participant = ItemType<Chart["participants"]>
 
 export const createParticipant = (
   participant: Partial<Participant> = {}
-): ItemType<Chart["participants"]> => ({
+): Participant => ({
   name: "Test participant",
   createdAt: new Date().toISOString(),
   selections: [],

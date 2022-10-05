@@ -2,5 +2,5 @@ import { HTMLAttributes } from "react"
 import { InputHint } from "../layout"
 
 export const Error = (props: HTMLAttributes<HTMLDivElement>) => (
-  <InputHint {...props} className="text-red-500" />
+  <InputHint {...props} className="text-red-500 dark:text-red-600" />
 )

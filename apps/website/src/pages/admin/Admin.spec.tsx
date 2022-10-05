@@ -2,6 +2,7 @@ import { screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { finishMutations, uuid } from "../test-utils"
 import {
+  Chart,
   createChart,
   createDimension,
   createParticipant,
@@ -23,17 +24,17 @@ import { Route } from "react-router-dom"
 describe("Admin", () => {
   const chartId = "chart-id"
 
-  const mutateChartMock = (id: string, payload: Charts_Set_Input) => ({
+  const mutateChartMock = (chart: Chart, payload: Charts_Set_Input) => ({
     request: {
       query: UpdateChartDocument,
       variables: {
-        pk: { id },
+        pk: { id: chart.id },
         payload,
       },
     },
     result: {
       data: {
-        update_charts_by_pk: { __typename: "charts", id, ...payload },
+        update_charts_by_pk: { ...chart, ...payload },
       },
     },
   })
@@ -42,10 +43,8 @@ describe("Admin", () => {
     describe("Title", () => {
       it("is possible to change the title of the cart.", async () => {
         const chart = createChart({ id: chartId, title: "Initial title" })
-        const updateMock = mutateChartMock(chart.id, {
+        const updateMock = mutateChartMock(chart, {
           title: "Changed title",
-          min: chart.min,
-          max: chart.max,
         })
 
         await renderChart({ mocks: [updateMock], chart })
@@ -78,6 +77,7 @@ describe("Admin", () => {
         result: {
           data: {
             insert_dimensions_one: {
+              __typename: "dimensions",
               id: uuid(),
               ...dimension,
             },
@@ -95,6 +95,7 @@ describe("Admin", () => {
         result: {
           data: {
             delete_dimensions_by_pk: {
+              __typename: "dimensions",
               id,
             },
           },
@@ -123,54 +124,24 @@ describe("Admin", () => {
         },
       })
 
-      describe("Adding a new dimension.", () => {
-        it("immediately shows the new dimension but disables it.", async () => {
-          const insertMock = insertDimensionMock({
-            chartId,
-            title: "New dimension",
-          })
-
-          await renderChart({ mocks: [insertMock], chart: { id: chartId } })
-
-          await userEvent.type(
-            screen.getByRole("textbox", { name: "Add dimension" }),
-            "New dimension{enter}"
-          )
-
-          expect(
-            screen.getByRole("listitem", { name: "New dimension" })
-          ).toBeInTheDocument()
-          expect(
-            screen.getByRole("button", {
-              name: `Remove dimension "New dimension"`,
-            })
-          ).toBeDisabled()
+      it("is possible to add a new dimension.", async () => {
+        const insertMock = insertDimensionMock({
+          chartId,
+          title: "New dimension",
         })
 
-        it("enables the dimension when it has been added.", async () => {
-          const insertMock = insertDimensionMock({
-            chartId,
-            title: "New dimension",
-          })
+        await renderChart({ mocks: [insertMock], chart: { id: chartId } })
 
-          await renderChart({ mocks: [insertMock], chart: { id: chartId } })
+        await userEvent.type(
+          screen.getByRole("textbox", { name: "Add dimension" }),
+          "New dimension{enter}"
+        )
 
-          await userEvent.type(
-            screen.getByRole("textbox", { name: "Add dimension" }),
-            "New dimension{enter}"
-          )
+        await finishMutations(insertMock)
 
-          await finishMutations(insertMock)
-
-          expect(
-            screen.getByRole("listitem", { name: "New dimension" })
-          ).toBeInTheDocument()
-          expect(
-            screen.getByRole("button", {
-              name: `Remove dimension "New dimension"`,
-            })
-          ).toBeEnabled()
-        })
+        expect(
+          screen.getByRole("listitem", { name: "New dimension" })
+        ).toBeInTheDocument()
       })
 
       it("should be possible to remove a dimension", async () => {
@@ -264,9 +235,7 @@ describe("Admin", () => {
       it("is possible to change the upper bound of the selection range.", async () => {
         const chart = createChart({ id: chartId, dimensions })
 
-        const updateMock = mutateChartMock(chart.id, {
-          title: chart.title,
-          min: chart.min,
+        const updateMock = mutateChartMock(chart, {
           max: 10,
         })
 
@@ -293,9 +262,7 @@ describe("Admin", () => {
       it("is possible to change the lower bound of the selection range", async () => {
         const chart = createChart({ id: chartId, dimensions })
 
-        const updateMock = mutateChartMock(chart.id, {
-          title: chart.title,
-          max: chart.max,
+        const updateMock = mutateChartMock(chart, {
           min: 0,
         })
 
@@ -322,10 +289,8 @@ describe("Admin", () => {
       it("is not possible to enter an upper bound that is below the lower bound.", async () => {
         const chart = createChart({ id: chartId, min: 4, max: 4 })
 
-        const updateMock = mutateChartMock(chart.id, {
-          title: chart.title,
-          min: chart.min,
-          max: chart.max,
+        const updateMock = mutateChartMock(chart, {
+          max: 3,
         })
 
         await renderChart({ chart, mocks: [updateMock] })
@@ -344,10 +309,8 @@ describe("Admin", () => {
       it("is not possible to enter a lower bound that is greater than the upper bound.", async () => {
         const chart = createChart({ id: chartId, min: 3, max: 5 })
 
-        const updateMock = mutateChartMock(chart.id, {
-          title: chart.title,
-          max: chart.max,
-          min: chart.min,
+        const updateMock = mutateChartMock(chart, {
+          min: 6,
         })
 
         await renderChart({ chart, mocks: [updateMock] })
