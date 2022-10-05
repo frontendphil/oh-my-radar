@@ -24,7 +24,6 @@ export function RadarChart({
   size: maxUserDefinedSize = 500,
   children,
 }: Props) {
-  const titleId = useId()
   const padding = STEP_RADIUS + DIMENSION_OVERLAP
 
   const size = useResponsiveSize(maxUserDefinedSize)
@@ -32,77 +31,68 @@ export function RadarChart({
   const canvasSize = size - 2 * STEP_RADIUS - DIMENSION_OVERLAP
 
   return (
-    <div>
-      <h1
-        id={titleId}
-        className="mb-5 text-center text-2xl font-semibold md:mb-10"
-      >
-        {title}
-      </h1>
-
-      <RadarContext.Provider
-        value={{ diagramWidth: canvasSize, dimensions, range }}
-      >
-        <div className="relative" style={{ width: size, height: size }}>
-          <div
-            style={{
-              position: "absolute",
-              left: size / 2,
-              top: size / 2,
-            }}
-          >
-            <DimensionLabels />
-          </div>
-
-          <svg
-            className="absolute"
-            role="figure"
-            aria-labelledby={titleId}
-            width={size}
-            height={size}
-          >
-            <defs>
-              <DimensionMarker size={5} />
-            </defs>
-
-            <g x={padding} y={padding}>
-              {dimensions.map(({ id }, index) => (
-                <Dimension
-                  key={id}
-                  angle={getDimensionAngle(dimensions, index)}
-                  diagramWidth={size}
-                />
-              ))}
-            </g>
-
-            <g
-              x={padding}
-              y={padding}
-              width={size - 2 * STEP_RADIUS}
-              height={size - 2 * STEP_RADIUS}
-            >
-              <Circles />
-
-              <g transform={`translate(${size / 2} ${size / 2})`}>
-                <Slots>
-                  {(_, { x, y, step }) => (
-                    <Step
-                      disabled
-                      key={step}
-                      aria-label={`${step}`}
-                      x={x}
-                      y={y}
-                    />
-                  )}
-                </Slots>
-
-                {children}
-              </g>
-            </g>
-          </svg>
+    <RadarContext.Provider
+      value={{ diagramWidth: canvasSize, dimensions, range }}
+    >
+      <div className="relative" style={{ width: size, height: size }}>
+        <div
+          style={{
+            position: "absolute",
+            left: size / 2,
+            top: size / 2,
+          }}
+        >
+          <DimensionLabels />
         </div>
-      </RadarContext.Provider>
-    </div>
+
+        <svg
+          className="absolute"
+          role="figure"
+          aria-label={title}
+          width={size}
+          height={size}
+        >
+          <defs>
+            <DimensionMarker size={5} />
+          </defs>
+
+          <g x={padding} y={padding}>
+            {dimensions.map(({ id }, index) => (
+              <Dimension
+                key={id}
+                angle={getDimensionAngle(dimensions, index)}
+                diagramWidth={size}
+              />
+            ))}
+          </g>
+
+          <g
+            x={padding}
+            y={padding}
+            width={size - 2 * STEP_RADIUS}
+            height={size - 2 * STEP_RADIUS}
+          >
+            <Circles />
+
+            <g transform={`translate(${size / 2} ${size / 2})`}>
+              <Slots>
+                {(_, { x, y, step }) => (
+                  <Step
+                    disabled
+                    key={step}
+                    aria-label={`${step}`}
+                    x={x}
+                    y={y}
+                  />
+                )}
+              </Slots>
+
+              {children}
+            </g>
+          </g>
+        </svg>
+      </div>
+    </RadarContext.Provider>
   )
 }
 
