@@ -24,17 +24,11 @@ type Props = {
 export const Participants = ({ onSelect }: Props) => {
   const descriptionId = useId()
 
-  const chart = useChart()
+  const { participants } = useChart()
 
   const [deleteParticipant, { loading }] = useDeleteParticipantMutation({
     update: removeParticipantsFromCache,
   })
-
-  if (!chart) {
-    return null
-  }
-
-  const { participants } = chart
 
   return (
     <>
