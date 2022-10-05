@@ -17,18 +17,22 @@ type Props = Omit<AllHTMLAttributes<HTMLInputElement>, "onChange"> & {
 export const NumberInput = ({
   label,
   value,
+  defaultValue,
   onChange,
   isValid = () => [true],
   ...rest
 }: Props) => {
   const id = useId()
   const errorId = useId()
-  const [internalValue, setInternalValue] = useState(value?.toString())
+
+  const externalValue = value ?? defaultValue
+
+  const [internalValue, setInternalValue] = useState(externalValue?.toString())
   const [error, setError] = useState<string | undefined>()
 
   useEffect(() => {
-    setInternalValue(value?.toString())
-  }, [value])
+    setInternalValue(externalValue?.toString())
+  }, [externalValue])
 
   return (
     <InputLayout label={<Label htmlFor={id}>{label}</Label>}>
@@ -39,10 +43,6 @@ export const NumberInput = ({
         aria-describedby={errorId}
         value={internalValue}
         onChange={(event) => {
-          if (!onChange) {
-            return
-          }
-
           invariant(
             event.target instanceof HTMLInputElement,
             `Expected an input as event target.`
@@ -58,7 +58,9 @@ export const NumberInput = ({
 
           if (valid) {
             setError(undefined)
-            onChange(event.target.valueAsNumber)
+            if (onChange) {
+              onChange(event.target.valueAsNumber)
+            }
           } else {
             setError(description)
           }

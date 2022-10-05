@@ -9,38 +9,45 @@ import {
   NumberInput,
 } from "../../form-controls"
 import {
-  AdminGetChartQuery,
+  Charts_Set_Input,
   useDeleteChartMutation,
   useDeleteDimensionMutation,
   useInsertDimensionMutation,
   useUpdateChartMutation,
   useUpdateDimensionMutation,
 } from "./api"
-import { useEffect } from "react"
-import { useConfiguration } from "./useConfiguration"
-import invariant from "invariant"
 import { Divider } from "../../layout"
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline"
 import { useNavigate } from "react-router-dom"
+import { useChart } from "./useChart"
+import {
+  insertDimensionIntoCache,
+  removeDimensionFromCache,
+} from "./dimensionsCache"
 
-type Props = {
-  chart: NonNullable<AdminGetChartQuery["charts_by_pk"]>
-}
-
-export const Configuration = ({ chart }: Props) => {
-  const [configuration, updateConfiguration] = useConfiguration()
+export const Configuration = () => {
   const navigate = useNavigate()
+
+  const chart = useChart()
 
   const [updateChart, { loading: updatingChart }] = useUpdateChartMutation()
   const [deleteChart, { loading: deletingChart }] = useDeleteChartMutation({
     onCompleted: () => navigate("/"),
   })
   const [insertDimension, { loading: insertingDimension }] =
-    useInsertDimensionMutation()
+    useInsertDimensionMutation({
+      update: insertDimensionIntoCache,
+    })
   const [deleteDimension, { loading: deletingDimension }] =
-    useDeleteDimensionMutation()
+    useDeleteDimensionMutation({
+      update: removeDimensionFromCache,
+    })
   const [updateDimension, { loading: updatingDimension }] =
     useUpdateDimensionMutation()
+
+  if (!chart) {
+    return null
+  }
 
   const loading =
     updatingChart ||
@@ -49,138 +56,70 @@ export const Configuration = ({ chart }: Props) => {
     deletingDimension ||
     updatingDimension
 
-  useEffect(() => {
-    const { title, min, max, dimensions } = chart
+  const { title, dimensions, min, max } = chart
 
-    updateConfiguration({
-      title,
-      dimensions,
-      range: [min, max],
-    })
-  }, [chart, updateConfiguration])
-
-  const { title, dimensions, range } = configuration
-
-  const [min, max] = range
-
-  const saveChart = () => {
+  const saveChart = (payload: Charts_Set_Input) => {
     updateChart({
-      variables: { pk: { id: chart.id }, payload: { title, min, max } },
+      variables: { pk: { id: chart.id }, payload },
     })
   }
 
   return (
-    <div className="h-full py-6 px-2 md:px-6">
+    <div className="py-6 px-2 md:px-6">
       <div className="flex h-full flex-col justify-between">
         <div>
           <Form>
             <Input
               label="Title"
-              value={title}
+              defaultValue={title}
               disabled={loading}
-              onChange={(title) => updateConfiguration({ title })}
-              onBlur={saveChart}
+              onBlur={(event) => saveChart({ title: event.target.value })}
             />
 
             <FormGroup>
               <NumberInput
                 label="Min value"
-                value={min}
+                defaultValue={min}
                 disabled={loading}
                 isValid={(value) =>
                   value < max
                     ? [true]
                     : [false, `Min value must be less than ${max}`]
                 }
-                onChange={(value) =>
-                  updateConfiguration({
-                    range: [value, max],
-                  })
+                onBlur={(event) =>
+                  saveChart({ min: event.target.valueAsNumber })
                 }
-                onBlur={saveChart}
               />
 
               <NumberInput
                 label="Max value"
-                value={max}
+                defaultValue={max}
                 disabled={loading}
                 isValid={(value) =>
                   value > min
                     ? [true]
                     : [false, `Max value must be greater than ${min}`]
                 }
-                onChange={(value) =>
-                  updateConfiguration({
-                    range: [min, value],
-                  })
+                onBlur={(event) =>
+                  saveChart({ max: event.target.valueAsNumber })
                 }
-                onBlur={saveChart}
               />
             </FormGroup>
 
             <Dimensions
               dimensions={dimensions}
               disabled={loading}
-              onAdd={(dimension) => {
-                updateConfiguration({
-                  dimensions: [
-                    ...configuration.dimensions,
-                    { ...dimension, id: "new" },
-                  ],
-                })
-
+              onAdd={(dimension) =>
                 insertDimension({
                   variables: { dimension: { chartId: chart.id, ...dimension } },
-                  onCompleted: (data) => {
-                    invariant(
-                      data.insert_dimensions_one,
-                      "Dimension could not be created."
-                    )
-
-                    const { id, title } = data.insert_dimensions_one
-
-                    updateConfiguration((currentConfiguration) => ({
-                      dimensions: currentConfiguration.dimensions.map(
-                        (dimension) =>
-                          dimension.id === "new" ? { id, title } : dimension
-                      ),
-                    }))
-                  },
                 })
-              }}
-              onRemove={(dimensionId) => {
-                updateConfiguration({
-                  dimensions: dimensions.map((dimension) =>
-                    dimension.id === dimensionId
-                      ? { ...dimension, deleted: true }
-                      : dimension
-                  ),
-                })
-
+              }
+              onRemove={(dimensionId) =>
                 deleteDimension({
                   variables: { id: dimensionId },
-                  onCompleted: () => {
-                    updateConfiguration({
-                      dimensions: dimensions.filter(
-                        ({ id }) => id !== dimensionId
-                      ),
-                    })
-                  },
                 })
-              }}
-              onChange={(dimension) => {
-                const index = dimensions.findIndex(
-                  ({ id }) => id === dimension.id
-                )
-
-                updateConfiguration({
-                  dimensions: [
-                    ...dimensions.slice(0, index),
-                    dimension,
-                    ...dimensions.slice(index + 1),
-                  ],
-                })
-
+              }
+              onChange={(dimension) =>
                 updateDimension({
                   variables: {
                     pk: { id: dimension.id },
@@ -191,7 +130,7 @@ export const Configuration = ({ chart }: Props) => {
                     },
                   },
                 })
-              }}
+              }
             />
           </Form>
 
