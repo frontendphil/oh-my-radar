@@ -26,8 +26,10 @@ export const insertDimensionIntoCache: MutationUpdaterFunction<
     return
   }
 
-  updateDimensionsInCache(cache, (dimensionsRef) => [
-    ...dimensionsRef,
+  updateDimensionsInCache(cache, (dimensionsRef, { readField }) => [
+    ...dimensionsRef.map((dimensionRef) => ({
+      id: readField("id", dimensionRef),
+    })),
     data.insert_dimensions_one,
   ])
 }
