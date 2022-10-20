@@ -27,10 +27,10 @@
   "devDependencies": {
     "@graphql-codegen/cli": "2.13.7",
     "@graphql-codegen/introspection": "2.2.1",
-    "@graphql-codegen/typescript": "2.7.4",
+    "@graphql-codegen/typescript": "2.7.5",
     "@graphql-codegen/typescript-graphql-files-modules": "2.2.1",
-    "@graphql-codegen/typescript-operations": "2.5.4",
-    "@graphql-codegen/typescript-react-apollo": "3.3.4",
+    "@graphql-codegen/typescript-operations": "2.5.5",
+    "@graphql-codegen/typescript-react-apollo": "3.3.5",
     "@radar/chart": "1.0.0",
     "@radar/eslint-config": "1.0.0",
     "@radar/jest-preset": "1.0.0",
