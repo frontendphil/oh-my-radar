@@ -9,7 +9,7 @@
   "author": "Philipp Giese",
   "license": "MIT",
   "dependencies": {
-    "@types/jest": "29.2.1",
+    "@types/jest": "29.2.2",
     "@types/node": "17.0.23",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
