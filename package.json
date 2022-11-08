@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/frontendphil/radar-chart#readme",
   "devDependencies": {
-    "husky": "8.0.1",
+    "husky": "8.0.2",
     "is-ci": "3.0.1",
     "prettier": "2.7.1",
     "prettier-plugin-tailwindcss": "0.1.13",
