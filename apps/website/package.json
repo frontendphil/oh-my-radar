@@ -39,7 +39,7 @@
     "@testing-library/user-event": "14.4.3",
     "@types/invariant": "2.2.35",
     "autoprefixer": "10.4.13",
-    "css-loader": "6.7.1",
+    "css-loader": "6.7.2",
     "dotenv": "16.0.3",
     "eslint": "8.27.0",
     "html-webpack-plugin": "5.5.0",
