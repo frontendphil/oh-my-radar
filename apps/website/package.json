@@ -25,11 +25,11 @@
     "react-router-dom": "6.4.5"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "2.15.0",
-    "@graphql-codegen/introspection": "2.2.1",
-    "@graphql-codegen/typescript": "2.8.3",
+    "@graphql-codegen/cli": "2.16.1",
+    "@graphql-codegen/introspection": "2.2.3",
+    "@graphql-codegen/typescript": "2.8.5",
     "@graphql-codegen/typescript-graphql-files-modules": "2.2.1",
-    "@graphql-codegen/typescript-operations": "2.5.8",
+    "@graphql-codegen/typescript-operations": "2.5.10",
     "@graphql-codegen/typescript-react-apollo": "3.3.7",
     "@radar/chart": "1.0.0",
     "@radar/eslint-config": "1.0.0",
