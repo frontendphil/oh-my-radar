@@ -7,7 +7,7 @@ import {
   InsertParticipantDocument,
   InsertSelectionsDocument,
   Participants_Set_Input,
-  Selection_Set_Input,
+  Selections_Set_Input,
 } from "./api"
 
 describe("Participate", () => {
@@ -25,7 +25,7 @@ describe("Participate", () => {
     },
   })
 
-  const insertSelectionsMock = (selections: Selection_Set_Input[]) => ({
+  const insertSelectionsMock = (selections: Selections_Set_Input[]) => ({
     request: {
       query: InsertSelectionsDocument,
       variables: {

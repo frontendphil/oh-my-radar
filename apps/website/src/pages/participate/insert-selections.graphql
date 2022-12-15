@@ -1,5 +1,5 @@
-mutation InsertSelections($selections: [selection_insert_input!]!) {
-  insert_selection(objects: $selections) {
+mutation InsertSelections($selections: [selections_insert_input!]!) {
+  insert_selections(objects: $selections) {
     returning {
       chartId
     }
