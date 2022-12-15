@@ -34,7 +34,7 @@ describe("Participate", () => {
     },
     result: {
       data: {
-        insert_selection: {
+        insert_selections: {
           returning: [],
         },
       },

@@ -21,11 +21,11 @@
       "inputs": ["**/*"]
     },
     "test": {
-      "inputs": ["./**/jest.config.js", "setupTests.ts"],
+      "inputs": ["./**/jest.config.js", "setupTests.ts", "./**/*.spec.tsx"],
       "outputs": ["./**/coverage/**"]
     },
     "test:watch": {
-      "inputs": ["./**/jest.config.js", "setupTests.ts"],
+      "inputs": ["./**/jest.config.js", "setupTests.ts", "./**/*.spec.tsx"],
       "outputs": ["./**/coverage/**"]
     },
     "test:ci": {
