@@ -18,7 +18,7 @@
   "author": "Philipp Giese",
   "license": "UNLICENSED",
   "dependencies": {
-    "@apollo/client": "3.7.3",
+    "@apollo/client": "3.7.4",
     "@heroicons/react": "2.0.13",
     "graphql": "16.6.0",
     "invariant": "2.2.4",
